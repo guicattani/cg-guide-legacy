@@ -1,31 +1,4 @@
-#pragma region imgui_headers
-// dear imgui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
-
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include <stdio.h>
-
-// About Desktop OpenGL function loaders:
-//  Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function pointers.
-//  Helper libraries are often used for this purpose! Here we are supporting a few common ones (gl3w, glew, glad).
-//  You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include <GL/glew.h>    // Initialize with glewInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-#include <glad/glad.h>  // Initialize with gladLoadGL()
-#else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif
-
-// Include glfw3.h after our OpenGL definitions
-#include <GLFW/glfw3.h>
-
-#pragma endregion
+#include "headers.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -39,104 +12,24 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-#pragma region [rgba(80, 80, 0, 0.2)] FUNCTIONS_STRUCTS_GLOBAL_VARS
-
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-
-// Headers abaixo são específicos de C++
-#include <map>
-#include <string>
-#include <fstream>
-#include <sstream>
-
-// Headers da biblioteca GLM: criação de matrizes e vetores.
-#include <glm/mat4x4.hpp>
-#include <glm/vec4.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
+#pragma region [rgba(80, 80, 0, 0.2)] HEADERS APPLICATION
 #include "matrices.h"
+#include "shaders.h"
+#include "globals.h"
+#include "initialize_globals.h"
 
 GLuint BuildTriangles(); // Constrói triângulos para renderização
-GLuint LoadShader_Vertex(const char* filename);   // Carrega um vertex shader
-GLuint LoadShader_Fragment(const char* filename); // Carrega um fragment shader
-void LoadShader(const char* filename, GLuint shader_id); // Funcao utilizada pelas duas acima
-GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id); // Cria um programa de GPU
 
 // funções callback para comunicação com o sistema operacional e interação do
 // usuário. Veja mais comentários nas definições das mesmas, abaixo.
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
-void ErrorCallback(int error, const char* description);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+void ErrorCallback(int error, const char* description);
 
-// Definimos uma estrutura que armazenará dados necessários para renderizar
-// cada objeto da cena virtual.
-struct SceneObject
-{
-    const char*  name;        // Nome do objeto
-    void*        first_index; // índice do primeiro vértice dentro do vetor indices[] definido em BuildTriangles()
-    int          num_indices; // Número de índices do objeto dentro do vetor indices[] definido em BuildTriangles()
-    GLenum       rendering_mode; // Modo de rasterização (GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.)
-};
-
-// Abaixo definimos variáveis globais utilizadas em várias funções do código.
-
-// A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
-// (map).  Veja dentro da função BuildTriangles() como que são incluídos
-// objetos dentro da variável g_VirtualScene, e veja na função main() como
-// estes são acessados.
-std::map<const char*, SceneObject> g_VirtualScene;
-
-
-// Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
-float g_ScreenRatio = 1.0f;
-
-// ângulos de Euler que controlam a rotação de um dos cubos da cena virtual
-float g_AngleX = 0.0f;
-float g_AngleY = 0.0f;
-float g_AngleZ = 0.0f;
-
-// ângulos de Euler que controlam a rotação de um dos cubos da cena virtual
-float g_MoveX = 0.0f;
-float g_MoveY = 0.0f;
-float g_MoveZ = 0.0f;
-
-// Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
-// Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-//glm::vec4 camera_position_c  ;
-//glm::vec4 camera_lookat_l    ;
-//glm::vec4 camera_view_vector ;
-//glm::vec4 camera_up_vector   ;
-//glm::vec4 camera_right_vector;
-
-bool WPressed = false;
-bool SPressed = false;
-bool APressed = false;
-bool DPressed = false;
-
-// "g_LeftMouseButtonPressed = true" se o usuário está com o botão esquerdo do mouse
-// pressionado no momento atual. Veja função MouseButtonCallback().
-bool g_LeftMouseButtonPressed = false;
-
-// Variáveis que definem a câmera em coordenadas esféricas, controladas pelo
-// usuário através do mouse (veja função CursorPosCallback()). A posição
-// efetiva da câmera é calculada dentro da função main(), dentro do loop de
-// renderização.
-float g_CameraTheta = 0.0f; // ângulo no plano ZX em relação ao eixo Z
-float g_CameraPhi = 0.0f;   // ângulo em relação ao eixo Y
-float g_CameraDistance = 2.5f; // Distância da câmera para a origem
-
-// Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
-bool g_UsePerspectiveProjection = true;
-
-// Variável que controla o ImGui.
-ImGuiIO* g_Io;
-
-#pragma endregion
+#pragma endregion HEADERS APPLICATION
 
 #pragma region [rgba(20, 20, 100, 0.2)] MAIN
 int main(int, char**)
@@ -270,9 +163,9 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    g_Io = &ImGui::GetIO(); (void)g_Io;
-    //g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    Globals::g_Io = &ImGui::GetIO(); (void)Globals::g_Io;
+    //Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -289,12 +182,12 @@ int main(int, char**)
     // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
     // - Read 'misc/fonts/README.txt' for more instructions and details.
     // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-    //g_Io.Fonts->AddFontDefault();
-    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-    //ImFont* font = g_Io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, g_Io.Fonts->GetGlyphRangesJapanese());
+    //Globals::g_Io.Fonts->AddFontDefault();
+    //Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
+    //Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+    //Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
+    //Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
+    //ImFont* font = Globals::g_Io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, Globals::g_Io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
     // Our state
@@ -313,9 +206,9 @@ int main(int, char**)
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Poll and handle events (inputs, window resize, etc.)
-        // You can read the g_Io.WantCaptureMouse, g_Io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When g_Io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-        // - When g_Io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+        // You can read the Globals::g_Io.WantCaptureMouse, Globals::g_Io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+        // - When Globals::g_Io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+        // - When Globals::g_Io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
         // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
@@ -442,21 +335,21 @@ int main(int, char**)
             // "model", "view" e "projection" definidas acima e já enviadas
             // para a placa de vídeo (GPU).
             //
-            // Veja a definição de g_VirtualScene["cube_faces"] dentro da
+            // Veja a definição de Globals::g_VirtualScene["cube_faces"] dentro da
             // função BuildTriangles(), e veja a documentação da função
             // glDrawElements() em http://docs.gl/gl3/glDrawElements.
             glDrawElements(
-                g_VirtualScene["cube_faces"].rendering_mode, // Veja slide 178 do documento "Aula_04_Modelagem_Geometrica_3D.pdf".
-                g_VirtualScene["cube_faces"].num_indices,    //
+                Globals::g_VirtualScene["cube_faces"].rendering_mode, // Veja slide 178 do documento "Aula_04_Modelagem_Geometrica_3D.pdf".
+                Globals::g_VirtualScene["cube_faces"].num_indices,    //
                 GL_UNSIGNED_INT,
-                (void*)g_VirtualScene["cube_faces"].first_index
+                (void*)Globals::g_VirtualScene["cube_faces"].first_index
             );
 
             // Pedimos para OpenGL desenhar linhas com largura de 4 pixels.
             glLineWidth(4.0f);
             // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
             // apontados pelo VAO como linhas. Veja a definição de
-            // g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+            // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
             // a documentação da função glDrawElements() em
             // http://docs.gl/gl3/glDrawElements.
             //
@@ -465,10 +358,10 @@ int main(int, char**)
             // geométricas que o cubo. Isto é, estes eixos estaráo
             // representando o sistema de coordenadas do modelo (e não o global)!
             glDrawElements(
-                g_VirtualScene["axes"].rendering_mode,
-                g_VirtualScene["axes"].num_indices,
+                Globals::g_VirtualScene["axes"].rendering_mode,
+                Globals::g_VirtualScene["axes"].num_indices,
                 GL_UNSIGNED_INT,
-                (void*)g_VirtualScene["axes"].first_index
+                (void*)Globals::g_VirtualScene["axes"].first_index
             );
 
             // Informamos para a placa de vídeo (GPU) que a variável booleana
@@ -477,14 +370,14 @@ int main(int, char**)
             glUniform1i(render_as_black_uniform, true);
             // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
             // VAO como linhas, formando as arestas pretas do cubo. Veja a
-            // definição de g_VirtualScene["cube_edges"] dentro da função
+            // definição de Globals::g_VirtualScene["cube_edges"] dentro da função
             // BuildTriangles(), e veja a documentação da função
             // glDrawElements() em http://docs.gl/gl3/glDrawElements.
             glDrawElements(
-                g_VirtualScene["cube_edges"].rendering_mode,
-                g_VirtualScene["cube_edges"].num_indices,
+                Globals::g_VirtualScene["cube_edges"].rendering_mode,
+                Globals::g_VirtualScene["cube_edges"].num_indices,
                 GL_UNSIGNED_INT,
-                (void*)g_VirtualScene["cube_edges"].first_index
+                (void*)Globals::g_VirtualScene["cube_edges"].first_index
             );
             // Desenhamos um ponto de tamanho 15 pixels em cima do terceiro vértice
             // do terceiro cubo. Este vértice tem coordenada de modelo igual é
@@ -512,14 +405,14 @@ int main(int, char**)
 
         // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
         // apontados pelo VAO como linhas. Veja a definição de
-        // g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+        // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
         // a documentação da função glDrawElements() em
         // http://docs.gl/gl3/glDrawElements.
         glDrawElements(
-            g_VirtualScene["axes"].rendering_mode,
-            g_VirtualScene["axes"].num_indices,
+            Globals::g_VirtualScene["axes"].rendering_mode,
+            Globals::g_VirtualScene["axes"].num_indices,
             GL_UNSIGNED_INT,
-            (void*)g_VirtualScene["axes"].first_index
+            (void*)Globals::g_VirtualScene["axes"].first_index
         );
 
         // "Desligamos" o VAO, evitando assim que operações posteriores venham a
@@ -807,8 +700,8 @@ GLuint BuildTriangles()
     cube_faces.num_indices    = 36;       // último índice está em indices[35]; total de 36 índices.
     cube_faces.rendering_mode = GL_TRIANGLES; // índices correspondem ao tipo de rasterização GL_TRIANGLES.
 
-    // Adicionamos o objeto criado acima na nossa cena virtual (g_VirtualScene).
-    g_VirtualScene["cube_faces"] = cube_faces;
+    // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
+    Globals::g_VirtualScene["cube_faces"] = cube_faces;
 
     // Criamos um segundo objeto virtual (SceneObject) que se refere às arestas
     // pretas do cubo.
@@ -818,8 +711,8 @@ GLuint BuildTriangles()
     cube_edges.num_indices    = 24; // último índice está em indices[59]; total de 24 índices.
     cube_edges.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
 
-    // Adicionamos o objeto criado acima na nossa cena virtual (g_VirtualScene).
-    g_VirtualScene["cube_edges"] = cube_edges;
+    // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
+    Globals::g_VirtualScene["cube_edges"] = cube_edges;
 
     // Criamos um terceiro objeto virtual (SceneObject) que se refere aos eixos XYZ.
     SceneObject axes;
@@ -827,7 +720,7 @@ GLuint BuildTriangles()
     axes.first_index    = (void*)(60*sizeof(GLuint)); // Primeiro índice está em indices[60]
     axes.num_indices    = 6; // último índice está em indices[65]; total de 6 índices.
     axes.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
-    g_VirtualScene["axes"] = axes;
+    Globals::g_VirtualScene["axes"] = axes;
 
     // Criamos um buffer OpenGL para armazenar os índices acima
     GLuint indices_id;
@@ -858,155 +751,11 @@ GLuint BuildTriangles()
     return vertex_array_object_id;
 }
 
-// Carrega um Vertex Shader de um arquivo GLSL. Veja definição de LoadShader() abaixo.
-GLuint LoadShader_Vertex(const char* filename)
-{
-    // Criamos um identificador (ID) para este shader, informando que o mesmo
-    // será aplicado nos vértices.
-    GLuint vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
-
-    // Carregamos e compilamos o shader
-    LoadShader(filename, vertex_shader_id);
-
-    // Retorna o ID gerado acima
-    return vertex_shader_id;
-}
-
-// Carrega um Fragment Shader de um arquivo GLSL . Veja definição de LoadShader() abaixo.
-GLuint LoadShader_Fragment(const char* filename)
-{
-    // Criamos um identificador (ID) para este shader, informando que o mesmo
-    // será aplicado nos fragmentos.
-    GLuint fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
-
-    // Carregamos e compilamos o shader
-    LoadShader(filename, fragment_shader_id);
-
-    // Retorna o ID gerado acima
-    return fragment_shader_id;
-}
-
-// função auxilar, utilizada pelas duas funções acima. Carrega código de GPU de
-// um arquivo GLSL e faz sua compilação.
-void LoadShader(const char* filename, GLuint shader_id)
-{
-    // Lemos o arquivo de texto indicado pela variável "filename"
-    // e colocamos seu conteúdo em memória, apontado pela variável
-    // "shader_string".
-    std::ifstream file;
-    try {
-        file.exceptions(std::ifstream::failbit);
-        file.open(filename);
-    } catch ( std::exception& e ) {
-        fprintf(stderr, "ERROR: Cannot open file \"%s\".\n", filename);
-        std::exit(1);
-    }
-    std::stringstream shader;
-    shader << file.rdbuf();
-    std::string str = shader.str();
-    const GLchar* shader_string = str.c_str();
-    const GLint   shader_string_length = static_cast<GLint>( str.length() );
-
-    // Define o código do shader GLSL, contido na string "shader_string"
-    glShaderSource(shader_id, 1, &shader_string, &shader_string_length);
-
-    // Compila o código do shader GLSL (em tempo de execução)
-    glCompileShader(shader_id);
-
-    // Verificamos se ocorreu algum erro ou "warning" durante a compilação
-    GLint compiled_ok;
-    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled_ok);
-
-    GLint log_length = 0;
-    glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
-
-    // Alocamos memória para guardar o log de compilação.
-    // A chamada "new" em C++ é equivalente ao "malloc()" do C.
-    GLchar* log = new GLchar[log_length];
-    glGetShaderInfoLog(shader_id, log_length, &log_length, log);
-
-    // Imprime no terminal qualquer erro ou "warning" de compilação
-    if ( log_length != 0 )
-    {
-        std::string  output;
-
-        if ( !compiled_ok )
-        {
-            output += "ERROR: OpenGL compilation of \"";
-            output += filename;
-            output += "\" failed.\n";
-            output += "== Start of compilation log\n";
-            output += log;
-            output += "== End of compilation log\n";
-        }
-        else
-        {
-            output += "WARNING: OpenGL compilation of \"";
-            output += filename;
-            output += "\".\n";
-            output += "== Start of compilation log\n";
-            output += log;
-            output += "== End of compilation log\n";
-        }
-
-        fprintf(stderr, "%s", output.c_str());
-    }
-
-    // A chamada "delete" em C++ é equivalente ao "free()" do C
-    delete [] log;
-}
-
-// Esta função cria um programa de GPU, o qual contém obrigatoriamente um
-// Vertex Shader e um Fragment Shader.
-GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
-{
-    // Criamos um identificador (ID) para este programa de GPU
-    GLuint program_id = glCreateProgram();
-
-    // definição dos dois shaders GLSL que devem ser executados pelo programa
-    glAttachShader(program_id, vertex_shader_id);
-    glAttachShader(program_id, fragment_shader_id);
-
-    // Linkagem dos shaders acima ao programa
-    glLinkProgram(program_id);
-
-    // Verificamos se ocorreu algum erro durante a linkagem
-    GLint linked_ok = GL_FALSE;
-    glGetProgramiv(program_id, GL_LINK_STATUS, &linked_ok);
-
-    // Imprime no terminal qualquer erro de linkagem
-    if ( linked_ok == GL_FALSE )
-    {
-        GLint log_length = 0;
-        glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &log_length);
-
-        // Alocamos memória para guardar o log de compilação.
-        // A chamada "new" em C++ é equivalente ao "malloc()" do C.
-        GLchar* log = new GLchar[log_length];
-
-        glGetProgramInfoLog(program_id, log_length, &log_length, log);
-
-        std::string output;
-
-        output += "ERROR: OpenGL linking of program failed.\n";
-        output += "== Start of link log\n";
-        output += log;
-        output += "\n== End of link log\n";
-
-        // A chamada "delete" em C++ é equivalente ao "free()" do C
-        delete [] log;
-
-        fprintf(stderr, "%s", output.c_str());
-    }
-
-    // Retornamos o ID gerado acima
-    return program_id;
-}
 
 // definição da função que será chamada sempre que a janela do sistema
 // operacional for redimensionada, por consequência alterando o tamanho do
 // "framebuffer" (região de memória onde são armazenados os pixels da imagem).
-    void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     // Indicamos que queremos renderizar em toda região do framebuffer. A
     // função "glViewport" define o mapeamento das "normalized device
@@ -1026,25 +775,20 @@ GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
     g_ScreenRatio = (float)width / height;
 }
 
-// Variáveis globais que armazenam a última posição do cursor do mouse, para
-// que possamos calcular quanto que o mouse se movimentou entre dois instantes
-// de tempo. Utilizadas no callback CursorPosCallback() abaixo.
-double g_LastCursorPosX, g_LastCursorPosY;
-
 // função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    if(g_Io->WantCaptureMouse)
+    if(Globals::g_Io->WantCaptureMouse)
       return;
 
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
         // Se o usuário pressionou o botão esquerdo do mouse, guardamos a
-        // posição atual do cursor nas variáveis g_LastCursorPosX e
+        // posição atual do cursor nas variáveis Globals::g_LastCursorPosX e
         // g_LastCursorPosY.  Também, setamos a variável
         // g_LeftMouseButtonPressed como true, para saber que o usuário está
         // com o botão esquerdo pressionado.
-        glfwGetCursorPos(window, &g_LastCursorPosX, &g_LastCursorPosY);
+        glfwGetCursorPos(window, &Globals::g_LastCursorPosX, &Globals::g_LastCursorPosY);
         g_LeftMouseButtonPressed = true;
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
@@ -1069,8 +813,8 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         return;
 
     // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
-    float dx = xpos - g_LastCursorPosX;
-    float dy = ypos - g_LastCursorPosY;
+    float dx = xpos - Globals::g_LastCursorPosX;
+    float dy = ypos - Globals::g_LastCursorPosY;
 
     // Atualizamos parâmetros da câmera com os deslocamentos
     g_CameraTheta -= 0.01f*dx;
@@ -1088,8 +832,8 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 
     // Atualizamos as variáveis globais para armazenar a posição atual do
     // cursor como sendo a última posição conhecida do cursor.
-    g_LastCursorPosX = xpos;
-    g_LastCursorPosY = ypos;
+    Globals::g_LastCursorPosX = xpos;
+    Globals::g_LastCursorPosY = ypos;
 }
 
 // função callback chamada sempre que o usuário movimenta a "rodinha" do mouse.
@@ -1198,4 +942,6 @@ void ErrorCallback(int error, const char* description)
 {
     fprintf(stderr, "ERROR: GLFW: %s\n", description);
 }
+
+
 #pragma endregion FUNCTIONS

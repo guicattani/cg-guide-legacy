@@ -16,6 +16,7 @@
 
 EXE = example_imgui
 SOURCES = ./src/main.cpp
+SOURCES += ./src/shaders.cpp
 SOURCES += ./src/imgui_impl_glfw.cpp ./src/imgui_impl_opengl3.cpp
 SOURCES += ./src/imgui/imgui.cpp ./src/imgui/imgui_demo.cpp ./src/imgui/imgui_draw.cpp ./src/imgui/imgui_widgets.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
