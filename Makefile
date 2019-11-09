@@ -21,6 +21,9 @@ SOURCES += ./src/imgui/imgui.cpp ./src/imgui/imgui_demo.cpp ./src/imgui/imgui_dr
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 
+INCLUDE	:= include
+LIB		:= libs
+
 CXXFLAGS = -I./src/imgui
 CXXFLAGS += -g -Wall -Wformat -Wno-unknown-pragmas
 LIBS =
@@ -73,7 +76,7 @@ endif
 ##---------------------------------------------------------------------
 
 %.o:./src/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
 %.o:./src/imgui/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
@@ -88,6 +91,9 @@ all: $(EXE)
 
 $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+
+run: all
+	./$(BIN)/$(EXECUTABLE)
 
 clean:
 	cd ./bin
