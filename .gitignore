@@ -38,3 +38,5 @@
 /lib/opengl/*.bundle
 /pkg
 /tmp
+
+imgui.ini
