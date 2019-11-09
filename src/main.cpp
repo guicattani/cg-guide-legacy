@@ -133,6 +133,8 @@ float g_CameraDistance = 2.5f; // Distância da câmera para a origem
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 bool g_UsePerspectiveProjection = true;
 
+// Variável que controla o ImGui.
+ImGuiIO* g_Io;
 
 #pragma endregion
 
@@ -160,7 +162,7 @@ int main(int, char**)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "TCC - Guilherme", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "TCC - Guilherme", NULL, NULL);
     if (window == NULL)
         return 1;
 
@@ -268,9 +270,9 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    g_Io = &ImGui::GetIO(); (void)g_Io;
+    //g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -287,18 +289,21 @@ int main(int, char**)
     // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
     // - Read 'misc/fonts/README.txt' for more instructions and details.
     // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+    //g_Io.Fonts->AddFontDefault();
+    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
+    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
+    //g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
+    //ImFont* font = g_Io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, g_Io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    float nearplane = -0.1f;  // posição do "near plane"
+    float farplane  = -10.0f; // posição do "far plane"
     #pragma endregion MAIN
 
     #pragma region [rgba(50, 100, 100, 0.2)] DRAW_LOOP
@@ -308,9 +313,9 @@ int main(int, char**)
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+        // You can read the g_Io.WantCaptureMouse, g_Io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+        // - When g_Io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+        // - When g_Io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
         // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
@@ -352,8 +357,6 @@ int main(int, char**)
         // Note que, no sistema de coordenadas da câmera, os planos near e far
         // estáo no sentido negativo! Veja slides 198-200 do documento
         // "Aula_09_Projecoes.pdf".
-        float nearplane = -0.1f;  // posição do "near plane"
-        float farplane  = -10.0f; // posição do "far plane"
         if (g_UsePerspectiveProjection)
         {
             // Projeção Perspectiva.
@@ -541,17 +544,10 @@ int main(int, char**)
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         {
-            static float f = 0.0f;
+            // static float f = 0.0f;
             static int counter = 0;
             // Create a window called "Hello, world!" and append into it.
-            ImGui::Begin("Hello, world!");
-            // Display some text (you can use a format strings too)
-            ImGui::Text("This is some useful text.");
-            // Edit bools storing our window open/close state
-            ImGui::Checkbox("Demo Window", &show_demo_window);
-            ImGui::Checkbox("Another Window", &show_another_window);
-            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+            ImGui::Begin("Settings");
             // Edit 3 floats representing a color
             ImGui::ColorEdit3("clear color", (float*)&clear_color);
 
@@ -560,6 +556,17 @@ int main(int, char**)
                 counter++;
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
+
+            ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
+
+            ImGui::Text("Block Settings");
+            ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
+            ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
+            ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
+
+            ImGui::Text("Frustum Settings");
+            ImGui::SliderFloat("Near Plane", &nearplane, -10.0f, 10.0f);
+            ImGui::SliderFloat("Far Plane", &farplane, -10.0f, 10.0f);
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
@@ -1027,6 +1034,9 @@ double g_LastCursorPosX, g_LastCursorPosY;
 // função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+    if(g_Io->WantCaptureMouse)
+      return;
+
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
         // Se o usuário pressionou o botão esquerdo do mouse, guardamos a
