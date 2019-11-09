@@ -24,7 +24,15 @@ static void glfw_error_callback(int error, const char* description)
 #endif
 #include "callbacks.h"
 
-GLuint BuildTriangles(); // Constrói triângulos para renderização
+GLuint BuildTriangles();
+
+void SetCallbacks();
+
+void InitializeOpenGL3();
+
+void PrintGPUInformation();
+
+bool InitializeOpenGLLoader();
 
 #pragma endregion HEADERS APPLICATION
 
@@ -32,99 +40,35 @@ GLuint BuildTriangles(); // Constrói triângulos para renderização
 int main(int, char**)
 {
     // Setup window
-    glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
     {
         fprintf(stderr, "ERROR: glfwInit() failed.\n");
         std::exit(1);
     }
 
-    // Definimos o callback para impressão de erros da GLFW no terminal
-    glfwSetErrorCallback(ErrorCallback);
-        // GL 3.0 + GLSL 130
+    // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 130";
-    // Pedimos para utilizar OpenGL versão 3.3 (ou superior)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-    // Pedimos para utilizar o perfil "core", isto é, utilizaremos somente as
-    // funções modernas de OpenGL.
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    InitializeOpenGL3();
 
     // Create window with graphics context
     GLFWwindow* window = glfwCreateWindow(800, 800, "TCC - Guilherme", NULL, NULL);
     if (window == NULL)
         return 1;
 
-    // Definimos a função de callback que será chamada sempre que o usuário
-    // pressionar alguma tecla do teclado ...
-    glfwSetKeyCallback(window, KeyCallback);
-    // ... ou clicar os botões do mouse ...
-    glfwSetMouseButtonCallback(window, MouseButtonCallback);
-    // ... ou movimentar o cursor do mouse em cima da janela ...
-    glfwSetCursorPosCallback(window, CursorPosCallback);
-    // ... ou rolar a "rodinha" do mouse.
-    glfwSetScrollCallback(window, ScrollCallback);
-
-    // Definimos a função de callback que será chamada sempre que a janela for
-    // redimensionada, por consequência alterando o tamanho do "framebuffer"
-    // (região de memória onde são armazenados os pixels da imagem).
-    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+    SetCallbacks(window);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
-    // Initialize OpenGL loader
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-    bool err = gl3wInit() != 0;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-    bool err = glewInit() != GLEW_OK;
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-    bool err = gladLoadGL() == 0;
-#else
-    bool err = false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
-#endif
+    bool err = InitializeOpenGLLoader();
     if (err)
     {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return 1;
     }
 
-    // Definimos o callback para impressão de erros da GLFW no terminal
-    glfwSetErrorCallback(ErrorCallback);
-
-    // Imprimimos no terminal informações sobre a GPU do sistema
-    const GLubyte *vendor      = glGetString(GL_VENDOR);
-    const GLubyte *renderer    = glGetString(GL_RENDERER);
-    const GLubyte *glversion   = glGetString(GL_VERSION);
-    const GLubyte *glslversion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-    printf("GPU: %s, %s, OpenGL %s, GLSL %s\n", vendor, renderer, glversion, glslversion);
-
-    // Carregamos os shaders de vértices e de fragmentos que seráo utilizados
-    // para renderização. Veja slide 217 e 219 do documento no Moodle
-    // "Aula_03_Rendering_Pipeline_Grafico.pdf".
-    //
-    // Note que o caminho para os arquivos "shader_vertex.glsl" e
-    // "shader_fragment.glsl" estáo fixados, sendo que assumimos a existência
-    // da seguinte estrutura no sistema de arquivos:
-    //
-    //    + FCG_Lab_0X/
-    //    |
-    //    +--+ bin/
-    //    |  |
-    //    |  +--+ Release/  (ou Debug/ ou Linux/)
-    //    |     |
-    //    |     o-- main.exe
-    //    |
-    //    +--+ src/
-    //       |
-    //       o-- shader_vertex.glsl
-    //       |
-    //       o-- shader_fragment.glsl
-    //       |
-    //       o-- ...
-    //
+    PrintGPUInformation();
     GLuint vertex_shader_id = LoadShader_Vertex("src/shader_vertex.glsl");
     GLuint fragment_shader_id = LoadShader_Fragment("src/shader_fragment.glsl");
 
@@ -145,7 +89,7 @@ int main(int, char**)
     // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
     glEnable(GL_DEPTH_TEST);
 
-    // Variáveis auxiliares utilizadas para chamada é função
+    // Variáveis auxiliares utilizadas para chamada de função
     // TextRendering_ShowModelViewProjection(), armazenando matrizes 4x4.
     glm::mat4 the_projection;
     glm::mat4 the_model;
@@ -496,7 +440,9 @@ int main(int, char**)
 #pragma endregion DRAW_LOOP
 
 #pragma region [rgba(50, 100, 30, 0.2)] FUNCTIONS
-// Constrói triângulos para futura renderização
+/*
+Constrói triângulos para renderização
+*/
 GLuint BuildTriangles()
 {
     // Primeiro, definimos os atributos de cada vértice.
@@ -748,4 +694,64 @@ GLuint BuildTriangles()
     return vertex_array_object_id;
 }
 
+/*
+Cria callbacks pra todos eventos: (KeyPress, MouseButtonPress, CursorPosition, Scroll, Framebuffer, Error)
+*/
+void SetCallbacks(GLFWwindow* window){
+    // Definimos a função de callback que será chamada sempre que o usuário
+    // pressionar alguma tecla do teclado ...
+    glfwSetKeyCallback(window, KeyCallback);
+    // ... ou clicar os botões do mouse ...
+    glfwSetMouseButtonCallback(window, MouseButtonCallback);
+    // ... ou movimentar o cursor do mouse em cima da janela ...
+    glfwSetCursorPosCallback(window, CursorPosCallback);
+    // ... ou rolar a "rodinha" do mouse.
+    glfwSetScrollCallback(window, ScrollCallback);
+    // Definimos a função de callback que será chamada sempre que a janela for
+    // redimensionada, por consequência alterando o tamanho do "framebuffer"
+    // (região de memória onde são armazenados os pixels da imagem).
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+    // Definimos o callback para impressão de erros da GLFW no terminal
+    glfwSetErrorCallback(ErrorCallback);
+
+}
+
+/*
+Initialize OpenGL loader
+*/
+bool InitializeOpenGLLoader(){
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+    return gl3wInit() != 0;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+    return glewInit() != GLEW_OK;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+    return gladLoadGL() == 0;
+#else
+    return false; // If you use IMGUI_IMPL_OPENGL_LOADER_CUSTOM, your loader is likely to requires some form of initialization.
+#endif
+}
+
+/*
+Pedimos para utilizar OpenGL versão 3.3 (ou superior)
+Pedimos para utilizar o perfil "core", isto é, utilizaremos somente as
+funções modernas de OpenGL.
+*/
+void InitializeOpenGL3(){
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+}
+
+/*
+Imprimimos no terminal informações sobre a GPU do sistema
+*/
+void PrintGPUInformation(){
+    const GLubyte *vendor      = glGetString(GL_VENDOR);
+    const GLubyte *renderer    = glGetString(GL_RENDERER);
+    const GLubyte *glversion   = glGetString(GL_VERSION);
+    const GLubyte *glslversion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    printf("GPU: %s, %s, OpenGL %s, GLSL %s\n", vendor, renderer, glversion, glslversion);
+}
 #pragma endregion FUNCTIONS
