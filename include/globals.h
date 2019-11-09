@@ -1,6 +1,7 @@
-#ifndef CLASS_GLOBALS
-#define CLASS_GLOBALS
+#ifndef CLASS_ADD_HEADERS
+#define CLASS_ADD_HEADERS
 #include "headers.h"
+#endif
 
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
 extern float g_ScreenRatio;
@@ -42,10 +43,7 @@ extern float g_CameraDistance; // Distância da câmera para a origem
 
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 extern bool g_UsePerspectiveProjection;
-#endif
 
-#ifndef CLASS_STATIC_GLOBALS
-#define CLASS_STATIC_GLOBALS
 class Globals {
 public:
   // Variável da cena atual.
@@ -59,4 +57,3 @@ public:
   // Variável que controla o ImGui.
   static ImGuiIO* g_Io;
 };
-#endif

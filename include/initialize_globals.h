@@ -1,5 +1,3 @@
-#ifndef CLASS_INITIALIZE_GLOBALS
-#define CLASS_INITIALIZE_GLOBALS
 #include "globals.h"
 
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
@@ -46,4 +44,3 @@ bool g_UsePerspectiveProjection = true;
 std::map<const char*, SceneObject> Globals::g_VirtualScene;
 double Globals::g_LastCursorPosX, Globals::g_LastCursorPosY;
 ImGuiIO* Globals::g_Io;
-#endif

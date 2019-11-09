@@ -1,4 +1,7 @@
+#ifndef CLASS_ADD_HEADERS
+#define CLASS_ADD_HEADERS
 #include "headers.h"
+#endif
 
 GLuint LoadShader_Vertex(const char* filename);   // Carrega um vertex shader
 GLuint LoadShader_Fragment(const char* filename); // Carrega um fragment shader
