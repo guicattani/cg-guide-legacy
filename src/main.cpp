@@ -64,6 +64,9 @@ GLuint LoadShader_Fragment(const char* filename); // Carrega um fragment shader
 void LoadShader(const char* filename, GLuint shader_id); // Funcao utilizada pelas duas acima
 GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id); // Cria um programa de GPU
 
+// Fun��es callback para comunica��o com o sistema operacional e intera��o do
+// usu�rio. Veja mais coment�rios nas defini��es das mesmas, abaixo.
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void ErrorCallback(int error, const char* description);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
@@ -138,29 +141,43 @@ int main(int, char**)
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
-        return 1;
+    {
+        fprintf(stderr, "ERROR: glfwInit() failed.\n");
+        std::exit(1);
+    }
 
-    // Decide GL+GLSL versions
-#if __APPLE__
-    // GL 3.2 + GLSL 150
-    const char* glsl_version = "#version 150";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-#else
-    // GL 3.0 + GLSL 130
+    // Definimos o callback para impress�o de erros da GLFW no terminal
+    glfwSetErrorCallback(ErrorCallback);
+        // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 130";
+    // Pedimos para utilizar OpenGL vers�o 3.3 (ou superior)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-#endif
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+    // Pedimos para utilizar o perfil "core", isto �, utilizaremos somente as
+    // fun��es modernas de OpenGL.
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create window with graphics context
     GLFWwindow* window = glfwCreateWindow(1280, 720, "TCC - Guilherme", NULL, NULL);
     if (window == NULL)
         return 1;
+
+    // Definimos a fun��o de callback que ser� chamada sempre que o usu�rio
+    // pressionar alguma tecla do teclado ...
+    glfwSetKeyCallback(window, KeyCallback);
+    // ... ou clicar os bot�es do mouse ...
+    glfwSetMouseButtonCallback(window, MouseButtonCallback);
+    // ... ou movimentar o cursor do mouse em cima da janela ...
+    glfwSetCursorPosCallback(window, CursorPosCallback);
+    // ... ou rolar a "rodinha" do mouse.
+    glfwSetScrollCallback(window, ScrollCallback);
+
+    // Definimos a fun��o de callback que ser� chamada sempre que a janela for
+    // redimensionada, por consequ�ncia alterando o tamanho do "framebuffer"
+    // (regi�o de mem�ria onde s�o armazenados os pixels da imagem).
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
@@ -183,21 +200,7 @@ int main(int, char**)
     // Definimos o callback para impress�o de erros da GLFW no terminal
     glfwSetErrorCallback(ErrorCallback);
 
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
-
-    // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
+    // Imprimimos no terminal informa��es sobre a GPU do sistema
     const GLubyte *vendor      = glGetString(GL_VENDOR);
     const GLubyte *renderer    = glGetString(GL_RENDERER);
     const GLubyte *glversion   = glGetString(GL_VERSION);
@@ -205,6 +208,30 @@ int main(int, char**)
 
     printf("GPU: %s, %s, OpenGL %s, GLSL %s\n", vendor, renderer, glversion, glslversion);
 
+    // Carregamos os shaders de v�rtices e de fragmentos que ser�o utilizados
+    // para renderiza��o. Veja slide 217 e 219 do documento no Moodle
+    // "Aula_03_Rendering_Pipeline_Grafico.pdf".
+    //
+    // Note que o caminho para os arquivos "shader_vertex.glsl" e
+    // "shader_fragment.glsl" est�o fixados, sendo que assumimos a exist�ncia
+    // da seguinte estrutura no sistema de arquivos:
+    //
+    //    + FCG_Lab_0X/
+    //    |
+    //    +--+ bin/
+    //    |  |
+    //    |  +--+ Release/  (ou Debug/ ou Linux/)
+    //    |     |
+    //    |     o-- main.exe
+    //    |
+    //    +--+ src/
+    //       |
+    //       o-- shader_vertex.glsl
+    //       |
+    //       o-- shader_fragment.glsl
+    //       |
+    //       o-- ...
+    //
     GLuint vertex_shader_id = LoadShader_Vertex("src/shader_vertex.glsl");
     GLuint fragment_shader_id = LoadShader_Fragment("src/shader_fragment.glsl");
 
@@ -222,6 +249,9 @@ int main(int, char**)
     GLint projection_uniform      = glGetUniformLocation(program_id, "projection"); // Vari�vel da matriz "projection" em shader_vertex.glsl
     GLint render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Vari�vel booleana em shader_vertex.glsl
 
+    // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
+    glEnable(GL_DEPTH_TEST);
+
     // Vari�veis auxiliares utilizadas para chamada � fun��o
     // TextRendering_ShowModelViewProjection(), armazenando matrizes 4x4.
     glm::mat4 the_projection;
@@ -233,6 +263,21 @@ int main(int, char**)
     float x = 2.0f*cos(g_CameraPhi)*sin(g_CameraTheta);
 
     glm::vec4 camera_position_c = glm::vec4(0.0f,0.0f,0.0f,1.0f);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsClassic();
+
+    // Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -254,22 +299,12 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    // Definimos a fun��o de callback que ser� chamada sempre que o usu�rio
-    // pressionar alguma tecla do teclado ...
-    glfwSetKeyCallback(window, KeyCallback);
-    // ... ou clicar os bot�es do mouse ...
-    glfwSetMouseButtonCallback(window, MouseButtonCallback);
-    // ... ou movimentar o cursor do mouse em cima da janela ...
-    glfwSetCursorPosCallback(window, CursorPosCallback);
-    // ... ou rolar a "rodinha" do mouse.
-    glfwSetScrollCallback(window, ScrollCallback);
-
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
 
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
@@ -277,6 +312,8 @@ int main(int, char**)
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
 
+        // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
+        // os shaders de v�rtice e fragmentos).
         glUseProgram(program_id);
 
         // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
@@ -348,7 +385,6 @@ int main(int, char**)
             float l = -r;
             projection = Matrix_Orthographic(l, r, b, t, nearplane, farplane);
         }
-
 
         // Enviamos as matrizes "view" e "projection" para a placa de v�deo
         // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas s�o
@@ -474,6 +510,35 @@ int main(int, char**)
             }
         }
 
+        // Agora queremos desenhar os eixos XYZ de coordenadas GLOBAIS.
+        // Para tanto, colocamos a matriz de modelagem igual � identidade.
+        // Veja slide 134 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
+        glm::mat4 model = Matrix_Identity();
+
+        // Enviamos a nova matriz "model" para a placa de v�deo (GPU). Veja o
+        // arquivo "shader_vertex.glsl".
+        glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+
+        // Pedimos para OpenGL desenhar linhas com largura de 10 pixels.
+        glLineWidth(10.0f);
+
+        // Informamos para a placa de v�deo (GPU) que a vari�vel booleana
+        // "render_as_black" deve ser colocada como "false". Veja o arquivo
+        // "shader_vertex.glsl".
+        glUniform1i(render_as_black_uniform, false);
+
+        // Pedimos para a GPU rasterizar os v�rtices dos eixos XYZ
+        // apontados pelo VAO como linhas. Veja a defini��o de
+        // g_VirtualScene["axes"] dentro da fun��o BuildTriangles(), e veja
+        // a documenta��o da fun��o glDrawElements() em
+        // http://docs.gl/gl3/glDrawElements.
+        glDrawElements(
+            g_VirtualScene["axes"].rendering_mode,
+            g_VirtualScene["axes"].num_indices,
+            GL_UNSIGNED_INT,
+            (void*)g_VirtualScene["axes"].first_index
+        );
+
         // "Desligamos" o VAO, evitando assim que opera��es posteriores venham a
         // alterar o mesmo. Isso evita bugs.
         glBindVertexArray(0);
@@ -545,102 +610,6 @@ int main(int, char**)
     glfwTerminate();
 
     return 0;
-}
-
-// Carrega um Vertex Shader de um arquivo GLSL. Veja defini��o de LoadShader() abaixo.
-GLuint LoadShader_Vertex(const char* filename)
-{
-    // Criamos um identificador (ID) para este shader, informando que o mesmo
-    // ser� aplicado nos v�rtices.
-    GLuint vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
-
-    // Carregamos e compilamos o shader
-    LoadShader(filename, vertex_shader_id);
-
-    // Retorna o ID gerado acima
-    return vertex_shader_id;
-}
-
-// Carrega um Fragment Shader de um arquivo GLSL . Veja defini��o de LoadShader() abaixo.
-GLuint LoadShader_Fragment(const char* filename)
-{
-    // Criamos um identificador (ID) para este shader, informando que o mesmo
-    // ser� aplicado nos fragmentos.
-    GLuint fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
-
-    // Carregamos e compilamos o shader
-    LoadShader(filename, fragment_shader_id);
-
-    // Retorna o ID gerado acima
-    return fragment_shader_id;
-}
-
-void LoadShader(const char* filename, GLuint shader_id)
-{
-    // Lemos o arquivo de texto indicado pela vari�vel "filename"
-    // e colocamos seu conte�do em mem�ria, apontado pela vari�vel
-    // "shader_string".
-    std::ifstream file;
-    try {
-        file.exceptions(std::ifstream::failbit);
-        file.open(filename);
-    } catch ( std::exception& e ) {
-        fprintf(stderr, "ERROR: Cannot open file \"%s\".\n", filename);
-        std::exit(1);
-    }
-    std::stringstream shader;
-    shader << file.rdbuf();
-    std::string str = shader.str();
-    const GLchar* shader_string = str.c_str();
-    const GLint   shader_string_length = static_cast<GLint>( str.length() );
-
-    // Define o c�digo do shader GLSL, contido na string "shader_string"
-    glShaderSource(shader_id, 1, &shader_string, &shader_string_length);
-
-    // Compila o c�digo do shader GLSL (em tempo de execu��o)
-    glCompileShader(shader_id);
-
-    // Verificamos se ocorreu algum erro ou "warning" durante a compila��o
-    GLint compiled_ok;
-    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled_ok);
-
-    GLint log_length = 0;
-    glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
-
-    // Alocamos mem�ria para guardar o log de compila��o.
-    // A chamada "new" em C++ � equivalente ao "malloc()" do C.
-    GLchar* log = new GLchar[log_length];
-    glGetShaderInfoLog(shader_id, log_length, &log_length, log);
-
-    // Imprime no terminal qualquer erro ou "warning" de compila��o
-    if ( log_length != 0 )
-    {
-        std::string  output;
-
-        if ( !compiled_ok )
-        {
-            output += "ERROR: OpenGL compilation of \"";
-            output += filename;
-            output += "\" failed.\n";
-            output += "== Start of compilation log\n";
-            output += log;
-            output += "== End of compilation log\n";
-        }
-        else
-        {
-            output += "WARNING: OpenGL compilation of \"";
-            output += filename;
-            output += "\".\n";
-            output += "== Start of compilation log\n";
-            output += log;
-            output += "== End of compilation log\n";
-        }
-
-        fprintf(stderr, "%s", output.c_str());
-    }
-
-    // A chamada "delete" em C++ � equivalente ao "free()" do C
-    delete [] log;
 }
 
 // Constr�i tri�ngulos para futura renderiza��o
@@ -895,6 +864,104 @@ GLuint BuildTriangles()
     return vertex_array_object_id;
 }
 
+// Carrega um Vertex Shader de um arquivo GLSL. Veja defini��o de LoadShader() abaixo.
+GLuint LoadShader_Vertex(const char* filename)
+{
+    // Criamos um identificador (ID) para este shader, informando que o mesmo
+    // ser� aplicado nos v�rtices.
+    GLuint vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
+
+    // Carregamos e compilamos o shader
+    LoadShader(filename, vertex_shader_id);
+
+    // Retorna o ID gerado acima
+    return vertex_shader_id;
+}
+
+// Carrega um Fragment Shader de um arquivo GLSL . Veja defini��o de LoadShader() abaixo.
+GLuint LoadShader_Fragment(const char* filename)
+{
+    // Criamos um identificador (ID) para este shader, informando que o mesmo
+    // ser� aplicado nos fragmentos.
+    GLuint fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+
+    // Carregamos e compilamos o shader
+    LoadShader(filename, fragment_shader_id);
+
+    // Retorna o ID gerado acima
+    return fragment_shader_id;
+}
+
+// Fun��o auxilar, utilizada pelas duas fun��es acima. Carrega c�digo de GPU de
+// um arquivo GLSL e faz sua compila��o.
+void LoadShader(const char* filename, GLuint shader_id)
+{
+    // Lemos o arquivo de texto indicado pela vari�vel "filename"
+    // e colocamos seu conte�do em mem�ria, apontado pela vari�vel
+    // "shader_string".
+    std::ifstream file;
+    try {
+        file.exceptions(std::ifstream::failbit);
+        file.open(filename);
+    } catch ( std::exception& e ) {
+        fprintf(stderr, "ERROR: Cannot open file \"%s\".\n", filename);
+        std::exit(1);
+    }
+    std::stringstream shader;
+    shader << file.rdbuf();
+    std::string str = shader.str();
+    const GLchar* shader_string = str.c_str();
+    const GLint   shader_string_length = static_cast<GLint>( str.length() );
+
+    // Define o c�digo do shader GLSL, contido na string "shader_string"
+    glShaderSource(shader_id, 1, &shader_string, &shader_string_length);
+
+    // Compila o c�digo do shader GLSL (em tempo de execu��o)
+    glCompileShader(shader_id);
+
+    // Verificamos se ocorreu algum erro ou "warning" durante a compila��o
+    GLint compiled_ok;
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled_ok);
+
+    GLint log_length = 0;
+    glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
+
+    // Alocamos mem�ria para guardar o log de compila��o.
+    // A chamada "new" em C++ � equivalente ao "malloc()" do C.
+    GLchar* log = new GLchar[log_length];
+    glGetShaderInfoLog(shader_id, log_length, &log_length, log);
+
+    // Imprime no terminal qualquer erro ou "warning" de compila��o
+    if ( log_length != 0 )
+    {
+        std::string  output;
+
+        if ( !compiled_ok )
+        {
+            output += "ERROR: OpenGL compilation of \"";
+            output += filename;
+            output += "\" failed.\n";
+            output += "== Start of compilation log\n";
+            output += log;
+            output += "== End of compilation log\n";
+        }
+        else
+        {
+            output += "WARNING: OpenGL compilation of \"";
+            output += filename;
+            output += "\".\n";
+            output += "== Start of compilation log\n";
+            output += log;
+            output += "== End of compilation log\n";
+        }
+
+        fprintf(stderr, "%s", output.c_str());
+    }
+
+    // A chamada "delete" em C++ � equivalente ao "free()" do C
+    delete [] log;
+}
+
 // Esta fun��o cria um programa de GPU, o qual cont�m obrigatoriamente um
 // Vertex Shader e um Fragment Shader.
 GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
@@ -942,6 +1009,29 @@ GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
     return program_id;
 }
 
+// Defini��o da fun��o que ser� chamada sempre que a janela do sistema
+// operacional for redimensionada, por consequ�ncia alterando o tamanho do
+// "framebuffer" (regi�o de mem�ria onde s�o armazenados os pixels da imagem).
+    void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+    // Indicamos que queremos renderizar em toda regi�o do framebuffer. A
+    // fun��o "glViewport" define o mapeamento das "normalized device
+    // coordinates" (NDC) para "pixel coordinates".  Essa � a opera��o de
+    // "Screen Mapping" ou "Viewport Mapping" vista em aula (slides 32 at� 40
+    // do documento "Aula_07_Transformacoes_Geometricas_3D.pdf").
+    glViewport(0, 0, width, height);
+
+    // Atualizamos tamb�m a raz�o que define a propor��o da janela (largura /
+    // altura), a qual ser� utilizada na defini��o das matrizes de proje��o,
+    // tal que n�o ocorra distor��es durante o processo de "Screen Mapping"
+    // acima, quando NDC � mapeado para coordenadas de pixels. Veja slide 234
+    // do documento "Aula_09_Projecoes.pdf".
+    //
+    // O cast para float � necess�rio pois n�meros inteiros s�o arredondados ao
+    // serem divididos!
+    g_ScreenRatio = (float)width / height;
+}
+
 // Vari�veis globais que armazenam a �ltima posi��o do cursor do mouse, para
 // que possamos calcular quanto que o mouse se movimentou entre dois instantes
 // de tempo. Utilizadas no callback CursorPosCallback() abaixo.
@@ -967,7 +1057,6 @@ void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
         g_LeftMouseButtonPressed = false;
     }
 }
-
 
 // Fun��o callback chamada sempre que o usu�rio movimentar o cursor do mouse em
 // cima da janela OpenGL.
@@ -1005,7 +1094,6 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
     g_LastCursorPosX = xpos;
     g_LastCursorPosY = ypos;
 }
-
 
 // Fun��o callback chamada sempre que o usu�rio movimenta a "rodinha" do mouse.
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
