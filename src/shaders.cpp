@@ -40,7 +40,7 @@ void LoadShader(const char* filename, GLuint shader_id)
         file.exceptions(std::ifstream::failbit);
         file.open(filename);
     } catch ( std::exception& e ) {
-        fprintf(stderr, "ERROR: Cannot open file \"%s\".\n", filename);
+        fprintf(stderr, "ERROR: Cannot open file \"%s\". Error: %s\n", filename, e.what());
         std::exit(1);
     }
     std::stringstream shader;

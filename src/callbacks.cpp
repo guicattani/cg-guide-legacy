@@ -61,8 +61,8 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         return;
 
     // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
-    float dx = xpos - Globals::g_LastCursorPosX;
-    float dy = ypos - Globals::g_LastCursorPosY;
+    float dx = float(xpos - Globals::g_LastCursorPosX);
+    float dy = float(ypos - Globals::g_LastCursorPosY);
 
     // Atualizamos parâmetros da câmera com os deslocamentos
     g_CameraTheta -= 0.01f*dx;
@@ -89,7 +89,7 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
     // Atualizamos a distância da câmera para a origem utilizando a
     // movimentação da "rodinha", simulando um ZOOM.
-    g_CameraDistance -= 0.1f*yoffset;
+    g_CameraDistance -= 0.1f*float(yoffset);
 
     if (g_CameraDistance < 0.0f)
         g_CameraDistance = 0.0f;
@@ -111,7 +111,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
     //   Se apertar tecla Z       então g_AngleZ += delta;
     //   Se apertar tecla shift+Z então g_AngleZ -= delta;
 
-    float delta = 3.141592 / 16; // 22.5 graus, em radianos.
+    float delta = float(3.141592 / 16); // 22.5 graus, em radianos.
 
     if (key == GLFW_KEY_X && action == GLFW_PRESS)
     {
