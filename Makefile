@@ -25,7 +25,7 @@ UNAME_S := $(shell uname -s)
 INCLUDE	:= include
 LIB		:= libs
 
-CXXFLAGS = -I./src/imgui
+CXXFLAGS = -I./libs/imgui
 CXXFLAGS += -g -Wall -Wformat -Wno-unknown-pragmas
 LIBS =
 
@@ -79,7 +79,7 @@ endif
 %.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
-%.o:./src/imgui/%.cpp
+%.o:./libs/imgui/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:./libs/gl3w/GL/%.c
@@ -94,9 +94,9 @@ $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
 run: all
-	cd ./bin/
+	cd ./bin
 	./$(EXECUTABLE)
 
 clean:
-	cd ./bin/
-	rm -f $(EXE) $(OBJS)
+	cd bin
+	rm -rf $(EXE) $(OBJS)
