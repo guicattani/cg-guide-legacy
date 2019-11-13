@@ -17,8 +17,8 @@
 EXE = example_imgui
 SOURCES = ./src/main.cpp
 SOURCES += ./src/callbacks.cpp ./src/shaders.cpp
-SOURCES += ./src/imgui_impl_glfw.cpp ./src/imgui_impl_opengl3.cpp
-SOURCES += ./src/imgui/imgui.cpp ./src/imgui/imgui_demo.cpp ./src/imgui/imgui_draw.cpp ./src/imgui/imgui_widgets.cpp
+SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
+SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 
@@ -94,8 +94,9 @@ $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
 run: all
-	./$(BIN)/$(EXECUTABLE)
+	cd ./bin/
+	./$(EXECUTABLE)
 
 clean:
-	cd ./bin
+	cd ./bin/
 	rm -f $(EXE) $(OBJS)
