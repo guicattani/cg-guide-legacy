@@ -6,6 +6,9 @@
 *.lo
 *.o
 *.obj
+*.ilk
+*.pdb
+
 
 # Precompiled Headers
 *.gch
@@ -38,3 +41,5 @@
 /lib/opengl/*.bundle
 /pkg
 /tmp
+
+imgui.ini
