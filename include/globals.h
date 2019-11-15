@@ -44,6 +44,15 @@ extern float g_CameraDistance; // Distância da câmera para a origem
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 extern bool g_UsePerspectiveProjection;
 
+// Variável que controla a posição do near plane do frustum.
+extern float g_FrustumNearPlane;
+
+// Variável que controla a posição do far plane do frustum.
+extern float g_FrustumFarPlane;
+
+// Variável que controla a cor do plano de clear.
+extern ImVec4 g_ClearColor;
+
 class Globals {
 public:
   // Variável da cena atual.

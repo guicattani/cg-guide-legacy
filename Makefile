@@ -14,9 +14,9 @@
 #CXX = g++
 #CXX = clang++
 
-EXE = example_imgui
+EXE = main
 SOURCES = ./src/main.cpp
-SOURCES += ./src/callbacks.cpp ./src/shaders.cpp
+SOURCES += ./src/callbacks.cpp ./src/shaders.cpp ./src/interface.cpp
 SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
 SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
 SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
@@ -98,9 +98,7 @@ $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
 run: all
-	cd ./bin
-	./$(EXECUTABLE)
+	cd ./bin;	./$(EXE);
 
 clean:
-	cd bin
-	rm -rf $(EXE) $(OBJS)
+	cd ./bin;	rm -rf $(EXE) $(OBJS);

@@ -10,7 +10,7 @@
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-#pragma region [rgba(80, 80, 0, 0.2)] HEADERS APPLICATION
+#pragma region [rgba(80, 80, 0, 0.2)] HEADERS
 #include "matrices.h"
 #include "shaders.h"
 #ifndef CLASS_HEADER_INITIALIZE_GLOBALS
@@ -18,21 +18,16 @@
 #include "initialize_globals.h"
 #endif
 #include "callbacks.h"
+#include "interface.h"
 
 GLuint BuildTriangles();
 
 void SetCallbacks(GLFWwindow* window);
-
 void InitializeOpenGL3();
-
 void PrintGPUInformation();
-
 bool InitializeOpenGLLoader();
 
-ImVec4 Block_color_1 = ImVec4(1.0f, 0.5f, 0.0f, 1.0f);
-ImVec4 Block_color_2 = ImVec4(0.0f, 0.5f, 1.0f, 1.0f);
-
-#pragma endregion HEADERS APPLICATION
+#pragma endregion HEADERS
 
 #pragma region [rgba(20, 20, 100, 0.3)] MAIN
 int main(int, char**)
@@ -46,7 +41,6 @@ int main(int, char**)
 
 	// GL 3.0 + GLSL 130
 	const char* glsl_version = "#version 130";
-
 	InitializeOpenGL3();
 
 	// Create window with graphics context
@@ -55,7 +49,6 @@ int main(int, char**)
 		return 1;
 
 	SetCallbacks(window);
-
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
 
@@ -72,7 +65,6 @@ int main(int, char**)
 
 	// Criamos um programa de GPU utilizando os shaders carregados acima
 	GLuint program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
-
 	// Construímos a representação de um triângulo
 	GLuint vertex_array_object_id = BuildTriangles();
 
@@ -99,50 +91,17 @@ int main(int, char**)
 
 	glm::vec4 camera_position_c = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	Globals::g_Io = &ImGui::GetIO(); (void)Globals::g_Io;
-	//Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	//Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+  //Inicializa a Interface (Imgui)
+  Interface interface = new Interface(true);
+  interface.Init(window, glsl_version);
 
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
-
-	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init(glsl_version);
-
-	// Load Fonts
-	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-	// - If the file cannot be loaded, the function will return NULL. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-	// - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-	// - Read 'misc/fonts/README.txt' for more instructions and details.
-	// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-	//Globals::g_Io.Fonts->AddFontDefault();
-	//Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-	//Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-	//Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-	//Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
-	//ImFont* font = Globals::g_Io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, Globals::g_Io.Fonts->GetGlyphRangesJapanese());
-	//IM_ASSERT(font != NULL);
-
-	// Our state
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	float nearplane = -0.1f;  // posição do "near plane"
-	float farplane = -10.0f; // posição do "far plane"
 #pragma endregion MAIN
 
 #pragma region [rgba(50, 100, 100, 0.2)] DRAW_LOOP
 // Main loop
 	while (!glfwWindowShouldClose(window))
 	{
-		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		glClearColor(g_ClearColor.x, g_ClearColor.y, g_ClearColor.z, g_ClearColor.w);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Poll and handle events (inputs, window resize, etc.)
 		// You can read the Globals::g_Io.WantCaptureMouse, Globals::g_Io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -195,7 +154,7 @@ int main(int, char**)
 			// Para definição do field of view (FOV), veja slide 234 do
 			// documento "Aula_09_Projecoes.pdf".
 			float field_of_view = 3.141592 / 3.0f;
-			projection = Matrix_Perspective(field_of_view, g_ScreenRatio, nearplane, farplane);
+			projection = Matrix_Perspective(field_of_view, g_ScreenRatio, g_FrustumNearPlane, g_FrustumFarPlane);
 		}
 		else
 		{
@@ -208,7 +167,7 @@ int main(int, char**)
 			float b = -t;
 			float r = t * g_ScreenRatio;
 			float l = -r;
-			projection = Matrix_Orthographic(l, r, b, t, nearplane, farplane);
+			projection = Matrix_Orthographic(l, r, b, t, g_FrustumNearPlane, g_FrustumFarPlane);
 		}
 
 		// Enviamos as matrizes "view" e "projection" para a placa de vídeo
@@ -364,83 +323,11 @@ int main(int, char**)
 		// as matrizes e pontos resultantes dessas transformações.
 		glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
 
-
-		//############# Start the Dear ImGui frame ##############
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
-
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-		{
-			// static float f = 0.0f;
-			static int counter = 0;
-			// Create a window called "Hello, world!" and append into it.
-			ImGui::Begin("Settings");
-			// Edit 3 floats representing a color
-			ImGui::ColorEdit3("clear color", (float*)&clear_color);
-
-			// Buttons return true when clicked (most widgets return true when edited/activated)
-			if (ImGui::Button("Button"))
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-
-			ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
-
-			ImGui::Text("Block Settings");
-			ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
-			ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
-			ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
-
-			bool changeColor1 = ImGui::ColorEdit3("Block color 1", (float*)&Block_color_1);
-			bool changeColor2 = ImGui::ColorEdit3("Block color 2", (float*)&Block_color_2);
-
-			if (changeColor1 || changeColor2)
-			{
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				BuildTriangles();
-			}
-
-			ImGui::Text("Frustum Settings");
-			ImGui::SliderFloat("Near Plane", &nearplane, -10.0f, 10.0f);
-			ImGui::SliderFloat("Far Plane", &farplane, -10.0f, 10.0f);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::End();
-		}
-
-		// 3. Show another simple window.
-		if (show_another_window)
-		{
-			// Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-			ImGui::Begin("Another Window", &show_another_window);
-			ImGui::Text("Hello from another window!");
-			if (ImGui::Button("Close Me"))
-				show_another_window = false;
-			ImGui::End();
-		}
-
-		// Rendering
-		ImGui::Render();
-
-		int display_w, display_h;
-		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
-
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		glfwSwapBuffers(window);
+    interface.Show(window);
+    glfwSwapBuffers(window);
 	}
 
-	// Cleanup
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-	//############# End the Dear ImGui frame ##############
-
+  interface.CleanUp();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
@@ -567,14 +454,14 @@ GLuint BuildTriangles()
 	GLfloat color_coefficients[] = {
 		// Cores dos vértices do cubo
 		//  R     G     B     A
-		  Block_color_1.x, Block_color_1.y, Block_color_1.z, Block_color_1.w, // cor do vértice 0
-		  Block_color_1.x, Block_color_1.y, Block_color_1.z, Block_color_1.w, // cor do vértice 1
-		  Block_color_2.x, Block_color_2.y, Block_color_2.z, Block_color_2.w, // cor do vértice 2
-		  Block_color_2.x, Block_color_2.y, Block_color_2.z, Block_color_2.w, // cor do vértice 3
-		  Block_color_1.x, Block_color_1.y, Block_color_1.z, Block_color_1.w, // cor do vértice 4
-		  Block_color_1.x, Block_color_1.y, Block_color_1.z, Block_color_1.w, // cor do vértice 5
-		  Block_color_2.x, Block_color_2.y, Block_color_2.z, Block_color_2.w, // cor do vértice 6
-		  Block_color_2.x, Block_color_2.y, Block_color_2.z, Block_color_2.w, // cor do vértice 7
+		  1.0f, 0.5f, 0.0f, 1.0f, // cor do vértice 0
+		  1.0f, 0.5f, 0.0f, 1.0f, // cor do vértice 1
+		  0.0f, 0.5f, 1.0f, 1.0f, // cor do vértice 2
+		  0.0f, 0.5f, 1.0f, 1.0f, // cor do vértice 3
+		  1.0f, 0.5f, 0.0f, 1.0f, // cor do vértice 4
+		  1.0f, 0.5f, 0.0f, 1.0f, // cor do vértice 5
+		  0.0f, 0.5f, 1.0f, 1.0f, // cor do vértice 6
+		  0.0f, 0.5f, 1.0f, 1.0f, // cor do vértice 7
 		// Cores para desenhar o eixo X
 			1.0f, 0.0f, 0.0f, 1.0f, // cor do vértice 8
 			1.0f, 0.0f, 0.0f, 1.0f, // cor do vértice 9
