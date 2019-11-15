@@ -29,6 +29,9 @@
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// Headers da biblioteca para carregar modelos obj
+#include <tiny_obj_loader.h>
+
 #ifndef CLASS_STRUCTS
 #define CLASS_STRUCTS
 // Definimos uma estrutura que armazenará dados necessários para renderizar
