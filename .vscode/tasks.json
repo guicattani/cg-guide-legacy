@@ -3,6 +3,8 @@
     "tasks": [
         {
             "label": "build",
+            "dependsOrder": "sequence",
+            "dependsOn": ["clean"],
             "type": "shell",
             "group": {
                 "kind": "build",
@@ -19,7 +21,24 @@
             },
             "args": [
                 "-c",
-                "mingw32-make"
+                "make"
+            ]
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "windows": {
+                "command": "powershell"
+            },
+            "linux": {
+                "command": "bash"
+            },
+            "osx": {
+                "command": "bash"
+            },
+            "args": [
+                "-c",
+                "make clean"
             ]
         },
         {
@@ -40,7 +59,7 @@
             },
             "args": [
                 "-c",
-                "mingw32-make run"
+                "make run"
             ]
         },
         {
@@ -57,7 +76,7 @@
             },
             "args": [
                 "-c",
-                "mingw32-make clean"
+                "make clean"
             ]
         }
     ]

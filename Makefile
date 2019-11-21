@@ -14,9 +14,10 @@
 #CXX = g++
 #CXX = clang++
 
-EXE = example_imgui
+EXE = main
 SOURCES = ./src/main.cpp
-SOURCES += ./src/callbacks.cpp ./src/shaders.cpp
+SOURCES += ./src/callbacks.cpp ./src/shaders.cpp ./src/interface.cpp
+SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
 SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
 SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
@@ -25,7 +26,7 @@ UNAME_S := $(shell uname -s)
 INCLUDE	:= include
 LIB		:= libs
 
-CXXFLAGS = -I./src/imgui
+CXXFLAGS = -I./libs/imgui  -I./libs/tiny_obj_loader -I./libs/KHR/
 CXXFLAGS += -g -Wall -Wformat -Wno-unknown-pragmas
 LIBS =
 
@@ -79,7 +80,10 @@ endif
 %.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
-%.o:./src/imgui/%.cpp
+%.o:./libs/imgui/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.o:./libs/tiny_obj_loader/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:./libs/gl3w/GL/%.c
@@ -94,9 +98,7 @@ $(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
 run: all
-	cd ./bin/
-	./$(EXECUTABLE)
+	cd ./bin;	./$(EXE);
 
 clean:
-	cd ./bin/
-	rm -f $(EXE) $(OBJS)
+	cd ./bin;	rm -rf $(EXE) $(OBJS);

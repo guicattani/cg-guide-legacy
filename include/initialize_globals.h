@@ -41,6 +41,15 @@ float g_CameraDistance = 2.5f; // Distância da câmera para a origem
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 bool g_UsePerspectiveProjection = true;
 
+// Variável que controla o tamanho do near plane do frustum.
+float g_FrustumNearPlane = -0.1f;
+
+// Variável que controla o tamanho do far plane do frustum.
+float g_FrustumFarPlane = -10.0f;
+
+// Variável que controla a cor do plano de clear.
+ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 std::map<const char*, SceneObject> Globals::g_VirtualScene;
 double Globals::g_LastCursorPosX, Globals::g_LastCursorPosY;
 ImGuiIO* Globals::g_Io;
