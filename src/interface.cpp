@@ -1,7 +1,7 @@
 #include "interface.h"
 
 Interface::Interface(bool show_demo_window) {
-  SetInterface(show_demo_window);
+  m_show_demo_window = show_demo_window;
 }
 
 void Interface::Init(GLFWwindow *window, const char* glsl_version) {
@@ -96,8 +96,4 @@ void Interface::Start(){
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-}
-
-void Interface::SetInterface(bool show_demo_window){
-  m_show_demo_window = show_demo_window;
 }

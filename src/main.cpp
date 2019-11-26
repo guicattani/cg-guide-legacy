@@ -11,14 +11,18 @@
 #endif
 
 #pragma region [rgba(80, 80, 0, 0.2)] HEADERS
+#ifndef CLASS_HEADER_MATRICES
+#define CLASS_HEADER_MATRICES
 #include "matrices.h"
-#include "shaders.h"
+#endif
 #ifndef CLASS_HEADER_INITIALIZE_GLOBALS
 #define CLASS_HEADER_INITIALIZE_GLOBALS
 #include "initialize_globals.h"
 #endif
 #include "callbacks.h"
+#include "shaders.h"
 #include "interface.h"
+#include "camera.h"
 
 GLuint BuildTriangles();
 
@@ -72,8 +76,6 @@ int main(int, char**)
 	// Utilizaremos estas variáveis para enviar dados para a placa de vídeo
 	// (GPU)! Veja arquivo "shader_vertex.glsl".
 	GLint model_uniform = glGetUniformLocation(program_id, "model"); // Variável da matriz "model"
-	GLint view_uniform = glGetUniformLocation(program_id, "view"); // Variável da matriz "view" em shader_vertex.glsl
-	GLint projection_uniform = glGetUniformLocation(program_id, "projection"); // Variável da matriz "projection" em shader_vertex.glsl
 	GLint render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
 
 	// Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
@@ -85,15 +87,11 @@ int main(int, char**)
 	glm::mat4 the_model;
 	glm::mat4 the_view;
 
-	float y = 2.0f * sin(g_CameraPhi);
-	float z = 2.0f * cos(g_CameraPhi) * cos(g_CameraTheta);
-	float x = 2.0f * cos(g_CameraPhi) * sin(g_CameraTheta);
-
-	glm::vec4 camera_position_c = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
   //Inicializa a Interface (Imgui)
-  Interface interface = new Interface(true);
+  Interface interface = Interface(true);
   interface.Init(window, glsl_version);
+
+  Camera main_camera = Camera(program_id);
 
 #pragma endregion MAIN
 
@@ -117,70 +115,14 @@ int main(int, char**)
 		// comentários detalhados dentro da definição de BuildTriangles().
 		glBindVertexArray(vertex_array_object_id);
 
-		// Computamos a posição da câmera utilizando coordenadas esféricas.  As
-		// variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
-		// controladas pelo mouse do usuário. Veja as funções CursorPosCallback()
-		// e ScrollCallback().
-		y = 2.0f * sin(g_CameraPhi);
-		z = 2.0f * cos(g_CameraPhi) * cos(g_CameraTheta);
-		x = 2.0f * cos(g_CameraPhi) * sin(g_CameraTheta);
-		// Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
-		// Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-		glm::vec4 camera_lookat_l = glm::vec4(x + camera_position_c.x, -y + camera_position_c.y, z + camera_position_c.z, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
-		glm::vec4 camera_view_vector = camera_lookat_l - camera_position_c; // Vetor "view", sentido para onde a câmera está virada
-		glm::vec4 camera_up_vector = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f); // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
-		glm::vec4 camera_right_vector = crossproduct(camera_view_vector, camera_up_vector);
-		if (WPressed)
-			camera_position_c += 0.01f * camera_view_vector;
-		if (SPressed)
-			camera_position_c -= 0.01f * camera_view_vector;
-		if (APressed)
-			camera_position_c -= 0.01f * camera_right_vector;
-		if (DPressed)
-			camera_position_c += 0.01f * camera_right_vector;
+    main_camera.Enable();
 
-		// Computamos a matriz "View" utilizando os parâmetros da câmera para
-		// definir o sistema de coordenadas da câmera.  Veja slide 169 do
-		// documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-		glm::mat4 view = Matrix_Camera_View(camera_position_c, camera_view_vector, camera_up_vector);
-		// Agora computamos a matriz de Projeção.
-		glm::mat4 projection;
-		// Note que, no sistema de coordenadas da câmera, os planos near e far
-		// estáo no sentido negativo! Veja slides 198-200 do documento
-		// "Aula_09_Projecoes.pdf".
-		if (g_UsePerspectiveProjection)
-		{
-			// Projeção Perspectiva.
-			// Para definição do field of view (FOV), veja slide 234 do
-			// documento "Aula_09_Projecoes.pdf".
-			float field_of_view = 3.141592 / 3.0f;
-			projection = Matrix_Perspective(field_of_view, g_ScreenRatio, g_FrustumNearPlane, g_FrustumFarPlane);
-		}
-		else
-		{
-			// Projeção Ortográfica.
-			// Para definição dos valores l, r, b, t ("left", "right", "bottom", "top"),
-			// veja slide 243 do documento "Aula_09_Projecoes.pdf".
-			// Para simular um "zoom" ortográfico, computamos o valor de "t"
-			// utilizando a variável g_CameraDistance.
-			float t = 1.5f * g_CameraDistance / 2.5f;
-			float b = -t;
-			float r = t * g_ScreenRatio;
-			float l = -r;
-			projection = Matrix_Orthographic(l, r, b, t, g_FrustumNearPlane, g_FrustumFarPlane);
-		}
-
-		// Enviamos as matrizes "view" e "projection" para a placa de vídeo
-		// (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
-		// efetivamente aplicadas em todos os pontos.
-		glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projection));
-
+    //RENDER
 		// Vamos desenhar 3 instâncias (cópias) do cubo
 		for (int i = 1; i <= 3; ++i)
 		{
-			// Cada cópia do cubo possui uma matriz de modelagem independente,
-			// já que cada cópia estará em uma posição (rotação, escala, ...)
+			// Cada cópia do cuCamerao possui uma matriz de modelagem independente,
+			// já que cada cópiCamera estará em uma posição (rotação, escala, ...)
 			// diferente em relação ao espaço global (World Coordinates). Veja
 			// slide 138 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
 			glm::mat4 model;
@@ -214,8 +156,8 @@ int main(int, char**)
 			  // Armazenamos as matrizes model, view, e projection do terceiro cubo
 			  // para mostrar elas na tela através da função TextRendering_ShowModelViewProjection().
 				the_model = model;
-				the_projection = projection;
-				the_view = view;
+				the_projection = main_camera.projection;
+				the_view = main_camera.view;
 			}
 
 			// Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o

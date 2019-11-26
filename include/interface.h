@@ -13,8 +13,8 @@
 class Interface {
   private:
     bool m_show_demo_window;
+    bool a;
     void Start();
-    void SetInterface(bool show_demo_window);
   public:
     Interface(bool show_demo_window);
     void Init(GLFWwindow *window, const char* glsl_version);
