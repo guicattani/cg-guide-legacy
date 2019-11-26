@@ -19,8 +19,9 @@
 	<glm/exponential.hpp>
 	<glm/gtc/random.hpp>
 
-1537884536 d:\tcc\tcc\include\glm\glm.hpp
+1574340608 d:\tcc\tcc\include\glm\glm.hpp
 	"detail/_fixes.hpp"
+	"detail/setup.hpp"
 	<cmath>
 	<climits>
 	<cfloat>
@@ -48,28 +49,26 @@
 	"vector_relational.hpp"
 	"integer.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\_fixes.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\_fixes.hpp
 	<cmath>
 
-1537884536 d:\tcc\tcc\include\glm\fwd.hpp
-	"detail/type_int.hpp"
-	"detail/type_float.hpp"
-	"detail/type_vec.hpp"
-	"detail/type_mat.hpp"
+1574340608 d:\tcc\tcc\include\glm\fwd.hpp
+	"detail/qualifier.hpp"
 
 1537884536 d:\tcc\tcc\include\glm\detail\type_int.hpp
 	"setup.hpp"
 	<type_traits>
 	<cstdint>
 
-1537884536 d:\tcc\tcc\include\glm\detail\setup.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\setup.hpp
 	<cassert>
 	<cstddef>
 	"../simd/platform.h"
+	<cstdint>
+	<type_traits>
 
-1537884536 d:\tcc\tcc\include\glm\simd\platform.h
+1574340608 d:\tcc\tcc\include\glm\simd\platform.h
 	<cuda.h>
-	<intrin.h>
 	<immintrin.h>
 	<immintrin.h>
 	<popcntintrin.h>
@@ -79,7 +78,7 @@
 	<pmmintrin.h>
 	<emmintrin.h>
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_float.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\type_float.hpp
 	"setup.hpp"
 
 1537884536 d:\tcc\tcc\include\glm\detail\type_vec.hpp
@@ -92,62 +91,93 @@
 1537884536 d:\tcc\tcc\include\glm\detail\type_mat.hpp
 	"precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\vec2.hpp
-	"detail/type_vec2.hpp"
+1574340608 d:\tcc\tcc\include\glm\vec2.hpp
+	"./ext/vector_bool2.hpp"
+	"./ext/vector_bool2_precision.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float2_precision.hpp"
+	"./ext/vector_double2.hpp"
+	"./ext/vector_double2_precision.hpp"
+	"./ext/vector_int2.hpp"
+	"./ext/vector_int2_precision.hpp"
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_uint2_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec2.hpp
-	"type_vec.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec2.hpp
+	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec2.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\_swizzle.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\_swizzle.hpp
 
-1537884536 d:\tcc\tcc\include\glm\detail\_swizzle_func.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\_swizzle_func.hpp
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec2.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec2.inl
+	"./compute_vector_relational.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\vec3.hpp
-	"detail/type_vec3.hpp"
+1574340608 d:\tcc\tcc\include\glm\vec3.hpp
+	"./ext/vector_bool3.hpp"
+	"./ext/vector_bool3_precision.hpp"
+	"./ext/vector_float3.hpp"
+	"./ext/vector_float3_precision.hpp"
+	"./ext/vector_double3.hpp"
+	"./ext/vector_double3_precision.hpp"
+	"./ext/vector_int3.hpp"
+	"./ext/vector_int3_precision.hpp"
+	"./ext/vector_uint3.hpp"
+	"./ext/vector_uint3_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec3.hpp
-	"type_vec.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec3.hpp
+	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec3.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec3.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec3.inl
+	"compute_vector_relational.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\vec4.hpp
-	"detail/type_vec4.hpp"
+1574340608 d:\tcc\tcc\include\glm\vec4.hpp
+	"./ext/vector_bool4.hpp"
+	"./ext/vector_bool4_precision.hpp"
+	"./ext/vector_float4.hpp"
+	"./ext/vector_float4_precision.hpp"
+	"./ext/vector_double4.hpp"
+	"./ext/vector_double4_precision.hpp"
+	"./ext/vector_int4.hpp"
+	"./ext/vector_int4_precision.hpp"
+	"./ext/vector_uint4.hpp"
+	"./ext/vector_uint4_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec4.hpp
-	"type_vec.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec4.hpp
+	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec4.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec4.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec4.inl
+	"compute_vector_relational.hpp"
 	"type_vec4_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec4_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec4_simd.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat2x2.hpp
-	"detail/type_mat2x2.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat2x2.hpp
+	"./ext/matrix_double2x2.hpp"
+	"./ext/matrix_double2x2_precision.hpp"
+	"./ext/matrix_float2x2.hpp"
+	"./ext/matrix_float2x2_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x2.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x2.hpp
 	"type_vec2.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x2.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x2.inl
-	"func_matrix.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x2.inl
+	"../matrix.hpp"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_matrix.hpp
 	"../detail/precision.hpp"
@@ -167,139 +197,145 @@
 	"../mat4x4.hpp"
 	"func_matrix.inl"
 
-1537884536 d:\tcc\tcc\include\glm\mat2x3.hpp
-	"detail/type_mat2x3.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat2x3.hpp
+	"./ext/matrix_double2x3.hpp"
+	"./ext/matrix_double2x3_precision.hpp"
+	"./ext/matrix_float2x3.hpp"
+	"./ext/matrix_float2x3_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x3.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x3.hpp
 	"type_vec2.hpp"
 	"type_vec3.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x3.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x3.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x3.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat2x4.hpp
-	"detail/type_mat2x4.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat2x4.hpp
+	"./ext/matrix_double2x4.hpp"
+	"./ext/matrix_double2x4_precision.hpp"
+	"./ext/matrix_float2x4.hpp"
+	"./ext/matrix_float2x4_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x4.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x4.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat2x4.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat2x4.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat2x4.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat3x2.hpp
-	"detail/type_mat3x2.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat3x2.hpp
+	"./ext/matrix_double3x2.hpp"
+	"./ext/matrix_double3x2_precision.hpp"
+	"./ext/matrix_float3x2.hpp"
+	"./ext/matrix_float3x2_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x2.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x2.hpp
 	"type_vec2.hpp"
 	"type_vec3.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x2.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x2.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x2.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat3x3.hpp
-	"detail/type_mat3x3.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat3x3.hpp
+	"./ext/matrix_double3x3.hpp"
+	"./ext/matrix_double3x3_precision.hpp"
+	"./ext/matrix_float3x3.hpp"
+	"./ext/matrix_float3x3_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x3.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x3.hpp
 	"type_vec3.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x3.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x3.inl
-	"func_matrix.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x3.inl
+	"../matrix.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\mat3x4.hpp
-	"detail/type_mat3x4.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat3x4.hpp
+	"./ext/matrix_double3x4.hpp"
+	"./ext/matrix_double3x4_precision.hpp"
+	"./ext/matrix_float3x4.hpp"
+	"./ext/matrix_float3x4_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x4.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x4.hpp
 	"type_vec3.hpp"
 	"type_vec4.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat3x4.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat3x4.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat3x4.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat4x2.hpp
-	"detail/type_mat4x2.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat4x2.hpp
+	"./ext/matrix_double4x2.hpp"
+	"./ext/matrix_double4x2_precision.hpp"
+	"./ext/matrix_float4x2.hpp"
+	"./ext/matrix_float4x2_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x2.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x2.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x2.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x2.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x2.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat4x3.hpp
-	"detail/type_mat4x3.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat4x3.hpp
+	"./ext/matrix_double4x3.hpp"
+	"./ext/matrix_double4x3_precision.hpp"
+	"./ext/matrix_float4x3.hpp"
+	"./ext/matrix_float4x3_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x3.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x3.hpp
 	"type_vec3.hpp"
 	"type_vec4.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x3.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x3.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x3.inl
 
-1537884536 d:\tcc\tcc\include\glm\mat4x4.hpp
-	"detail/type_mat4x4.hpp"
+1574340608 d:\tcc\tcc\include\glm\mat4x4.hpp
+	"./ext/matrix_double4x4.hpp"
+	"./ext/matrix_double4x4_precision.hpp"
+	"./ext/matrix_float4x4.hpp"
+	"./ext/matrix_float4x4_precision.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x4.hpp
-	"../fwd.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x4.hpp
 	"type_vec4.hpp"
-	"type_mat.hpp"
 	<limits>
 	<cstddef>
 	"type_mat4x4.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x4.inl
-	"func_matrix.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x4.inl
+	"../matrix.hpp"
 	"type_mat4x4_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_mat4x4_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_mat4x4_simd.inl
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_matrix.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_matrix.inl
 	"../geometric.hpp"
 	<limits>
 	"func_matrix_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\geometric.hpp
-	"detail/func_geometric.hpp"
+1574340608 d:\tcc\tcc\include\glm\geometric.hpp
+	"detail/type_vec3.hpp"
+	"detail/func_geometric.inl"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_geometric.hpp
 	"type_vec3.hpp"
 	"func_geometric.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_geometric.inl
-	"func_exponential.hpp"
-	"func_common.hpp"
-	"type_vec2.hpp"
-	"type_vec4.hpp"
-	"type_float.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\func_geometric.inl
+	"../exponential.hpp"
+	"../common.hpp"
 	"func_geometric_simd.inl"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_exponential.hpp
@@ -310,18 +346,18 @@
 	<cmath>
 	"func_exponential.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec1.hpp
-	"../fwd.hpp"
-	"type_vec.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec1.hpp
+	"qualifier.hpp"
 	"_swizzle.hpp"
 	"_swizzle_func.hpp"
 	<cstddef>
 	"type_vec1.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_vec1.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_vec1.inl
+	"./compute_vector_relational.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_exponential.inl
-	"func_vector_relational.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\func_exponential.inl
+	"../vector_relational.hpp"
 	"_vectorize.hpp"
 	<limits>
 	<cmath>
@@ -333,22 +369,17 @@
 	"setup.hpp"
 	"func_vector_relational.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_vector_relational.inl
-	<limits>
+1574340608 d:\tcc\tcc\include\glm\detail\func_vector_relational.inl
 	"func_vector_relational_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_vector_relational_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_vector_relational_simd.inl
 
-1537884536 d:\tcc\tcc\include\glm\detail\_vectorize.hpp
-	"type_vec1.hpp"
-	"type_vec2.hpp"
-	"type_vec3.hpp"
-	"type_vec4.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\_vectorize.hpp
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_exponential_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_exponential_simd.inl
 	"../simd/exponential.h"
 
-1537884536 d:\tcc\tcc\include\glm\simd\exponential.h
+1574340608 d:\tcc\tcc\include\glm\simd\exponential.h
 	"platform.h"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_common.hpp
@@ -358,8 +389,10 @@
 	"_fixes.hpp"
 	"func_common.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_common.inl
-	"func_vector_relational.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\func_common.inl
+	"../vector_relational.hpp"
+	"compute_common.hpp"
+	"type_vec1.hpp"
 	"type_vec2.hpp"
 	"type_vec3.hpp"
 	"type_vec4.hpp"
@@ -367,36 +400,39 @@
 	<limits>
 	"func_common_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_common_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_common_simd.inl
 	"../simd/common.h"
 	<immintrin.h>
 
-1537884536 d:\tcc\tcc\include\glm\simd\common.h
+1574340608 d:\tcc\tcc\include\glm\simd\common.h
 	"platform.h"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_geometric_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_geometric_simd.inl
 	"../simd/geometric.h"
 
-1537884536 d:\tcc\tcc\include\glm\simd\geometric.h
+1574340608 d:\tcc\tcc\include\glm\simd\geometric.h
 	"common.h"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_matrix_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_matrix_simd.inl
 	"type_mat4x4.hpp"
-	"func_geometric.hpp"
+	"../geometric.hpp"
 	"../simd/matrix.h"
+	<cstring>
 
-1537884536 d:\tcc\tcc\include\glm\simd\matrix.h
+1574340608 d:\tcc\tcc\include\glm\simd\matrix.h
 	"geometric.h"
 
-1537884536 d:\tcc\tcc\include\glm\trigonometric.hpp
-	"detail/func_trigonometric.hpp"
+1574340608 d:\tcc\tcc\include\glm\trigonometric.hpp
+	"detail/setup.hpp"
+	"detail/qualifier.hpp"
+	"detail/func_trigonometric.inl"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_trigonometric.hpp
 	"setup.hpp"
 	"precision.hpp"
 	"func_trigonometric.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_trigonometric.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_trigonometric.inl
 	"_vectorize.hpp"
 	<cmath>
 	<limits>
@@ -404,42 +440,70 @@
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_trigonometric_simd.inl
 
-1537884536 d:\tcc\tcc\include\glm\exponential.hpp
-	"detail/func_exponential.hpp"
+1574340608 d:\tcc\tcc\include\glm\exponential.hpp
+	"detail/type_vec1.hpp"
+	"detail/type_vec2.hpp"
+	"detail/type_vec3.hpp"
+	"detail/type_vec4.hpp"
+	<cmath>
+	"detail/func_exponential.inl"
 
-1537884536 d:\tcc\tcc\include\glm\common.hpp
-	"detail/func_common.hpp"
+1574340608 d:\tcc\tcc\include\glm\common.hpp
+	"detail/qualifier.hpp"
+	"detail/_fixes.hpp"
+	"detail/func_common.inl"
 
-1537884536 d:\tcc\tcc\include\glm\packing.hpp
-	"detail/func_packing.hpp"
+1574340608 d:\tcc\tcc\include\glm\packing.hpp
+	"./ext/vector_uint2.hpp"
+	"./ext/vector_float2.hpp"
+	"./ext/vector_float4.hpp"
+	"detail/func_packing.inl"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_packing.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
 	"func_packing.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_packing.inl
-	"func_common.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\func_packing.inl
+	"../common.hpp"
 	"type_half.hpp"
-	"../fwd.hpp"
 	"func_packing_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_half.hpp
+1574340608 d:\tcc\tcc\include\glm\detail\type_half.hpp
 	"setup.hpp"
 	"type_half.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\type_half.inl
+1574340608 d:\tcc\tcc\include\glm\detail\type_half.inl
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_packing_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_packing_simd.inl
 
-1537884536 d:\tcc\tcc\include\glm\matrix.hpp
-	"detail/func_matrix.hpp"
+1574340608 d:\tcc\tcc\include\glm\matrix.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"detail/func_matrix.inl"
 
-1537884536 d:\tcc\tcc\include\glm\vector_relational.hpp
-	"detail/func_vector_relational.hpp"
+1574340608 d:\tcc\tcc\include\glm\vector_relational.hpp
+	"detail/qualifier.hpp"
+	"detail/setup.hpp"
+	"detail/func_vector_relational.inl"
 
-1537884536 d:\tcc\tcc\include\glm\integer.hpp
-	"detail/func_integer.hpp"
+1574340608 d:\tcc\tcc\include\glm\integer.hpp
+	"detail/qualifier.hpp"
+	"common.hpp"
+	"vector_relational.hpp"
+	"detail/func_integer.inl"
 
 1537884536 d:\tcc\tcc\include\glm\detail\func_integer.hpp
 	"setup.hpp"
@@ -448,20 +512,16 @@
 	"func_vector_relational.hpp"
 	"func_integer.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_integer.inl
-	"type_vec2.hpp"
-	"type_vec3.hpp"
-	"type_vec4.hpp"
-	"type_int.hpp"
+1574340608 d:\tcc\tcc\include\glm\detail\func_integer.inl
 	"_vectorize.hpp"
 	<intrin.h>
 	<limits>
 	"func_integer_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\detail\func_integer_simd.inl
+1574340608 d:\tcc\tcc\include\glm\detail\func_integer_simd.inl
 	"../simd/integer.h"
 
-1537884536 d:\tcc\tcc\include\glm\simd\integer.h
+1574340608 d:\tcc\tcc\include\glm\simd\integer.h
 
 1537884536 d:\tcc\tcc\include\glm\ext.hpp
 	"glm.hpp"
@@ -556,42 +616,49 @@
 
 1537884536 d:\tcc\tcc\include\glm\gtc\color_space.inl
 
-1537884536 d:\tcc\tcc\include\glm\gtc\constants.hpp
-	"../detail/setup.hpp"
+1574340608 d:\tcc\tcc\include\glm\gtc\constants.hpp
+	"../ext/scalar_constants.hpp"
 	"constants.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\constants.inl
-	<limits>
+1574340608 d:\tcc\tcc\include\glm\gtc\constants.inl
 
-1537884536 d:\tcc\tcc\include\glm\gtc\epsilon.hpp
+1574340608 d:\tcc\tcc\include\glm\gtc\epsilon.hpp
 	"../detail/setup.hpp"
-	"../detail/precision.hpp"
+	"../detail/qualifier.hpp"
 	"epsilon.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\epsilon.inl
-	"quaternion.hpp"
+1574340608 d:\tcc\tcc\include\glm\gtc\epsilon.inl
 	"../vector_relational.hpp"
 	"../common.hpp"
-	"../vec2.hpp"
-	"../vec3.hpp"
-	"../vec4.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\quaternion.hpp
-	"../mat3x3.hpp"
-	"../mat4x4.hpp"
-	"../vec3.hpp"
-	"../vec4.hpp"
+1574340608 d:\tcc\tcc\include\glm\gtc\quaternion.hpp
 	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_common.hpp"
+	"../ext/quaternion_float.hpp"
+	"../ext/quaternion_float_precision.hpp"
+	"../ext/quaternion_double.hpp"
+	"../ext/quaternion_double_precision.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../ext/quaternion_trigonometric.hpp"
+	"../ext/quaternion_transform.hpp"
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
 	"quaternion.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\quaternion.inl
+1574340608 d:\tcc\tcc\include\glm\gtc\quaternion.inl
 	"../trigonometric.hpp"
 	"../geometric.hpp"
 	"../exponential.hpp"
+	"epsilon.hpp"
 	<limits>
 	"quaternion_simd.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\quaternion_simd.inl
+1574340608 d:\tcc\tcc\include\glm\gtc\quaternion_simd.inl
 
 1537884536 d:\tcc\tcc\include\glm\gtc\functions.hpp
 	"../detail/setup.hpp"
@@ -640,15 +707,17 @@
 
 1537884536 d:\tcc\tcc\include\glm\gtc\matrix_inverse.inl
 
-1537884536 d:\tcc\tcc\include\glm\gtc\matrix_transform.hpp
+1574340608 d:\tcc\tcc\include\glm\gtc\matrix_transform.hpp
 	"../mat4x4.hpp"
 	"../vec2.hpp"
 	"../vec3.hpp"
 	"../vec4.hpp"
-	"../gtc/constants.hpp"
+	"../ext/matrix_projection.hpp"
+	"../ext/matrix_clip_space.hpp"
+	"../ext/matrix_transform.hpp"
 	"matrix_transform.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\matrix_transform.inl
+1574340608 d:\tcc\tcc\include\glm\gtc\matrix_transform.inl
 	"../geometric.hpp"
 	"../trigonometric.hpp"
 	"../matrix.hpp"
@@ -694,10 +763,17 @@
 	"../mat4x4.hpp"
 	"type_precision.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\vec1.hpp
-	"../glm.hpp"
-	"../detail/type_vec1.hpp"
-	"vec1.inl"
+1574340608 d:\tcc\tcc\include\glm\gtc\vec1.hpp
+	"../ext/vector_bool1.hpp"
+	"../ext/vector_bool1_precision.hpp"
+	"../ext/vector_float1.hpp"
+	"../ext/vector_float1_precision.hpp"
+	"../ext/vector_double1.hpp"
+	"../ext/vector_double1_precision.hpp"
+	"../ext/vector_int1.hpp"
+	"../ext/vector_int1_precision.hpp"
+	"../ext/vector_uint1.hpp"
+	"../ext/vector_uint1_precision.hpp"
 
 1537884536 d:\tcc\tcc\include\glm\gtc\vec1.inl
 
@@ -744,8 +820,9 @@
 1537884536 d:\tcc\tcc\include\glm\gtc\round.inl
 	"../detail/func_integer.hpp"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\type_ptr.hpp
+1574340608 d:\tcc\tcc\include\glm\gtc\type_ptr.hpp
 	"../gtc/quaternion.hpp"
+	"../gtc/vec1.hpp"
 	"../vec2.hpp"
 	"../vec3.hpp"
 	"../vec4.hpp"
@@ -761,7 +838,7 @@
 	<cstring>
 	"type_ptr.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtc\type_ptr.inl
+1574340608 d:\tcc\tcc\include\glm\gtc\type_ptr.inl
 	<cstring>
 
 1537884536 d:\tcc\tcc\include\glm\gtc\ulp.hpp
@@ -830,13 +907,13 @@
 1537884536 d:\tcc\tcc\include\glm\gtx\component_wise.inl
 	<limits>
 
-1537884536 d:\tcc\tcc\include\glm\gtx\dual_quaternion.hpp
+1574340608 d:\tcc\tcc\include\glm\gtx\dual_quaternion.hpp
 	"../glm.hpp"
 	"../gtc/constants.hpp"
 	"../gtc/quaternion.hpp"
 	"dual_quaternion.inl"
 
-1537884536 d:\tcc\tcc\include\glm\gtx\dual_quaternion.inl
+1574340608 d:\tcc\tcc\include\glm\gtx\dual_quaternion.inl
 	"../geometric.hpp"
 	<limits>
 
@@ -1117,10 +1194,13 @@
 	"../gtc/type_ptr.hpp"
 	"../gtc/vec1.hpp"
 
-1537884536 source:d:\tcc\tcc\include\glm\detail\glm.cpp
-	<glm/glm.hpp>
-	<glm/gtc/quaternion.hpp>
+1574340608 source:d:\tcc\tcc\include\glm\detail\glm.cpp
 	<glm/gtx/dual_quaternion.hpp>
+	<glm/gtc/vec1.hpp>
+	<glm/gtc/quaternion.hpp>
+	<glm/ext/scalar_int_sized.hpp>
+	<glm/ext/scalar_uint_sized.hpp>
+	<glm/glm.hpp>
 
 1573526781 source:d:\tcc\tcc\include\glm\out\build\x64-debug\cmakefiles\3.15.19080502-msvc_2\compileridc\cmakeccompilerid.c
 
@@ -1131,17 +1211,17 @@
 
 1573526782 d:\tcc\tcc\include\glm\out\build\x64-debug\cmakefiles\showincludes\foo.h
 
-1573317210 source:d:\tcc\tcc\libs\gl3w\gl\gl3w.c
+1574340573 source:d:\tcc\tcc\libs\gl3w\gl\gl3w.c
 	<GL/gl3w.h>
 	<windows.h>
 	<Carbon/Carbon.h>
 	<dlfcn.h>
 	<GL/glx.h>
 
-1573317210 d:\tcc\tcc\libs\gl3w\gl\gl3w.h
+1574340573 d:\tcc\tcc\libs\gl3w\gl\gl3w.h
 	<GL/glcorearb.h>
 
-1573317210 d:\tcc\tcc\libs\gl3w\gl\glcorearb.h
+1574340573 d:\tcc\tcc\libs\gl3w\gl\glcorearb.h
 	<windows.h>
 	<stddef.h>
 	<inttypes.h>
@@ -1151,7 +1231,7 @@
 	<stdint.h>
 	<inttypes.h>
 
-1573317210 source:d:\tcc\tcc\libs\imgui\imgui.cpp
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui.cpp
 	"imgui.h"
 	"imgui_internal.h"
 	<ctype.h>
@@ -1166,7 +1246,7 @@
 	<imm.h>
 	"imgui_user.inl"
 
-1573317210 d:\tcc\tcc\libs\imgui\imgui.h
+1574340573 d:\tcc\tcc\libs\imgui\imgui.h
 	"imconfig.h"
 	<float.h>
 	<stdarg.h>
@@ -1176,19 +1256,19 @@
 	<stdint.h>
 	"imgui_user.h"
 
-1573317210 d:\tcc\tcc\libs\imgui\imconfig.h
+1574340573 d:\tcc\tcc\libs\imgui\imconfig.h
 
-1573317210 d:\tcc\tcc\libs\imgui\imgui_internal.h
+1574340573 d:\tcc\tcc\libs\imgui\imgui_internal.h
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<limits.h>
 	"imstb_textedit.h"
 
-1573317210 d:\tcc\tcc\libs\imgui\imstb_textedit.h
+1574340573 d:\tcc\tcc\libs\imgui\imstb_textedit.h
 	<string.h>
 
-1573317210 source:d:\tcc\tcc\libs\imgui\imgui_demo.cpp
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_demo.cpp
 	"imgui.h"
 	<ctype.h>
 	<limits.h>
@@ -1198,7 +1278,7 @@
 	<stddef.h>
 	<stdint.h>
 
-1573530809 source:d:\tcc\tcc\libs\imgui\imgui_draw.cpp
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_draw.cpp
 	"imgui.h"
 	"imgui_internal.h"
 	<stdio.h>
@@ -1208,11 +1288,11 @@
 	"imstb_rectpack.h"
 	"imstb_truetype.h"
 
-1573317210 d:\tcc\tcc\libs\imgui\imstb_rectpack.h
+1574340573 d:\tcc\tcc\libs\imgui\imstb_rectpack.h
 	<stdlib.h>
 	<assert.h>
 
-1573317210 d:\tcc\tcc\libs\imgui\imstb_truetype.h
+1574340573 d:\tcc\tcc\libs\imgui\imstb_truetype.h
 	"stb_truetype.h"
 	<stdio.h>
 	"stb_truetype.h"
@@ -1225,4 +1305,511 @@
 	<assert.h>
 	<string.h>
 	<string.h>
+
+1574340608 d:\tcc\tcc\include\glm\detail\qualifier.hpp
+	"setup.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool2.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\detail\compute_vector_relational.hpp
+	"setup.hpp"
+	<limits>
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float2.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double2.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int2.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint2.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint2_precision.hpp
+	"../detail/type_vec2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool3.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float3.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double3.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int3.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint3.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint3_precision.hpp
+	"../detail/type_vec3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool4.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float4.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double4.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double4_precision.hpp
+	"../detail/setup.hpp"
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int4.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint4.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint4_precision.hpp
+	"../detail/type_vec4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x3.hpp
+	"../detail/type_mat2x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x3_precision.hpp
+	"../detail/type_mat2x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x4.hpp
+	"../detail/type_mat2x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x4_precision.hpp
+	"../detail/type_mat2x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x2.hpp
+	"../detail/type_mat3x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x2_precision.hpp
+	"../detail/type_mat3x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x3.hpp
+	"../detail/type_mat3x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x3_precision.hpp
+	"../detail/type_mat3x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x4.hpp
+	"../detail/type_mat3x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float3x4_precision.hpp
+	"../detail/type_mat3x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x2_precision.hpp
+	"../detail/type_mat4x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x2.hpp
+	"../detail/type_mat4x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x3.hpp
+	"../detail/type_mat4x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x3_precision.hpp
+	"../detail/type_mat4x3.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x4.hpp
+	"../detail/type_mat4x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float4x4_precision.hpp
+	"../detail/type_mat4x4.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\detail\compute_common.hpp
+	"setup.hpp"
+	<limits>
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_double2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x2.hpp
+	"../detail/type_mat2x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_float2x2_precision.hpp
+	"../detail/type_mat2x2.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\scalar_constants.hpp
+	"../detail/setup.hpp"
+	"scalar_constants.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\scalar_constants.inl
+	<limits>
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_projection.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_projection.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_projection.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_clip_space.hpp
+	"../ext/scalar_constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"matrix_clip_space.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_clip_space.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_transform.hpp
+	"../gtc/constants.hpp"
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+	"matrix_transform.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\matrix_transform.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_relational.hpp
+	"../detail/qualifier.hpp"
+	"vector_relational.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_relational.inl
+	"../vector_relational.hpp"
+	"../common.hpp"
+	"../detail/qualifier.hpp"
+	"../detail/type_float.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_common.hpp
+	"../ext/scalar_constants.hpp"
+	"../ext/quaternion_geometric.hpp"
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	<limits>
+	"quaternion_common.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_geometric.hpp
+	"../geometric.hpp"
+	"../exponential.hpp"
+	"../ext/vector_relational.hpp"
+	"quaternion_geometric.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_geometric.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_common.inl
+	"quaternion_common_simd.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_common_simd.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_float.hpp
+	"../detail/type_quat.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\detail\type_quat.hpp
+	"../detail/type_mat3x3.hpp"
+	"../detail/type_mat4x4.hpp"
+	"../detail/type_vec3.hpp"
+	"../detail/type_vec4.hpp"
+	"../ext/vector_relational.hpp"
+	"../ext/quaternion_relational.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/matrix_transform.hpp"
+	"type_quat.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_relational.hpp
+	"../vector_relational.hpp"
+	"quaternion_relational.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_relational.inl
+
+1574340608 d:\tcc\tcc\include\glm\detail\type_quat.inl
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"../ext/quaternion_geometric.hpp"
+	<limits>
+	"type_quat_simd.inl"
+
+1574340608 d:\tcc\tcc\include\glm\detail\type_quat_simd.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_float_precision.hpp
+	"../detail/type_quat.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_double.hpp
+	"../detail/type_quat.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_double_precision.hpp
+	"../detail/type_quat.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_trigonometric.hpp
+	"../trigonometric.hpp"
+	"../exponential.hpp"
+	"scalar_constants.hpp"
+	"vector_relational.hpp"
+	<limits>
+	"quaternion_trigonometric.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_trigonometric.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_transform.hpp
+	"../common.hpp"
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"quaternion_transform.inl"
+
+1574340608 d:\tcc\tcc\include\glm\ext\quaternion_transform.inl
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool1.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_bool1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float1.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_float1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double1.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_double1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int1.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_int1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint1.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\vector_uint1_precision.hpp
+	"../detail/type_vec1.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\scalar_int_sized.hpp
+	"../detail/setup.hpp"
+
+1574340608 d:\tcc\tcc\include\glm\ext\scalar_uint_sized.hpp
+	"../detail/setup.hpp"
+
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_impl_glfw.cpp
+	"imgui.h"
+	"imgui_impl_glfw.h"
+	<GLFW/glfw3.h>
+	<GLFW/glfw3native.h>
+
+1574340573 d:\tcc\tcc\libs\imgui\imgui_impl_glfw.h
+
+1574340608 d:\tcc\tcc\libs\glfw\include\glfw\glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/glcorearb.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<vulkan/vulkan.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1574340573 d:\tcc\tcc\libs\glfw\include\glfw\glfw3native.h
+	<windows.h>
+	<ApplicationServices/ApplicationServices.h>
+	<X11/Xlib.h>
+	<X11/extensions/Xrandr.h>
+	<wayland-client.h>
+	<mir_toolkit/mir_client_library.h>
+	<GL/glx.h>
+	<EGL/egl.h>
+
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_impl_opengl3.cpp
+	"imgui.h"
+	"imgui_impl_opengl3.h"
+	<stdio.h>
+	<stddef.h>
+	<stdint.h>
+	"TargetConditionals.h"
+	<GLES2/gl2.h>
+	<OpenGLES/ES3/gl.h>
+	<GLES3/gl3.h>
+	<GL/gl3w.h>
+	<GL/glew.h>
+	<glad/glad.h>
+
+1574340573 d:\tcc\tcc\libs\imgui\imgui_impl_opengl3.h
+
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_widgets.cpp
+	"imgui.h"
+	"imgui_internal.h"
+	<ctype.h>
+	<stddef.h>
+	<stdint.h>
+	"imstb_textedit.h"
+
+1574340608 source:d:\tcc\tcc\libs\tiny_obj_loader\tiny_obj_loader.cpp
+	"tiny_obj_loader.h"
+
+1574340608 d:\tcc\tcc\libs\tiny_obj_loader\tiny_obj_loader.h
+	<map>
+	<string>
+	<vector>
+	<cassert>
+	<cctype>
+	<cmath>
+	<cstddef>
+	<cstdlib>
+	<cstring>
+	<utility>
+	<fstream>
+	<sstream>
+
+1574340573 source:d:\tcc\tcc\src\callbacks.cpp
+	"callbacks.h"
+
+1574340571 d:\tcc\tcc\include\callbacks.h
+	"globals.h"
+
+1574340608 d:\tcc\tcc\include\globals.h
+	"headers.h"
+
+1574340608 d:\tcc\tcc\include\headers.h
+	<stdio.h>
+	"imgui.h"
+	"imgui_impl_glfw.h"
+	"imgui_impl_opengl3.h"
+	<GL/gl3w.h>
+	<GL/glew.h>
+	<GLFW/glfw3.h>
+	<cmath>
+	<cstdio>
+	<cstdlib>
+	<map>
+	<string>
+	<fstream>
+	<sstream>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<tiny_obj_loader.h>
+
+1574340608 source:d:\tcc\tcc\src\interface.cpp
+	"interface.h"
+
+1574340608 d:\tcc\tcc\include\interface.h
+	"headers.h"
+	"globals.h"
+
+1574340608 source:d:\tcc\tcc\src\main.cpp
+	"headers.h"
+	"matrices.h"
+	"shaders.h"
+	"initialize_globals.h"
+	"callbacks.h"
+	"interface.h"
+
+1573281636 d:\tcc\tcc\include\matrices.h
+	<cstdio>
+	<cstdlib>
+	<glm/mat4x4.hpp>
+	<glm/vec4.hpp>
+	<glm/gtc/matrix_transform.hpp>
+
+1574340573 d:\tcc\tcc\include\shaders.h
+	"headers.h"
+
+1574340608 d:\tcc\tcc\include\initialize_globals.h
+	"globals.h"
+
+1574340573 source:d:\tcc\tcc\src\shaders.cpp
+	"shaders.h"
 

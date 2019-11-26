@@ -21,6 +21,7 @@
 					<Add directory="libs/gl3w" />
 					<Add directory="libs/glfw/include" />
 					<Add directory="libs/imgui" />
+					<Add directory="libs/tiny_obj_loader" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -70,6 +71,7 @@
 		<Unit filename="include/headers.h" />
 		<Unit filename="include/initialize_globals.h" />
 		<Unit filename="include/matrices.h" />
+		<Unit filename="include/interface.h" />
 		<Unit filename="include/shaders.h" />
 		<Unit filename="libs/gl3w/GL/gl3w.c">
 			<Option compilerVar="CC" />
@@ -92,8 +94,11 @@
 		<Unit filename="libs/imgui/imstb_rectpack.h" />
 		<Unit filename="libs/imgui/imstb_textedit.h" />
 		<Unit filename="libs/imgui/imstb_truetype.h" />
+		<Unit filename="libs/tiny_obj_loader/tiny_obj_loader.cpp" />
+		<Unit filename="libs/tiny_obj_loader/tiny_obj_loader.h" />
 		<Unit filename="src/callbacks.cpp" />
 		<Unit filename="src/shaders.cpp" />
+		<Unit filename="src/interface.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/shader_fragment.glsl" />
 		<Unit filename="src/shader_vertex.glsl" />
