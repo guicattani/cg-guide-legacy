@@ -190,3 +190,24 @@ void ErrorCallback(int error, const char* description)
 {
     fprintf(stderr, "ERROR: GLFW: %s\n", description);
 }
+
+/*
+Cria callbacks pra todos eventos: (KeyPress, MouseButtonPress, CursorPosition, Scroll, Framebuffer, Error)
+*/
+void SetCallbacks(GLFWwindow* window) {
+	// Definimos a função de callback que será chamada sempre que o usuário
+	// pressionar alguma tecla do teclado ...
+	glfwSetKeyCallback(window, KeyCallback);
+	// ... ou clicar os botões do mouse ...
+	glfwSetMouseButtonCallback(window, MouseButtonCallback);
+	// ... ou movimentar o cursor do mouse em cima da janela ...
+	glfwSetCursorPosCallback(window, CursorPosCallback);
+	// ... ou rolar a "rodinha" do mouse.
+	glfwSetScrollCallback(window, ScrollCallback);
+	// Definimos a função de callback que será chamada sempre que a janela for
+	// redimensionada, por consequência alterando o tamanho do "framebuffer"
+	// (região de memória onde são armazenados os pixels da imagem).
+	glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+	// Definimos o callback para impressão de erros da GLFW no terminal
+	glfwSetErrorCallback(ErrorCallback);
+}
