@@ -1,11 +1,11 @@
-#ifndef CLASS_HEADER_DEMO
-#define CLASS_HEADER_DEMO
-#include "demo.h"
+#ifndef CLASS_HEADER_SCENE
+#define CLASS_HEADER_SCENE
+#include "scene.h"
 #endif
 /*
 Constrói triângulos para renderização
 */
-GLuint Demo_3::BuildTriangles()
+GLuint Scene_3::BuildTriangles()
 {
   // Primeiro, definimos os atributos de cada vértice.
 
@@ -74,7 +74,7 @@ GLuint Demo_3::BuildTriangles()
   // para alocar um número de bytes exatamente igual ao tamanho ("size")
   // desse array. A constante "GL_STATIC_DRAW" dá uma dica para o driver da
   // GPU sobre como utilizaremos os dados do VBO. Neste caso, estamos dizendo
-  // que não pretendemos alterar tais dados (são estáticos: "STATIC"), e
+  // que não pretenscenes alterar tais dados (são estáticos: "STATIC"), e
   // também dizemos que tais dados seráo utilizados para renderizar ou
   // desenhar ("DRAW").  Pense que:
   //

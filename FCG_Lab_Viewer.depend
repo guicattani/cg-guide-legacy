@@ -1268,7 +1268,7 @@
 1574340573 d:\tcc\tcc\libs\imgui\imstb_textedit.h
 	<string.h>
 
-1574340573 source:d:\tcc\tcc\libs\imgui\imgui_demo.cpp
+1574340573 source:d:\tcc\tcc\libs\imgui\imgui_scene.cpp
 	"imgui.h"
 	<ctype.h>
 	<limits.h>

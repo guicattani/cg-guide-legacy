@@ -74,6 +74,8 @@
 		<Unit filename="include/camera.h" />
 		<Unit filename="include/interface.h" />
 		<Unit filename="include/shaders.h" />
+		<Unit filename="include/opengl_loader.h" />
+		<Unit filename="include/scene.h" />
 		<Unit filename="libs/gl3w/GL/gl3w.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -102,6 +104,8 @@
 		<Unit filename="src/matrices.cpp" />
 		<Unit filename="src/shaders.cpp" />
 		<Unit filename="src/interface.cpp" />
+		<Unit filename="src/opengl_loader.cpp" />
+		<Unit filename="src/scene_3.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/shader_fragment.glsl" />
 		<Unit filename="src/shader_vertex.glsl" />

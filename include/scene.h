@@ -8,15 +8,15 @@
 #include "globals.h"
 #endif
 
-#ifndef CLASS_DEMO_CLASS_HEADER
-#define CLASS_DEMO_CLASS_HEADER
-class Demo {
+#ifndef CLASS_SCENE_CLASS_HEADER
+#define CLASS_SCENE_CLASS_HEADER
+class Scene {
   public:
     virtual GLuint BuildTriangles() = 0;
 };
 
-class Demo_3 : Demo {
+class Scene_3 : public Scene {
   public:
-    GLuint BuildTriangles();
+    virtual GLuint BuildTriangles();
 };
 #endif
