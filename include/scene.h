@@ -35,17 +35,18 @@ class Scene_3 {
 };
 
 class Scene_4 {
-  public:
-    std::string shader_vertex_filepath = "../src/scene_4_shader_vertex.glsl";
-    std::string shader_fragment_file_filepath = "../sr c/scene_4_shader_fragment.glsl";
-
+  private:
     GLint model_uniform;
     GLint view_uniform;
     GLint projection_uniform;
     GLint object_id_uniform;
 
+  public:
+    static const char* shader_vertex_filepath;
+    static const char* shader_fragment_filepath;
+
     void LoadShaderVariables(GLuint program_id);
-    void BuildTrianglesAndAddToVirtualScene(ObjModel*);
+    void BuildTrianglesAndAddToVirtualScene(ObjModel* model);
     void Render();
 };
 #endif

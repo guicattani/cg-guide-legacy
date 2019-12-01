@@ -3,6 +3,11 @@
 #include "headers.h"
 #endif
 
+#ifndef CLASS_HEADER_CAMERA
+#define CLASS_HEADER_CAMERA
+#include "camera.h"
+#endif
+
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
 extern float g_ScreenRatio;
 
@@ -55,10 +60,12 @@ extern ImVec4 g_ClearColor;
 
 extern GLuint g_ProgramId;
 
+extern Camera* g_MainCamera;
+
 class Globals {
 public:
   // Variável da cena atual.
-  static std::map<const char*, SceneObject> g_VirtualScene;
+  static std::map<std::string, SceneObject> g_VirtualScene;
 
   // Variáveis globais que armazenam a última posição do cursor do mouse, para
   // que possamos calcular quanto que o mouse se movimentou entre dois instantes

@@ -38,7 +38,7 @@
 // cada objeto da cena virtual.
 struct SceneObject
 {
-    const char*  name;        // Nome do objeto
+    std::string  name;        // Nome do objeto
     void*        first_index; // índice do primeiro vértice dentro do vetor indices[] definido em BuildTriangles()
     int          num_indices; // Número de índices do objeto dentro do vetor indices[] definido em BuildTriangles()
     GLenum       rendering_mode; // Modo de rasterização (GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.)

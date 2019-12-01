@@ -31,9 +31,12 @@
 #define CLASS_HEADER_SHADERS
 #include "shaders.h"
 #endif
+#ifndef CLASS_HEADER_CAMERA
+#define CLASS_HEADER_CAMERA
+#include "camera.h"
+#endif
 #include "callbacks.h"
 #include "interface.h"
-#include "camera.h"
 #include "opengl_loader.h"
 #include "scene_loader.h"
 
@@ -72,7 +75,7 @@ int main(int, char**)
 	}
 	PrintGPUInformation();
 
-  int starting_scene = 3;
+  int starting_scene = 4;
 
   //Criamos todas instâncias de scenes
   Scene_3 scene_3 = Scene_3();
@@ -84,10 +87,30 @@ int main(int, char**)
       scene_3.LoadShaderVariables(g_ProgramId);
       scene_3.BuildTrianglesAndAddToVirtualScene();
       break;
+    case 4:
+      scene_4.LoadShaderVariables(g_ProgramId);
+      // Construímos a representação de objetos geométricos através de malhas de triângulos
+      ObjModel spheremodel("../data/sphere.obj");
+      ComputeNormals(&spheremodel);
+      scene_4.BuildTrianglesAndAddToVirtualScene(&spheremodel);
+
+      ObjModel bunnymodel("../data/bunny.obj");
+      ComputeNormals(&bunnymodel);
+      scene_4.BuildTrianglesAndAddToVirtualScene(&bunnymodel);
+
+      ObjModel planemodel("../data/plane.obj");
+      ComputeNormals(&planemodel);
+      scene_4.BuildTrianglesAndAddToVirtualScene(&planemodel);
+      break;
   }
 
 	// Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
 	glEnable(GL_DEPTH_TEST);
+
+  // Habilitamos o Backface Culling. Veja slides 22-34 do documento "Aula_13_Clipping_and_Culling.pdf".
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+  glFrontFace(GL_CCW);
 
 	// Variáveis auxiliares utilizadas para chamada de função
 	// TextRendering_ShowModelViewProjection(), armazenando matrizes 4x4.
@@ -99,7 +122,7 @@ int main(int, char**)
   Interface interface = Interface(true);
   interface.Init(window, glsl_version);
 
-  Camera main_camera = Camera(g_ProgramId);
+  g_MainCamera = new Camera(g_ProgramId);
 #pragma endregion MAIN
 
 #pragma region [rgba(50, 100, 100, 0.2)] DRAW_LOOP
@@ -118,14 +141,17 @@ int main(int, char**)
 		// os shaders de vértice e fragmentos).
 		glUseProgram(g_ProgramId);
 
-    main_camera.Enable();
+    g_MainCamera->Enable();
 
-    the_projection = main_camera.projection;
-    the_view = main_camera.view;
+    the_projection = g_MainCamera->projection;
+    the_view = g_MainCamera->view;
 
     switch(starting_scene){
       case 3:
         scene_3.Render();
+        break;
+      case 4:
+        scene_4.Render();
         break;
     }
 

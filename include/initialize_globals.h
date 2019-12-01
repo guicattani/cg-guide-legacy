@@ -49,9 +49,11 @@ float g_FrustumFarPlane = -10.0f;
 
 GLuint g_ProgramId;
 
+Camera* g_MainCamera;
+
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-std::map<const char*, SceneObject> Globals::g_VirtualScene;
+std::map<std::string, SceneObject> Globals::g_VirtualScene;
 double Globals::g_LastCursorPosX, Globals::g_LastCursorPosY;
 ImGuiIO* Globals::g_Io;
