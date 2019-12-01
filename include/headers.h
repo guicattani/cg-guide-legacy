@@ -42,5 +42,6 @@ struct SceneObject
     void*        first_index; // índice do primeiro vértice dentro do vetor indices[] definido em BuildTriangles()
     int          num_indices; // Número de índices do objeto dentro do vetor indices[] definido em BuildTriangles()
     GLenum       rendering_mode; // Modo de rasterização (GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.)
+    GLuint       vertex_array_object_id; // ID do VAO onde estão armazenados os atributos do modelo
 };
 #endif

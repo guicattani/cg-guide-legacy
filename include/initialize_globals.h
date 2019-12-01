@@ -47,6 +47,8 @@ float g_FrustumNearPlane = -0.1f;
 // Variável que controla o tamanho do far plane do frustum.
 float g_FrustumFarPlane = -10.0f;
 
+GLuint g_ProgramId;
+
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

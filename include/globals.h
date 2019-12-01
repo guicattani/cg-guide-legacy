@@ -53,6 +53,8 @@ extern float g_FrustumFarPlane;
 // Variável que controla a cor do plano de clear.
 extern ImVec4 g_ClearColor;
 
+extern GLuint g_ProgramId;
+
 class Globals {
 public:
   // Variável da cena atual.

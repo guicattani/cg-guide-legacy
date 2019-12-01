@@ -2,10 +2,22 @@
 #define CLASS_HEADER_SCENE
 #include "scene.h"
 #endif
+
+const char* Scene_3::shader_vertex_filepath = "../src/scene_3_shader_vertex.glsl";
+const char* Scene_3::shader_fragment_filepath = "../src/scene_3_shader_fragment.glsl";
+
+// Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
+// Utilizaremos estas variáveis para enviar dados para a placa de vídeo
+// (GPU)! Veja arquivo "shader_vertex.glsl".
+void Scene_3::LoadShaderVariables(GLuint program_id) {
+  model_uniform = glGetUniformLocation(program_id, "model"); // Variável da matriz "model"
+	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
+}
+
 /*
 Constrói triângulos para renderização
 */
-GLuint Scene_3::BuildTriangles()
+void Scene_3::BuildTrianglesAndAddToVirtualScene()
 {
   // Primeiro, definimos os atributos de cada vértice.
 
@@ -205,8 +217,12 @@ GLuint Scene_3::BuildTriangles()
   cube_faces.num_indices = 36;       // último índice está em indices[35]; total de 36 índices.
   cube_faces.rendering_mode = GL_TRIANGLES; // índices correspondem ao tipo de rasterização GL_TRIANGLES.
 
-  // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
+  //TODO isso aqui n ta legal, tem que entender o VAO pra poder mexer direito
+  cube_faces.vertex_array_object_id = vertex_array_object_id;
   Globals::g_VirtualScene["cube_faces"] = cube_faces;
+
+  // // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
+  // Globals::g_VirtualScene["cube_faces"] = cube_faces;
 
   // Criamos um segundo objeto virtual (SceneObject) que se refere às arestas
   // pretas do cubo.
@@ -250,8 +266,157 @@ GLuint Scene_3::BuildTriangles()
   // "Desligamos" o VAO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.
   glBindVertexArray(0);
+}
 
-  // Retornamos o ID do VAO. Isso é tudo que será necessário para renderizar
-  // os triângulos definidos acima. Veja a chamada glDrawElements() em main().
-  return vertex_array_object_id;
+void Scene_3::Render(){
+    // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
+		// vértices apontados pelo VAO criado pela função BuildTriangles(). Veja
+		// comentários detalhados dentro da definição de BuildTriangles().
+    // TODO ver o outro TODO da buildtriangles
+		glBindVertexArray(Globals::g_VirtualScene["cube_faces"].vertex_array_object_id);
+
+
+		// Vamos desenhar 3 instâncias (cópias) do cubo
+		for (int i = 1; i <= 3; ++i)
+		{
+			// Cada cópia do cuCamerao possui uma matriz de modelagem independente,
+			// já que cada cópiCamera estará em uma posição (rotação, escala, ...)
+			// diferente em relação ao espaço global (World Coordinates). Veja
+			// slide 138 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
+			glm::mat4 model;
+			if (i == 1)
+			{
+				// A primeira cópia do cubo não sofrerá nenhuma transformação
+				// de modelagem. Portanto, sua matriz "model" é a identidade, e
+				// suas coordenadas no espaço global (World Coordinates) seráo
+				// *exatamente iguais* a suas coordenadas no espaço do modelo
+				// (Model Coordinates).
+				model = Matrix_Identity();
+			}
+			else if (i == 2)
+			{
+				// A segunda cópia do cubo sofrerá um escalamento não-uniforme,
+				// seguido de uma rotação no eixo (1,1,1), e uma translação em Z (nessa ordem!).
+				model = Matrix_Translate(0.0f, 0.0f, -2.0f) // TERCEIRO translação
+					* Matrix_Rotate(3.141592f / 8.0f, glm::vec4(1.0f, 1.0f, 1.0f, 0.0f)) // SEGUNDO rotação
+					* Matrix_Scale(2.0f, 0.5f, 0.5f); // PRIMEIRO escala
+			}
+			else if (i == 3)
+			{
+				// A terceira cópia do cubo sofrerá rotações em X,Y e Z (nessa
+				// ordem) seguindo o sistema de ângulos de Euler, e após uma
+				// translação em X. Veja slide 62 do documento
+				// "Aula_07_Transformacoes_Geometricas_3D.pdf".
+				model = Matrix_Translate(-2.0f, 0.0f, 0.0f) // QUARTO translação
+					* Matrix_Rotate_Z(g_AngleZ)  // TERCEIRO rotação Z de Euler
+					* Matrix_Rotate_Y(g_AngleY)  // SEGUNDO rotação Y de Euler
+					* Matrix_Rotate_X(g_AngleX); // PRIMEIRO rotação X de Euler
+			  // Armazenamos as matrizes model, view, e projection do terceiro cubo
+			  // para mostrar elas na tela através da função TextRendering_ShowModelViewProjection().
+			}
+
+			// Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o
+			// arquivo "shader_vertex.glsl", onde esta é efetivamente
+			// aplicada em todos os pontos.
+			glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+			// Informamos para a placa de vídeo (GPU) que a variável booleana
+			// "render_as_black" deve ser colocada como "false". Veja o arquivo
+			// "shader_vertex.glsl".
+			glUniform1i(render_as_black_uniform, false);
+			// Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
+			// VAO como triângulos, formando as faces do cubo. Esta
+			// renderização irá executar o Vertex Shader definido no arquivo
+			// "shader_vertex.glsl", e o mesmo irá utilizar as matrizes
+			// "model", "view" e "projection" definidas acima e já enviadas
+			// para a placa de vídeo (GPU).
+			//
+			// Veja a definição de Globals::g_VirtualScene["cube_faces"] dentro da
+			// função BuildTriangles(), e veja a documentação da função
+			// glDrawElements() em http://docs.gl/gl3/glDrawElements.
+			glDrawElements(
+				Globals::g_VirtualScene["cube_faces"].rendering_mode, // Veja slide 178 do documento "Aula_04_Modelagem_Geometrica_3D.pdf".
+				Globals::g_VirtualScene["cube_faces"].num_indices,    //
+				GL_UNSIGNED_INT,
+				(void*)Globals::g_VirtualScene["cube_faces"].first_index
+			);
+
+			// Pedimos para OpenGL desenhar linhas com largura de 4 pixels.
+			glLineWidth(4.0f);
+			// Pedimos para a GPU rasterizar os vértices dos eixos XYZ
+			// apontados pelo VAO como linhas. Veja a definição de
+			// Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+			// a documentação da função glDrawElements() em
+			// http://docs.gl/gl3/glDrawElements.
+			//
+			// Importante: estes eixos seráo desenhamos com a matriz "model"
+			// definida acima, e portanto sofreráo as mesmas transformações
+			// geométricas que o cubo. Isto é, estes eixos estaráo
+			// representando o sistema de coordenadas do modelo (e não o global)!
+			glDrawElements(
+				Globals::g_VirtualScene["axes"].rendering_mode,
+				Globals::g_VirtualScene["axes"].num_indices,
+				GL_UNSIGNED_INT,
+				(void*)Globals::g_VirtualScene["axes"].first_index
+			);
+
+			// Informamos para a placa de vídeo (GPU) que a variável booleana
+			// "render_as_black" deve ser colocada como "true". Veja o arquivo
+			// "shader_vertex.glsl".
+			glUniform1i(render_as_black_uniform, true);
+			// Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
+			// VAO como linhas, formando as arestas pretas do cubo. Veja a
+			// definição de Globals::g_VirtualScene["cube_edges"] dentro da função
+			// BuildTriangles(), e veja a documentação da função
+			// glDrawElements() em http://docs.gl/gl3/glDrawElements.
+			glDrawElements(
+				Globals::g_VirtualScene["cube_edges"].rendering_mode,
+				Globals::g_VirtualScene["cube_edges"].num_indices,
+				GL_UNSIGNED_INT,
+				(void*)Globals::g_VirtualScene["cube_edges"].first_index
+			);
+			// Desenhamos um ponto de tamanho 15 pixels em cima do terceiro vértice
+			// do terceiro cubo. Este vértice tem coordenada de modelo igual é
+			// (0.5, 0.5, 0.5, 1.0).
+			if (i == 3)
+			{
+				glPointSize(15.0f);
+				glDrawArrays(GL_POINTS, 3, 1);
+			}
+		}
+
+		// Agora queremos desenhar os eixos XYZ de coordenadas GLOBAIS.
+		// Para tanto, colocamos a matriz de modelagem igual é identidade.
+		// Veja slide 134 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
+		glm::mat4 model = Matrix_Identity();
+		// Enviamos a nova matriz "model" para a placa de vídeo (GPU). Veja o
+		// arquivo "shader_vertex.glsl".
+		glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+		// Pedimos para OpenGL desenhar linhas com largura de 10 pixels.
+		glLineWidth(10.0f);
+		// Informamos para a placa de vídeo (GPU) que a variável booleana
+		// "render_as_black" deve ser colocada como "false". Veja o arquivo
+		// "shader_vertex.glsl".
+		glUniform1i(render_as_black_uniform, false);
+
+		// Pedimos para a GPU rasterizar os vértices dos eixos XYZ
+		// apontados pelo VAO como linhas. Veja a definição de
+		// Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+		// a documentação da função glDrawElements() em
+		// http://docs.gl/gl3/glDrawElements.
+		glDrawElements(
+			Globals::g_VirtualScene["axes"].rendering_mode,
+			Globals::g_VirtualScene["axes"].num_indices,
+			GL_UNSIGNED_INT,
+			(void*)Globals::g_VirtualScene["axes"].first_index
+		);
+
+		// "Desligamos" o VAO, evitando assim que operações posteriores venham a
+		// alterar o mesmo. Isso evita bugs.
+		glBindVertexArray(0);
+
+		// Pegamos um vértice com coordenadas de modelo (0.5, 0.5, 0.5, 1) e o
+		// passamos por todos os sistemas de coordenadas armazenados nas
+		// matrizes the_model, the_view, e the_projection; e escrevemos na tela
+		// as matrizes e pontos resultantes dessas transformações.
+		glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
 }

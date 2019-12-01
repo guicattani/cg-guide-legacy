@@ -17,7 +17,8 @@
 EXE = main
 SOURCES = ./src/main.cpp
 SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/shaders.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
-SOURCES += ./src/scene_3.cpp
+SOURCES += ./src/model_loader.cpp
+SOURCES += ./src/scene_loader.cpp ./src/scene_3.cpp
 SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
 SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
 SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
