@@ -31,18 +31,23 @@ void Interface::Show(GLFWwindow *window) {
 
   // Usamos um par Begin/End para criar uma nova janela nomeada.
   {
-    // static float f = 0.0f;
-    static int counter = 0;
     // Create a window called "Hello, world!" and append into it.
     ImGui::Begin("Settings");
-    // Edit 3 floats representing a color
-    ImGui::ColorEdit3("clear color", (float*)&g_ClearColor);
 
-    // Buttons return true when clicked (most widgets return true when edited/activated)
-    if (ImGui::Button("Button"))
-      counter++;
+    ImGui::Text("Change Scene");
+    if (ImGui::Button("Scene 3")) {
+      g_CurrentScene = 3;
+      g_SceneChanged = true;
+    }
     ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
+    if (ImGui::Button("Scene 4")) {
+      g_CurrentScene = 4;
+      g_SceneChanged = true;
+    }
+
+    // Edit 3 floats representing a color
+    ImGui::Text("Change Clear Color");
+    ImGui::ColorEdit3("clear color", (float*)&g_ClearColor);
 
     ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
 

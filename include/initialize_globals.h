@@ -51,6 +51,9 @@ GLuint g_ProgramId;
 
 Camera* g_MainCamera;
 
+int g_CurrentScene = 3;
+bool g_SceneChanged = false;
+
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

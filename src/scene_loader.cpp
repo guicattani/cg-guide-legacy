@@ -1,4 +1,7 @@
+#ifndef CLASS_HEADER_SCENE_LOADER
+#define CLASS_HEADER_SCENE_LOADER
 #include "scene_loader.h"
+#endif
 
 void CreateProgramForScene(int scene) {
   switch(scene) {
@@ -21,4 +24,3 @@ void CreateProgramForScene(int scene) {
         printf("No scene given to create, idling.\n");
   }
 }
-

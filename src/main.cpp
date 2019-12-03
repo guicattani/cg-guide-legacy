@@ -35,12 +35,14 @@
 #define CLASS_HEADER_CAMERA
 #include "camera.h"
 #endif
+#include "scene_loader.h"
 #include "callbacks.h"
 #include "interface.h"
 #include "opengl_loader.h"
-#include "scene_loader.h"
 
-GLuint BuildTriangles();
+void CreateScene(int scene);
+Scene_3* g_Scene3 = new Scene_3();
+Scene_4* g_Scene4 = new Scene_4();
 
 #pragma endregion HEADERS
 
@@ -75,34 +77,9 @@ int main(int, char**)
 	}
 	PrintGPUInformation();
 
-  int starting_scene = 4;
-
-  //Criamos todas instâncias de scenes
-  Scene_3 scene_3 = Scene_3();
-  Scene_4 scene_4 = Scene_4();
-
-  CreateProgramForScene(starting_scene);
-  switch(starting_scene){
-    case 3:
-      scene_3.LoadShaderVariables(g_ProgramId);
-      scene_3.BuildTrianglesAndAddToVirtualScene();
-      break;
-    case 4:
-      scene_4.LoadShaderVariables(g_ProgramId);
-      // Construímos a representação de objetos geométricos através de malhas de triângulos
-      ObjModel spheremodel("../data/sphere.obj");
-      ComputeNormals(&spheremodel);
-      scene_4.BuildTrianglesAndAddToVirtualScene(&spheremodel);
-
-      ObjModel bunnymodel("../data/bunny.obj");
-      ComputeNormals(&bunnymodel);
-      scene_4.BuildTrianglesAndAddToVirtualScene(&bunnymodel);
-
-      ObjModel planemodel("../data/plane.obj");
-      ComputeNormals(&planemodel);
-      scene_4.BuildTrianglesAndAddToVirtualScene(&planemodel);
-      break;
-  }
+  //Seleciona a cena 3 como inicial
+  g_CurrentScene = 3;
+  CreateScene(g_CurrentScene);
 
 	// Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
 	glEnable(GL_DEPTH_TEST);
@@ -146,12 +123,18 @@ int main(int, char**)
     the_projection = g_MainCamera->projection;
     the_view = g_MainCamera->view;
 
-    switch(starting_scene){
+    if(g_SceneChanged) {
+      CreateScene(g_CurrentScene);
+      g_SceneChanged = false;
+      continue;
+    }
+
+    switch(g_CurrentScene){
       case 3:
-        scene_3.Render();
+        g_Scene3->Render();
         break;
       case 4:
-        scene_4.Render();
+        g_Scene4->Render();
         break;
     }
 
@@ -165,3 +148,31 @@ int main(int, char**)
 	return 0;
 }
 #pragma endregion DRAW_LOOP
+
+#pragma region [rgba(0, 0, 100, 0.3)] FUNCTIONS
+// TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
+void CreateScene(int scene) {
+  CreateProgramForScene(scene);
+  switch(scene){
+    case 3:
+      g_Scene3->LoadShaderVariables(g_ProgramId);
+      g_Scene3->BuildTrianglesAndAddToVirtualScene();
+      break;
+    case 4:
+      g_Scene4->LoadShaderVariables(g_ProgramId);
+      // Construímos a representação de objetos geométricos através de malhas de triângulos
+      ObjModel spheremodel("../data/sphere.obj");
+      ComputeNormals(&spheremodel);
+      g_Scene4->BuildTrianglesAndAddToVirtualScene(&spheremodel);
+
+      ObjModel bunnymodel("../data/bunny.obj");
+      ComputeNormals(&bunnymodel);
+      g_Scene4->BuildTrianglesAndAddToVirtualScene(&bunnymodel);
+
+      ObjModel planemodel("../data/plane.obj");
+      ComputeNormals(&planemodel);
+      g_Scene4->BuildTrianglesAndAddToVirtualScene(&planemodel);
+      break;
+  }
+}
+#pragma endregion

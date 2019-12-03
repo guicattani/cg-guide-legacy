@@ -14,4 +14,4 @@
 #endif
 
 void CreateProgramForScene(int scene);
-GLuint LoadScene(int scene);
+void CreateScene(int scene);

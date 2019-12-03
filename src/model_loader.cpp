@@ -1,4 +1,7 @@
+#ifndef CLASS_HEADER_MODEL_LOADER
+#define CLASS_HEADER_MODEL_LOADER
 #include "model_loader.h"
+#endif
 
 // Função que desenha um objeto armazenado em g_VirtualScene. Veja definição
 // dos objetos na função BuildTrianglesAndAddToVirtualScene().

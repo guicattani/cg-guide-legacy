@@ -62,6 +62,9 @@ extern GLuint g_ProgramId;
 
 extern Camera* g_MainCamera;
 
+extern int g_CurrentScene;
+extern bool g_SceneChanged;
+
 class Globals {
 public:
   // Variável da cena atual.
