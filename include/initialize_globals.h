@@ -41,6 +41,9 @@ float g_CameraDistance = 2.5f; // Distância da câmera para a origem
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
 bool g_UsePerspectiveProjection = true;
 
+// Variável que controla o culling de faces
+bool g_BackfaceCulling = true;
+
 // Variável que controla o tamanho do near plane do frustum.
 float g_FrustumNearPlane = -0.1f;
 

@@ -125,12 +125,16 @@ void Interface::CameraSettings() {
   // Edit 3 floats representing a color
   ImGui::Text("Change Clear Color");
   ImGui::ColorEdit3("clear color", (float*)&g_ClearColor);
+  ImGui::Separator();
 
   ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
+  ImGui::Checkbox("Backface Culling", &g_BackfaceCulling);
+  ImGui::Separator();
 
   ImGui::Text("Frustum Settings");
   ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -10.0f, 10.0f);
   ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -10.0f, 10.0f);
+  ImGui::Separator();
 
   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }

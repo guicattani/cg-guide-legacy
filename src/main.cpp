@@ -88,6 +88,7 @@ int main(int, char**)
 	glEnable(GL_DEPTH_TEST);
 
   // Habilitamos o Backface Culling. Veja slides 22-34 do documento "Aula_13_Clipping_and_Culling.pdf".
+  bool culling_changed_monitor = g_BackfaceCulling;
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glFrontFace(GL_CCW);
@@ -139,6 +140,15 @@ int main(int, char**)
       case 4:
         g_Scene4->Render();
         break;
+    }
+
+    if(g_BackfaceCulling != culling_changed_monitor) {
+      if(g_BackfaceCulling)
+        glEnable(GL_CULL_FACE);
+      else
+        glDisable(GL_CULL_FACE);
+
+      culling_changed_monitor = g_BackfaceCulling;
     }
 
     interface.Show(window);
