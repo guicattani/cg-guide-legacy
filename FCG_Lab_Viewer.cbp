@@ -106,6 +106,9 @@
 		<Unit filename="src/interface.cpp" />
 		<Unit filename="src/opengl_loader.cpp" />
 		<Unit filename="src/scene_3.cpp" />
+		<Unit filename="src/scene_3_interface.cpp" />
+		<Unit filename="src/scene_4.cpp" />
+		<Unit filename="src/scene_4_interface.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/shader_fragment.glsl" />
 		<Unit filename="src/shader_vertex.glsl" />

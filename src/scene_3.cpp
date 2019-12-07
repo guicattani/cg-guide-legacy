@@ -3,13 +3,13 @@
 #include "scene.h"
 #endif
 
-const char* Scene_3::shader_vertex_filepath = "../src/scene_3_shader_vertex.glsl";
-const char* Scene_3::shader_fragment_filepath = "../src/scene_3_shader_fragment.glsl";
+const char* Scene3::shader_vertex_filepath = "../src/scene_3_shader_vertex.glsl";
+const char* Scene3::shader_fragment_filepath = "../src/scene_3_shader_fragment.glsl";
 
 // Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
 // Utilizaremos estas variáveis para enviar dados para a placa de vídeo
 // (GPU)! Veja arquivo "shader_vertex.glsl".
-void Scene_3::LoadShaderVariables(GLuint program_id) {
+void Scene3::LoadShaderVariables(GLuint program_id) {
   model_uniform = glGetUniformLocation(program_id, "model"); // Variável da matriz "model"
 	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
 }
@@ -17,7 +17,7 @@ void Scene_3::LoadShaderVariables(GLuint program_id) {
 /*
 Constrói triângulos para renderização
 */
-void Scene_3::BuildTrianglesAndAddToVirtualScene()
+void Scene3::BuildTrianglesAndAddToVirtualScene()
 {
   // Primeiro, definimos os atributos de cada vértice.
 
@@ -268,7 +268,7 @@ void Scene_3::BuildTrianglesAndAddToVirtualScene()
   glBindVertexArray(0);
 }
 
-void Scene_3::Render(){
+void Scene3::Render(){
     // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
 		// vértices apontados pelo VAO criado pela função BuildTriangles(). Veja
 		// comentários detalhados dentro da definição de BuildTriangles().

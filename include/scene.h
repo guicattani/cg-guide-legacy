@@ -20,7 +20,7 @@
 
 #ifndef CLASS_SCENE_CLASS_HEADER
 #define CLASS_SCENE_CLASS_HEADER
-class Scene_3 {
+class Scene3 {
   private:
     GLint model_uniform;
     GLint render_as_black_uniform;
@@ -34,7 +34,7 @@ class Scene_3 {
     void Render();
 };
 
-class Scene_4 {
+class Scene4 {
   private:
     GLint model_uniform;
     GLint view_uniform;

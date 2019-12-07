@@ -8,10 +8,10 @@
 #include "bezier.h"
 #endif
 
-const char * Scene_4::shader_vertex_filepath = "../src/scene_4_shader_vertex.glsl";
-const char * Scene_4::shader_fragment_filepath = "../src/scene_4_shader_fragment.glsl";
+const char * Scene4::shader_vertex_filepath = "../src/scene_4_shader_vertex.glsl";
+const char * Scene4::shader_fragment_filepath = "../src/scene_4_shader_fragment.glsl";
 
-void Scene_4::LoadShaderVariables(GLuint program_id) {
+void Scene4::LoadShaderVariables(GLuint program_id) {
   // Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
   // Utilizaremos estas variáveis para enviar dados para a placa de vídeo
   // (GPU)! Veja arquivo "shader_vertex.glsl" e "shader_fragment.glsl".
@@ -21,7 +21,7 @@ void Scene_4::LoadShaderVariables(GLuint program_id) {
   object_id_uniform       = glGetUniformLocation(program_id, "object_id"); // Variável "object_id" em shader_fragment.glsl
 }
 
-void Scene_4::BuildTrianglesAndAddToVirtualScene(ObjModel* model) {
+void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel* model) {
   GLuint vertex_array_object_id;
   glGenVertexArrays(1, &vertex_array_object_id);
   glBindVertexArray(vertex_array_object_id);
@@ -146,7 +146,7 @@ void Scene_4::BuildTrianglesAndAddToVirtualScene(ObjModel* model) {
   // alterar o mesmo. Isso evita bugs.
   glBindVertexArray(0);
 }
-void Scene_4::Render() {
+void Scene4::Render() {
   glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo

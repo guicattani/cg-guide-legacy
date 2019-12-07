@@ -1,5 +1,7 @@
+#ifndef CLASS_HEADER_INTERFACE
+#define CLASS_HEADER_INTERFACE
 #include "interface.h"
-
+#endif
 Interface::Interface(bool show_demo_window) {
   m_show_demo_window = show_demo_window;
 }
@@ -34,33 +36,26 @@ void Interface::Show(GLFWwindow *window) {
     // Create a window called "Hello, world!" and append into it.
     ImGui::Begin("Settings");
 
-    ImGui::Text("Change Scene");
-    if (ImGui::Button("Scene 3")) {
-      g_CurrentScene = 3;
-      g_SceneChanged = true;
+    ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    {
+        if (ImGui::BeginTabItem("Scene"))
+        {
+            SceneLoader();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Camera"))
+        {
+            CameraSettings();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Model"))
+        {
+            ModelSettings();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
     }
-    ImGui::SameLine();
-    if (ImGui::Button("Scene 4")) {
-      g_CurrentScene = 4;
-      g_SceneChanged = true;
-    }
-
-    // Edit 3 floats representing a color
-    ImGui::Text("Change Clear Color");
-    ImGui::ColorEdit3("clear color", (float*)&g_ClearColor);
-
-    ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
-
-    ImGui::Text("Block Settings");
-    ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
-    ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
-    ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
-
-    ImGui::Text("Frustum Settings");
-    ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -10.0f, 10.0f);
-    ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -10.0f, 10.0f);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::End();
   }
 
@@ -97,8 +92,51 @@ void Interface::CleanUp() {
   ImGui::DestroyContext();
 }
 
-void Interface::Start(){
+void Interface::Start() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
+}
+
+void Interface::SceneLoader() {
+  if (ImGui::Button("Scene 3")) {
+    g_CurrentScene = 3;
+    g_SceneChanged = true;
+  }
+  ImGui::SameLine();
+  if (ImGui::Button("Scene 4")) {
+    g_CurrentScene = 4;
+    g_SceneChanged = true;
+  }
+
+  ImGui::Separator();
+
+  switch(g_CurrentScene) {
+    case 3:
+      InterfaceScene3::Show();
+      break;
+    case 4:
+      InterfaceScene4::Show();
+      break;
+  }
+}
+
+void Interface::CameraSettings() {
+  // Edit 3 floats representing a color
+  ImGui::Text("Change Clear Color");
+  ImGui::ColorEdit3("clear color", (float*)&g_ClearColor);
+
+  ImGui::Checkbox("Perspective Projection", &g_UsePerspectiveProjection);
+
+  ImGui::Text("Frustum Settings");
+  ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -10.0f, 10.0f);
+  ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -10.0f, 10.0f);
+
+  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+}
+
+void Interface::ModelSettings() {
+  ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
+  ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
+  ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
 }

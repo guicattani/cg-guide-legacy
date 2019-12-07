@@ -35,14 +35,17 @@
 #define CLASS_HEADER_CAMERA
 #include "camera.h"
 #endif
+#ifndef CLASS_HEADER_INTERFACE
+#define CLASS_HEADER_INTERFACE
+#include "interface.h"
+#endif
 #include "scene_loader.h"
 #include "callbacks.h"
-#include "interface.h"
 #include "opengl_loader.h"
 
 void CreateScene(int scene);
-Scene_3* g_Scene3 = new Scene_3();
-Scene_4* g_Scene4 = new Scene_4();
+Scene3* g_Scene3 = new Scene3();
+Scene4* g_Scene4 = new Scene4();
 
 #pragma endregion HEADERS
 

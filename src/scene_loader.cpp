@@ -8,15 +8,15 @@ void CreateProgramForScene(int scene) {
     case 3:
       // Criamos um programa de GPU utilizando os shaders carregados acima
       g_ProgramId = CreateGpuProgram(
-          LoadShader_Vertex(Scene_3::shader_vertex_filepath),
-          LoadShader_Fragment(Scene_3::shader_fragment_filepath)
+          LoadShader_Vertex(Scene3::shader_vertex_filepath),
+          LoadShader_Fragment(Scene3::shader_fragment_filepath)
         );
       break;
     case 4:
       // Criamos um programa de GPU utilizando os shaders carregados acima
       g_ProgramId = CreateGpuProgram(
-          LoadShader_Vertex(Scene_4::shader_vertex_filepath),
-          LoadShader_Fragment(Scene_4::shader_fragment_filepath)
+          LoadShader_Vertex(Scene4::shader_vertex_filepath),
+          LoadShader_Fragment(Scene4::shader_fragment_filepath)
         );
       break;
 

@@ -41,5 +41,6 @@
 /lib/opengl/*.bundle
 /pkg
 /tmp
+/.history
 
 imgui.ini
