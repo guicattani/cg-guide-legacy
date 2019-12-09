@@ -40,11 +40,15 @@ class Scene4 {
     GLint view_uniform;
     GLint projection_uniform;
     GLint object_id_uniform;
+    GLint render_as_black_uniform;
 
+    GLuint VBO_bezier_line;
+    GLfloat bezier_line_coefficients[12];
   public:
     static const char* shader_vertex_filepath;
     static const char* shader_fragment_filepath;
 
+    void CreateBezierLine();
     void LoadShaderVariables(GLuint program_id);
     void BuildTrianglesAndAddToVirtualScene(ObjModel* model);
     void Render();
