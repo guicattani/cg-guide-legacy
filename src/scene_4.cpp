@@ -12,11 +12,12 @@ const char * Scene4::shader_vertex_filepath = "../src/scene_4_shader_vertex.glsl
 const char * Scene4::shader_fragment_filepath = "../src/scene_4_shader_fragment.glsl";
 
 void Scene4::CreateBezierLine() {
-  GLfloat bezier_line_coefficients[12] = {
-      -1.0f, 0.0f,  0.0f, // posição do vértice 0
-      -0.5f, 0.0f,  0.0f, // posição do vértice 1
-      0.5f,  0.0f,  0.0f, // posição do vértice 2
-      1.0f,  0.0f,  0.0f // posição do vértice 3
+  GLfloat bezier_line_coefficients[] = {
+      // Posições em coordenadas homogêneas - vec4 - com último componente w=1 pois são pontos
+      -1.0f, 1.0f,  1.0f, 1.0f, // posição do vértice 0
+      -0.5f, 1.0f,  0.0f, 1.0f, // posição do vértice 1
+      0.5f,  1.0f,  1.0f, 1.0f, // posição do vértice 2
+      1.0f,  1.0f,  0.0f, 1.0f  // posição do vértice 3
   };
 
   glGenBuffers(1, &VBO_bezier_line);
@@ -27,11 +28,11 @@ void Scene4::CreateBezierLine() {
   glBindVertexArray(vertex_array_object_id);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), NULL, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), NULL, GL_DYNAMIC_DRAW);
 
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
 
-  GLuint location = 3; // "(location = 3)" em "shader_vertex.glsl"
+  GLuint location = 0; // "(location = 0)" em "shader_vertex.glsl"
   GLint  number_of_dimensions = 4; // vec4 em "shader_vertex.glsl"
   glVertexAttribPointer(location, number_of_dimensions, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(location);
@@ -76,7 +77,6 @@ void Scene4::LoadShaderVariables(GLuint program_id) {
   view_uniform            = glGetUniformLocation(program_id, "view"); // Variável da matriz "view" em shader_vertex.glsl
   projection_uniform      = glGetUniformLocation(program_id, "projection"); // Variável da matriz "projection" em shader_vertex.glsl
   object_id_uniform       = glGetUniformLocation(program_id, "object_id"); // Variável "object_id" em shader_fragment.glsl
-  render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Variável "object_id" em shader_vertex.glsl
 }
 
 void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel* model) {
@@ -218,6 +218,7 @@ void Scene4::Render() {
   #define SPHERE 0
   #define BUNNY  1
   #define PLANE  2
+  #define BEZIER_LINE 3
 
   // Desenhamos o modelo da esfera
   // model = Matrix_Translate(-1.0f,0.0f,0.0f);
@@ -237,14 +238,6 @@ void Scene4::Render() {
   glm::vec3 c = glm::vec3(-1.0f,-2.0f,0.0f);
   glm::vec3 d = glm::vec3(-1.0f,1.0f,-1.0f);
 
-  glBegin (GL_LINES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f (a.x, a.y, a.z);
-    glVertex3f (b.x, b.y, b.z);
-    glVertex3f (c.x, c.y, c.z);
-    glVertex3f (d.x, d.y, d.z);
-  glEnd ();
-
   auto p = bezier3(t, a,b,c,d);
   model = Matrix_Translate(p.x,p.y,p.z)
         * Matrix_Rotate_Z(g_AngleZ)
@@ -260,24 +253,22 @@ void Scene4::Render() {
   glUniform1i(object_id_uniform, PLANE);
   DrawVirtualObject("plane");
 
-  GLfloat bezier_line_coefficients[12] = {
-    a.x, a.y, a.z,
-    b.x, b.y, b.z,
-    c.x, c.y, c.z,
-    d.x, d.y, d.z,
+  // Desenha poligono de controle da curva de Bézier
+  GLfloat bezier_line_coefficients[] = {
+      // Posições em coordenadas homogêneas - vec4 - com último componente w=1 pois são pontos
+      a.x, a.y, a.z, 1.0f,
+      b.x, b.y, b.z, 1.0f,
+      c.x, c.y, c.z, 1.0f,
+      d.x, d.y, d.z, 1.0f,
   };
   glBindVertexArray(Globals::g_VirtualScene["bezier_lines"].vertex_array_object_id);
-
   // Mexe no buffer dinamicamente, atualizando a posição dos vértices da linha.
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), bezier_line_coefficients, GL_DYNAMIC_DRAW);
+  // Utilizamos BufferSubData para alterar os valores sem realocar memória (glBufferData faz realocação).
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
 
-  glUniform1i(render_as_black_uniform, true);
-  glDrawElements(
-    Globals::g_VirtualScene["bezier_lines"].rendering_mode,
-    Globals::g_VirtualScene["bezier_lines"].num_indices,
-    GL_UNSIGNED_INT,
-    (void*)Globals::g_VirtualScene["bezier_lines"].first_index
-  );
-  glBindVertexArray(0);
+  model = Matrix_Identity(); // Reseta matriz de modelagem
+  glUniformMatrix4fv(model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
+  glUniform1i(object_id_uniform, BEZIER_LINE);
+  DrawVirtualObject("bezier_lines");
 }
