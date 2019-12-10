@@ -27,7 +27,7 @@ void Scene4::CreateBezierLine() {
   glBindVertexArray(vertex_array_object_id);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), NULL, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), NULL, GL_STATIC_DRAW);
 
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
 
@@ -48,7 +48,7 @@ void Scene4::CreateBezierLine() {
   bezier_lines.first_index = (void*)0; // Primeiro índice está em indices[36]
   bezier_lines.num_indices = 6; // último índice está em indices[59]; total de 24 índices.
   bezier_lines.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
-
+  bezier_lines.vertex_array_object_id = vertex_array_object_id;
   // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
   Globals::g_VirtualScene["bezier_lines"] = bezier_lines;
 
@@ -60,7 +60,7 @@ void Scene4::CreateBezierLine() {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 
   // Alocamos memória para o buffer.
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), NULL, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), NULL, GL_STATIC_DRAW);
 
   // Copiamos os valores do array indices[] para dentro do buffer.
   glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(indices), indices);
@@ -266,6 +266,7 @@ void Scene4::Render() {
     c.x, c.y, c.z,
     d.x, d.y, d.z,
   };
+  glBindVertexArray(Globals::g_VirtualScene["bezier_lines"].vertex_array_object_id);
 
   // Mexe no buffer dinamicamente, atualizando a posição dos vértices da linha.
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
@@ -278,4 +279,5 @@ void Scene4::Render() {
     GL_UNSIGNED_INT,
     (void*)Globals::g_VirtualScene["bezier_lines"].first_index
   );
+  glBindVertexArray(0);
 }
