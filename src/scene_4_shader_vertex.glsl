@@ -5,7 +5,6 @@
 layout (location = 0) in vec4 model_coefficients;
 layout (location = 1) in vec4 normal_coefficients;
 layout (location = 2) in vec2 texture_coefficients;
-layout (location = 3) in vec4 bezier_coefficients;
 
 // Matrizes computadas no c�digo C++ e enviadas para a GPU
 uniform mat4 model;
@@ -19,7 +18,6 @@ uniform bool render_as_black;
 // Shader. Veja o arquivo "shader_fragment.glsl".
 out vec4 position_world;
 out vec4 normal;
-out vec4 bezier_line_color;
 
 void main()
 {
@@ -58,10 +56,5 @@ void main()
     // Veja slide 107 do documento "Aula_07_Transformacoes_Geometricas_3D.pdf".
     normal = inverse(transpose(model)) * normal_coefficients;
     normal.w = 0.0;
-
-    if ( render_as_black )
-    {
-      bezier_line_color = vec4(0.0f,0.0f,0.0f,1.0f);
-    }
 }
 
