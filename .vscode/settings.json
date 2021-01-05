@@ -67,5 +67,6 @@
     "variant": "cpp",
     "codecvt": "cpp",
     "unordered_set": "cpp"
-  }
+  },
+  "cSpell.language": "en-GB,en,pt"
 }

@@ -75,11 +75,14 @@
 		<Unit filename="include/interface.h" />
 		<Unit filename="include/shaders.h" />
 		<Unit filename="include/opengl_loader.h" />
+		<Unit filename="include/model_loader.h" />
+		<Unit filename="include/scene_loader.h" />
+		<Unit filename="include/bezier.h" />
 		<Unit filename="include/scene.h" />
-		<Unit filename="libs/gl3w/GL/gl3w.c">
+		<Unit filename="include/gl3w/GL/gl3w.h">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="libs/gl3w/GL/gl3w.h" />
+		<Unit filename="libs/gl3w/GL/gl3w.c" />
 		<Unit filename="libs/gl3w/GL/glcorearb.h" />
 		<Unit filename="libs/glfw/include/GLFW/glfw3.h" />
 		<Unit filename="libs/glfw/include/GLFW/glfw3native.h" />
@@ -105,6 +108,8 @@
 		<Unit filename="src/shaders.cpp" />
 		<Unit filename="src/interface.cpp" />
 		<Unit filename="src/opengl_loader.cpp" />
+		<Unit filename="src/model_loader.cpp" />
+		<Unit filename="src/scene_loader.cpp" />
 		<Unit filename="src/scene_3.cpp" />
 		<Unit filename="src/scene_3_interface.cpp" />
 		<Unit filename="src/scene_4.cpp" />

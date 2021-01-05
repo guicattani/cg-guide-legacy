@@ -11,7 +11,7 @@
             "cwd": "${workspaceRoot}/bin",
             "environment": [],
             "externalConsole": true,
-            "preLaunchTask": "build",
+            "miDebuggerPath": "C:\\Mingw-w64\\mingw32\\bin\\gdb.exe",
             "linux": {
                 "MIMode": "gdb"
             },
