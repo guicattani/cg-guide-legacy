@@ -16,7 +16,7 @@ extern float g_AngleX;
 extern float g_AngleY;
 extern float g_AngleZ;
 
-// Ãngulos de Euler que controlam a rotação de um dos cubos da cena virtual
+// Ângulos de Euler que controlam a rotação de um dos cubos da cena virtual
 extern float g_MoveX;
 extern float g_MoveY;
 extern float g_MoveZ;
@@ -42,8 +42,8 @@ extern bool g_LeftMouseButtonPressed;
 // usuário através do mouse (veja função CursorPosCallback()). A posição
 // efetiva da câmera é calculada dentro da função main(), dentro do loop de
 // renderização.
-extern float g_CameraTheta; // ângulo no plano ZX em relação ao eixo Z
-extern float g_CameraPhi;   // ângulo em relação ao eixo Y
+extern float g_CameraTheta;    // ângulo no plano ZX em relação ao eixo Z
+extern float g_CameraPhi;      // ângulo em relação ao eixo Y
 extern float g_CameraDistance; // Distância da câmera para a origem
 
 // Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
@@ -63,12 +63,13 @@ extern ImVec4 g_ClearColor;
 
 extern GLuint g_ProgramId;
 
-extern Camera* g_MainCamera;
+extern Camera *g_MainCamera;
 
 extern int g_CurrentScene;
 extern bool g_SceneChanged;
 
-class Globals {
+class Globals
+{
 public:
   // Variável da cena atual.
   static std::map<std::string, SceneObject> g_VirtualScene;
@@ -79,5 +80,5 @@ public:
   static double g_LastCursorPosX, g_LastCursorPosY;
 
   // Variável que controla o ImGui.
-  static ImGuiIO* g_Io;
+  static ImGuiIO *g_Io;
 };
