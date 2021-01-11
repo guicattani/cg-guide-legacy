@@ -3,7 +3,6 @@
 #include "interface.h"
 #endif
 
-void InterfaceScene4::Show()
-{
+void InterfaceScene4::Show() {
   ImGui::Text("This is a text specific of Scene 4");
 }

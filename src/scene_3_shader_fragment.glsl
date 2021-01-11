@@ -15,3 +15,4 @@ void main()
     // pelo rasterizador.
     color = cor_interpolada_pelo_rasterizador;
 }
+

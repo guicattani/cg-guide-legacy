@@ -20,40 +20,37 @@
 
 #ifndef CLASS_SCENE_CLASS_HEADER
 #define CLASS_SCENE_CLASS_HEADER
-class Scene3
-{
-private:
-  GLint model_uniform;
-  GLint render_as_black_uniform;
+class Scene3 {
+  private:
+    GLint model_uniform;
+    GLint render_as_black_uniform;
 
-public:
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
+  public:
+    static const char* shader_vertex_filepath;
+    static const char* shader_fragment_filepath;
 
-  void LoadShaderVariables(GLuint program_id);
-  void BuildTrianglesAndAddToVirtualScene();
-  void Render();
+    void LoadShaderVariables(GLuint program_id);
+    void BuildTrianglesAndAddToVirtualScene();
+    void Render();
 };
 
-class Scene4
-{
-private:
-  GLint model_uniform;
-  GLint view_uniform;
-  GLint projection_uniform;
-  GLint object_id_uniform;
-  GLint render_as_black_uniform;
+class Scene4 {
+  private:
+    GLint model_uniform;
+    GLint view_uniform;
+    GLint projection_uniform;
+    GLint object_id_uniform;
+    GLint render_as_black_uniform;
 
-  GLuint VBO_bezier_line;
-  GLfloat bezier_line_coefficients[12];
+    GLuint VBO_bezier_line;
+    GLfloat bezier_line_coefficients[12];
+  public:
+    static const char* shader_vertex_filepath;
+    static const char* shader_fragment_filepath;
 
-public:
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
-
-  void CreateBezierLine();
-  void LoadShaderVariables(GLuint program_id);
-  void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
-  void Render();
+    void CreateBezierLine();
+    void LoadShaderVariables(GLuint program_id);
+    void BuildTrianglesAndAddToVirtualScene(ObjModel* model);
+    void Render();
 };
 #endif
