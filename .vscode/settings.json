@@ -68,5 +68,19 @@
     "codecvt": "cpp",
     "unordered_set": "cpp"
   },
-  "cSpell.language": "en-GB,en,pt"
+  "cSpell.language": "en-GB,en,pt",
+  "cSpell.ignoreWords": [
+    "g",
+    "get",
+    "gl",
+    "glf",
+    "imgui",
+    "lenum",
+    "luint",
+    "o",
+    "programiv",
+    "realoca",
+    "realocação",
+    "wwindow"
+  ]
 }

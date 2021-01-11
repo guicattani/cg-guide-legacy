@@ -8,12 +8,13 @@
 //  Helper libraries are often used for this purpose! Here we are supporting a few common ones (gl3w, glew, glad).
 //  You may use another loader/header of your choice (glext, glLoadGen, etc.), or chose to manually implement your own.
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
+#include <GL/gl3w.h> // Initialize with gl3wInit()
 #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include <GL/glew.h>    // Initialize with glewInit()
+#include <GL/glew.h> // Initialize with glewInit()
 #endif
 
 #include <GLFW/glfw3.h>
+#include <SOIL2/SOIL2.h>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -38,36 +39,36 @@
 // cada objeto da cena virtual.
 struct SceneObject
 {
-    std::string  name;        // Nome do objeto
-    void*        first_index; // índice do primeiro vértice dentro do vetor indices[] definido em BuildTriangles()
-    int          num_indices; // Número de índices do objeto dentro do vetor indices[] definido em BuildTriangles()
-    GLenum       rendering_mode; // Modo de rasterização (GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.)
-    GLuint       vertex_array_object_id; // ID do VAO onde estão armazenados os atributos do modelo
+  std::string name;              // Nome do objeto
+  void *first_index;             // índice do primeiro vértice dentro do vetor indices[] definido em BuildTriangles()
+  int num_indices;               // Número de índices do objeto dentro do vetor indices[] definido em BuildTriangles()
+  GLenum rendering_mode;         // Modo de rasterização (GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.)
+  GLuint vertex_array_object_id; // ID do VAO onde estão armazenados os atributos do modelo
 };
 
 // Estrutura que representa um modelo geométrico carregado a partir de um
 // arquivo ".obj". Veja https://en.wikipedia.org/wiki/Wavefront_.obj_file .
 struct ObjModel
 {
-    tinyobj::attrib_t                 attrib;
-    std::vector<tinyobj::shape_t>     shapes;
-    std::vector<tinyobj::material_t>  materials;
+  tinyobj::attrib_t attrib;
+  std::vector<tinyobj::shape_t> shapes;
+  std::vector<tinyobj::material_t> materials;
 
-    // Este construtor lê o modelo de um arquivo utilizando a biblioteca tinyobjloader.
-    // Veja: https://github.com/syoyo/tinyobjloader
-    ObjModel(const char* filename, const char* basepath = NULL, bool triangulate = true)
-    {
-        printf("Carregando modelo \"%s\"... ", filename);
+  // Este construtor lê o modelo de um arquivo utilizando a biblioteca tinyobjloader.
+  // Veja: https://github.com/syoyo/tinyobjloader
+  ObjModel(const char *filename, const char *basepath = NULL, bool triangulate = true)
+  {
+    printf("Carregando modelo \"%s\"... ", filename);
 
-        std::string err;
-        bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, triangulate);
+    std::string err;
+    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, triangulate);
 
-        if (!err.empty())
-            fprintf(stderr, "\n%s\n", err.c_str());
+    if (!err.empty())
+      fprintf(stderr, "\n%s\n", err.c_str());
 
-        if (!ret)
-            throw std::runtime_error("Erro ao carregar modelo.");
-        printf("OK.\n");
-    }
+    if (!ret)
+      throw std::runtime_error("Erro ao carregar modelo.");
+    printf("OK.\n");
+  }
 };
 #endif
