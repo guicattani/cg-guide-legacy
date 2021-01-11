@@ -11,42 +11,46 @@
 #   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-glfw
 #
 
-#CXX = g++
+CXX = g++
 #CXX = clang++
+CC  = gcc
+
+BIN=./bin
 
 EXE = main
 SOURCES = ./src/main.cpp
 SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/shaders.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
 SOURCES += ./src/model_loader.cpp
 SOURCES += ./src/scene_loader.cpp ./src/scene_3.cpp ./src/scene_3_interface.cpp ./src/scene_4.cpp ./src/scene_4_interface.cpp
-SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
-SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
-SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
-OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
-UNAME_S := $(shell uname -s)
 
-INCLUDE	:= include
-LIB		:= libs
+INCLUDE	:= ./include
+LIB		  := ./lib
 
-CXXFLAGS = -I./libs/imgui  -I./libs/tiny_obj_loader -I./libs/KHR/
-CXXFLAGS += -g -Wall -Wformat -Wno-unknown-pragmas
-LIBS =
+CXXFLAGS = -g -Wall -Wformat -Wno-unknown-pragmas
 
 ##---------------------------------------------------------------------
 ## OPENGL LOADER
 ##---------------------------------------------------------------------
 
 ## Using OpenGL loader: gl3w [default]
-SOURCES += ./libs/gl3w/GL/gl3w.c
-CXXFLAGS += -I./libs/gl3w
+SOURCES  += ./libs/gl3w/GL/gl3w.c
+CXXFLAGS += -I./libs/gl3w -DIMGUI_IMPL_OPENGL_LOADER_GL3W
 
-## Using OpenGL loader: glew
-## (This assumes a system-wide installation)
-CXXFLAGS += -lGLEW -DIMGUI_IMPL_OPENGL_LOADER_GLEW
+##---------------------------------------------------------------------
+## EXTERNAL LIBS
+##---------------------------------------------------------------------
+
+SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
+SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
+SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
+
+CXXFLAGS += -I./libs/imgui  -I./libs/tiny_obj_loader -I./libs/KHR/ -I./libs/glfw/include
 
 ##---------------------------------------------------------------------
 ## BUILD FLAGS PER PLATFORM
 ##---------------------------------------------------------------------
+
+UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux"
@@ -67,11 +71,10 @@ ifeq ($(UNAME_S), Darwin) #APPLE
 	CFLAGS = $(CXXFLAGS)
 endif
 
-ifeq ($(findstring MINGW,$(UNAME_S)),MINGW)
+ifeq ($(OS),Windows_NT)
 	ECHO_MESSAGE = "MinGW"
 	LIBS += -lglfw3 -lgdi32 -lopengl32 -limm32
 
-	CXXFLAGS += `pkg-config --cflags glfw3`
 	CFLAGS = $(CXXFLAGS)
 endif
 
@@ -79,29 +82,33 @@ endif
 ## BUILD RULES
 ##---------------------------------------------------------------------
 
-%.o:./src/%.cpp
+OBJS = $(addsuffix .o, $(basename $(addprefix $(BIN)/,$(notdir $(SOURCES)))))
+
+$(BIN)/%.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
-%.o:./libs/imgui/%.cpp
+$(BIN)/%.o:./libs/imgui/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+$(BIN)/%.o:./libs/tiny_obj_loader/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.o:./libs/tiny_obj_loader/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+$(BIN)/%.o:./libs/gl3w/GL/%.c
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c -o $@ $<
 
-%.o:./libs/gl3w/GL/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-all: $(EXE)
-	mv $(OBJS) ./bin/
-	mv $(EXE) ./bin/
+all: $(BIN)/$(EXE)
 	@echo Build complete for $(ECHO_MESSAGE)
 
-$(EXE): $(OBJS)
-	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+$(BIN)/$(EXE): $(OBJS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) -L$(LIB) $(LIBS)
 
 run: all
 	cd ./bin;	./$(EXE);
 
 clean:
+ifeq ($(OS),Windows_NT)
+	del /s "*.exe" "*.o"
+else
 	rm -rf $(EXE) $(OBJS);
 	cd ./bin;	rm -rf $(EXE) $(OBJS);
+endif

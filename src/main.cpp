@@ -80,8 +80,8 @@ int main(int, char**)
 	}
 	PrintGPUInformation();
 
-  //Seleciona a cena 3 como inicial
-  g_CurrentScene = 3;
+  //Seleciona a cena 4 como inicial
+  g_CurrentScene = 4;
   CreateScene(g_CurrentScene);
 
 	// Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
@@ -173,6 +173,7 @@ void CreateScene(int scene) {
       break;
     case 4:
       g_Scene4->LoadShaderVariables(g_ProgramId);
+      g_Scene4->CreateBezierLine();
       // Construímos a representação de objetos geométricos através de malhas de triângulos
       ObjModel spheremodel("../data/sphere.obj");
       ComputeNormals(&spheremodel);
