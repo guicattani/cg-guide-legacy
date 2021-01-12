@@ -25,6 +25,10 @@ RoadMap:
   - [ ] Normal mapping
   - [ ] Raycasting
   - [ ] Lerp and other built in OpenGL functions
+  - [ ] Portals
+  - [ ] Geometric Shaders
+  - [ ] Simple 3D Modeling
+  - [ ] Colliders
 
 # Pre Requisites
 
