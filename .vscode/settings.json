@@ -68,5 +68,36 @@
     "codecvt": "cpp",
     "unordered_set": "cpp"
   },
-  "cSpell.language": "en-GB,en,pt"
+  "cSpell.language": "en-GB,en,pt",
+  "cSpell.ignoreWords": [
+    "anisor",
+    "cousine",
+    "fnum",
+    "g",
+    "geometricas",
+    "glew",
+    "glext",
+    "glf",
+    "glfw",
+    "glversion",
+    "illum",
+    "imgui",
+    "lenum",
+    "lubyte",
+    "luint",
+    "opengl",
+    "proggy",
+    "programiv",
+    "projecoes",
+    "respectivamente",
+    "roboto",
+    "sulzbach",
+    "texcoord",
+    "tiny",
+    "vbos",
+    "vsync",
+    "wwindow",
+    "xpos",
+    "ypos"
+  ]
 }

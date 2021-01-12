@@ -49,7 +49,7 @@ Scene4 *g_Scene4 = new Scene4();
 
 #pragma endregion HEADERS
 
-#pragma region[rgba(20, 20, 100, 0.3)] MAIN
+#pragma region[rgba(10, 10, 10, 0.5)] MAIN
 int main(int, char **)
 {
   // Setup window
@@ -81,7 +81,7 @@ int main(int, char **)
   PrintGPUInformation();
 
   //Seleciona a cena 4 como inicial
-  g_CurrentScene = 4;
+  g_CurrentScene = 3;
   CreateScene(g_CurrentScene);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
@@ -165,7 +165,7 @@ int main(int, char **)
 }
 #pragma endregion DRAW_LOOP
 
-#pragma region[rgba(0, 0, 100, 0.3)] FUNCTIONS
+#pragma region[rgba(100, 0, 0, 0.3)] FUNCTIONS
 // TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
 void CreateScene(int scene)
 {
@@ -179,10 +179,6 @@ void CreateScene(int scene)
   case 4:
     g_Scene4->LoadShaderVariables(g_ProgramId);
     g_Scene4->CreateBezierLine();
-    // Construímos a representação de objetos geométricos através de malhas de triângulos
-    ObjModel spheremodel("../data/sphere.obj");
-    ComputeNormals(&spheremodel);
-    g_Scene4->BuildTrianglesAndAddToVirtualScene(&spheremodel);
 
     ObjModel bunnymodel("../data/bunny.obj");
     ComputeNormals(&bunnymodel);

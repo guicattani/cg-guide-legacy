@@ -16,7 +16,7 @@ extern float g_AngleX;
 extern float g_AngleY;
 extern float g_AngleZ;
 
-// Ãngulos de Euler que controlam a rotação de um dos cubos da cena virtual
+// Ângulos de Euler que controlam a rotação de um dos cubos da cena virtual
 extern float g_MoveX;
 extern float g_MoveY;
 extern float g_MoveZ;

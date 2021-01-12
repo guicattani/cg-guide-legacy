@@ -28,7 +28,7 @@ GLuint LoadShader_Fragment(const char *filename)
   return fragment_shader_id;
 }
 
-// função auxilar, utilizada pelas duas funções acima. Carrega código de GPU de
+// função auxiliar, utilizada pelas duas funções acima. Carrega código de GPU de
 // um arquivo GLSL e faz sua compilação.
 void LoadShader(const char *filename, GLuint shader_id)
 {

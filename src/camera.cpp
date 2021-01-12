@@ -39,7 +39,7 @@ void Camera::Enable()
 
   // Agora computamos a matriz de Projeção.
   // Note que, no sistema de coordenadas da câmera, os planos near e far
-  // estáo no sentido negativo! Veja slides 198-200 do documento
+  // estão no sentido negativo! Veja slides 198-200 do documento
   // "Aula_09_Projecoes.pdf".
   if (g_UsePerspectiveProjection)
   {

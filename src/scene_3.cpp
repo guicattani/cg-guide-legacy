@@ -88,7 +88,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // desse array. A constante "GL_STATIC_DRAW" dá uma dica para o driver da
   // GPU sobre como utilizaremos os dados do VBO. Neste caso, estamos dizendo
   // que não pretenscenes alterar tais dados (são estáticos: "STATIC"), e
-  // também dizemos que tais dados seráo utilizados para renderizar ou
+  // também dizemos que tais dados serão utilizados para renderizar ou
   // desenhar ("DRAW").  Pense que:
   //
   //            glBufferData()  ==  malloc() do C  ==  new do C++.
@@ -108,7 +108,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // coeficientes) destes atributos. Como em nosso caso são pontos em coordenadas
   // homogêneas, temos quatro coeficientes por vértice (X,Y,Z,W). Isso define
   // um tipo de dado chamado de "vec4" em "shader_vertex.glsl": um vetor com
-  // quatro coeficientes. Finalmente, informamos que os dados estáo em ponto
+  // quatro coeficientes. Finalmente, informamos que os dados estão em ponto
   // flutuante com 32 bits (GL_FLOAT).
   // Esta função também informa que o VBO "ligado" acima em glBindBuffer()
   // está dentro do VAO "ligado" acima por glBindVertexArray().
@@ -174,7 +174,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   //
   GLuint indices[] = {
       // Definimos os índices dos vértices que definem as FACES de um cubo
-      // através de 12 triângulos que seráo desenhados com o modo de renderização
+      // através de 12 triângulos que serão desenhados com o modo de renderização
       // GL_TRIANGLES.
       0, 1, 2, // triângulo 1
       7, 6, 5, // triângulo 2
@@ -189,7 +189,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
       4, 1, 0, // triângulo 11
       1, 6, 2, // triângulo 12
                // Definimos os índices dos vértices que definem as ARESTAS de um cubo
-               // através de 12 linhas que seráo desenhadas com o modo de renderização
+               // através de 12 linhas que serão desenhadas com o modo de renderização
                // GL_LINES.
       0, 1,    // linha 1
       1, 2,    // linha 2
@@ -204,7 +204,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
       5, 1,    // linha 11
       7, 3,    // linha 12
                // Definimos os índices dos vértices que definem as linhas dos eixos X, Y,
-               // Z, que seráo desenhados com o modo GL_LINES.
+               // Z, que serão desenhados com o modo GL_LINES.
       8, 9,    // linha 1
       10, 11,  // linha 2
       12, 13   // linha 3
@@ -222,7 +222,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   cube_faces.vertex_array_object_id = vertex_array_object_id;
   Globals::g_VirtualScene["cube_faces"] = cube_faces;
 
-  // // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
+  // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
   // Globals::g_VirtualScene["cube_faces"] = cube_faces;
 
   // Criamos um segundo objeto virtual (SceneObject) que se refere às arestas
@@ -280,8 +280,8 @@ void Scene3::Render()
   // Vamos desenhar 3 instâncias (cópias) do cubo
   for (int i = 1; i <= 3; ++i)
   {
-    // Cada cópia do cuCamerao possui uma matriz de modelagem independente,
-    // já que cada cópiCamera estará em uma posição (rotação, escala, ...)
+    // Cada cópia do cubo possui uma matriz de modelagem independente,
+    // já que cada cópia estará em uma posição (rotação, escala, ...)
     // diferente em relação ao espaço global (World Coordinates). Veja
     // slide 138 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
     glm::mat4 model;
@@ -289,7 +289,7 @@ void Scene3::Render()
     {
       // A primeira cópia do cubo não sofrerá nenhuma transformação
       // de modelagem. Portanto, sua matriz "model" é a identidade, e
-      // suas coordenadas no espaço global (World Coordinates) seráo
+      // suas coordenadas no espaço global (World Coordinates) serão
       // *exatamente iguais* a suas coordenadas no espaço do modelo
       // (Model Coordinates).
       model = Matrix_Identity();
@@ -348,9 +348,9 @@ void Scene3::Render()
     // a documentação da função glDrawElements() em
     // http://docs.gl/gl3/glDrawElements.
     //
-    // Importante: estes eixos seráo desenhamos com a matriz "model"
-    // definida acima, e portanto sofreráo as mesmas transformações
-    // geométricas que o cubo. Isto é, estes eixos estaráo
+    // Importante: estes eixos serão desenhamos com a matriz "model"
+    // definida acima, e portanto sofrerão as mesmas transformações
+    // geométricas que o cubo. Isto é, estes eixos estarão
     // representando o sistema de coordenadas do modelo (e não o global)!
     glDrawElements(
         Globals::g_VirtualScene["axes"].rendering_mode,

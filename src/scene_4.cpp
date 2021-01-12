@@ -209,6 +209,8 @@ void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel *model)
 
 void Scene4::Render()
 {
+  glLineWidth(1.0f);
+
   glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo
@@ -252,26 +254,16 @@ void Scene4::Render()
   glUniform1i(object_id_uniform, PLANE);
   DrawVirtualObject("plane");
 
-  // Desenha poligono de controle da curva de Bézier
+  // Desenha polígono de controle da curva de Bézier
+  // clang-format off
   GLfloat bezier_line_coefficients[] = {
       // Posições em coordenadas homogêneas - vec4 - com último componente w=1 pois são pontos
-      a.x,
-      a.y,
-      a.z,
-      1.0f,
-      b.x,
-      b.y,
-      b.z,
-      1.0f,
-      c.x,
-      c.y,
-      c.z,
-      1.0f,
-      d.x,
-      d.y,
-      d.z,
-      1.0f,
+      a.x, a.y, a.z, 1.0f,
+      b.x, b.y, b.z, 1.0f,
+      c.x, c.y, c.z, 1.0f,
+      d.x, d.y, d.z, 1.0f,
   };
+  // clang-format on
   glBindVertexArray(Globals::g_VirtualScene["bezier_lines"].vertex_array_object_id);
   // Mexe no buffer dinamicamente, atualizando a posição dos vértices da linha.
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
