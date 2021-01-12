@@ -2,12 +2,34 @@
 
 This is an OpenGL examples project, you can cycle through many different examples and change settings to see how it affects the scene.
 
+RoadMap:
+
+- General
+  - [x] Imgui integration
+  - [x] Different files per scene
+  - [x] Makefile
+  - [ ] CMake/Premake files to create VS slns and Code Blocks Projects
+
+---
+
+- Demos
+  - [x] Bezier Lines
+  - [ ] Culling demo
+  - [ ] Matrix operations
+  - [ ] Texture mapping
+  - [ ] Different shading techniques (Gourad, Phong, Flat)
+  - [ ] Frustrum demo
+  - [ ] Lighting
+  - [ ] Camera movement
+  - [ ] 2D transformations
+  - [ ] Normal mapping
+  - [ ] Raycasting
+  - [ ] Lerp and other built in OpenGL functions
+
 # Pre Requisites
 
 - Download GLFW3 pre-compiled binaries ([here](https://www.glfw.org/download.html)) for the **same** version as your MinGW/VS version and put it at /lib.
 - No specific IDE is necessary, you use either with makefile or Visual Studio / Code Blocks (projects solutions provided)
-
-TODO: There's a bug in path resolution in Code Blocks
 
 # Build
 
