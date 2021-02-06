@@ -20,6 +20,16 @@
 
 #ifndef CLASS_SCENE_CLASS_HEADER
 #define CLASS_SCENE_CLASS_HEADER
+class Scene2
+{
+public:
+  static const char *shader_vertex_filepath;
+  static const char *shader_fragment_filepath;
+
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+};
+
 class Scene3
 {
 private:

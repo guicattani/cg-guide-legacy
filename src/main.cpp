@@ -44,6 +44,7 @@
 #include "opengl_loader.h"
 
 void CreateScene(int scene);
+Scene2 *g_Scene2 = new Scene2();
 Scene3 *g_Scene3 = new Scene3();
 Scene4 *g_Scene4 = new Scene4();
 
@@ -81,7 +82,7 @@ int main(int, char **)
   PrintGPUInformation();
 
   //Seleciona a cena 4 como inicial
-  g_CurrentScene = 3;
+  g_CurrentScene = 4;
   CreateScene(g_CurrentScene);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
@@ -172,6 +173,9 @@ void CreateScene(int scene)
   CreateProgramForScene(scene);
   switch (scene)
   {
+  case 2:
+    g_Scene2->BuildTrianglesAndAddToVirtualScene();
+    break;
   case 3:
     g_Scene3->LoadShaderVariables(g_ProgramId);
     g_Scene3->BuildTrianglesAndAddToVirtualScene();

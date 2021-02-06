@@ -20,6 +20,7 @@ Constrói triângulos para renderização
 */
 void Scene3::BuildTrianglesAndAddToVirtualScene()
 {
+#pragma region[rgba(100, 0, 0, 0.1)] Initialize vertices VBO
   // Primeiro, definimos os atributos de cada vértice.
 
   // A posição de cada vértice é definida por coeficientes em um sistema de
@@ -125,7 +126,9 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // "Desligamos" o VBO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+#pragma endregion
 
+#pragma region[rgba(100, 100, 0, 0.1)] Initialize color VBO
   // Agora repetimos todos os passos acima para atribuir um novo atributo a
   // cada vértice: uma cor (veja slide 137 do documento "Aula_04_Modelagem_Geometrica_3D.pdf").
   // Tal cor é definida como coeficientes RGBA: Red, Green, Blue, Alpha;
@@ -162,7 +165,9 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   glVertexAttribPointer(location, number_of_dimensions, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(location);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+#pragma endregion
 
+#pragma region[rgba(0, 0, 100, 0.3)] Bind both VBOs in VBA
   // Vamos então definir polígonos utilizando os vértices do array
   // model_coefficients.
   //
@@ -218,7 +223,6 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   cube_faces.num_indices = 36;              // último índice está em indices[35]; total de 36 índices.
   cube_faces.rendering_mode = GL_TRIANGLES; // índices correspondem ao tipo de rasterização GL_TRIANGLES.
 
-  //TODO isso aqui n ta legal, tem que entender o VAO pra poder mexer direito
   cube_faces.vertex_array_object_id = vertex_array_object_id;
   Globals::g_VirtualScene["cube_faces"] = cube_faces;
 
@@ -267,14 +271,15 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // "Desligamos" o VAO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.
   glBindVertexArray(0);
+#pragma endregion
 }
 
 void Scene3::Render()
 {
+#pragma region[rgba(0, 50, 50, 0.3)] Draw cube_faces
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
   // vértices apontados pelo VAO criado pela função BuildTriangles(). Veja
   // comentários detalhados dentro da definição de BuildTriangles().
-  // TODO ver o outro TODO da buildtriangles
   glBindVertexArray(Globals::g_VirtualScene["cube_faces"].vertex_array_object_id);
 
   // Vamos desenhar 3 instâncias (cópias) do cubo
@@ -290,7 +295,7 @@ void Scene3::Render()
       // A primeira cópia do cubo não sofrerá nenhuma transformação
       // de modelagem. Portanto, sua matriz "model" é a identidade, e
       // suas coordenadas no espaço global (World Coordinates) serão
-      // *exatamente iguais* a suas coordenadas no espaço do modelo
+      // exatamente iguais a suas coordenadas no espaço do modelo
       // (Model Coordinates).
       model = Matrix_Identity();
     }
@@ -298,7 +303,7 @@ void Scene3::Render()
     {
       // A segunda cópia do cubo sofrerá um escalamento não-uniforme,
       // seguido de uma rotação no eixo (1,1,1), e uma translação em Z (nessa ordem!).
-      model = Matrix_Translate(0.0f, 0.0f, -2.0f)                                  // TERCEIRO translação
+      model = Matrix_Translate(0.0f, 0.0f, 2.0f)                                   // TERCEIRO translação
               * Matrix_Rotate(3.141592f / 8.0f, glm::vec4(1.0f, 1.0f, 1.0f, 0.0f)) // SEGUNDO rotação
               * Matrix_Scale(2.0f, 0.5f, 0.5f);                                    // PRIMEIRO escala
     }
@@ -381,32 +386,34 @@ void Scene3::Render()
       glDrawArrays(GL_POINTS, 3, 1);
     }
   }
+#pragma endregion
 
-  // Agora queremos desenhar os eixos XYZ de coordenadas GLOBAIS.
-  // Para tanto, colocamos a matriz de modelagem igual é identidade.
-  // Veja slide 134 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-  glm::mat4 model = Matrix_Identity();
-  // Enviamos a nova matriz "model" para a placa de vídeo (GPU). Veja o
-  // arquivo "shader_vertex.glsl".
-  glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-  // Pedimos para OpenGL desenhar linhas com largura de 10 pixels.
-  glLineWidth(10.0f);
-  // Informamos para a placa de vídeo (GPU) que a variável booleana
-  // "render_as_black" deve ser colocada como "false". Veja o arquivo
-  // "shader_vertex.glsl".
-  glUniform1i(render_as_black_uniform, false);
+  // #pragma region[rgba(10, 0, 100, 0.3)] Draw XYZ Axes
+  //   // Agora queremos desenhar os eixos XYZ de coordenadas GLOBAIS.
+  //   // Para tanto, colocamos a matriz de modelagem igual é identidade.
+  //   // Veja slide 134 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
+  //   glm::mat4 model = Matrix_Identity();
+  //   // Enviamos a nova matriz "model" para a placa de vídeo (GPU). Veja o
+  //   // arquivo "shader_vertex.glsl".
+  //   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+  //   // Pedimos para OpenGL desenhar linhas com largura de 10 pixels.
+  //   glLineWidth(10.0f);
+  //   // Informamos para a placa de vídeo (GPU) que a variável booleana
+  //   // "render_as_black" deve ser colocada como "false". Veja o arquivo
+  //   // "shader_vertex.glsl".
+  //   glUniform1i(render_as_black_uniform, false);
 
-  // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
-  // apontados pelo VAO como linhas. Veja a definição de
-  // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
-  // a documentação da função glDrawElements() em
-  // http://docs.gl/gl3/glDrawElements.
-  glDrawElements(
-      Globals::g_VirtualScene["axes"].rendering_mode,
-      Globals::g_VirtualScene["axes"].num_indices,
-      GL_UNSIGNED_INT,
-      (void *)Globals::g_VirtualScene["axes"].first_index);
-
+  //   // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
+  //   // apontados pelo VAO como linhas. Veja a definição de
+  //   // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+  //   // a documentação da função glDrawElements() em
+  //   // http://docs.gl/gl3/glDrawElements.
+  //   glDrawElements(
+  //       Globals::g_VirtualScene["axes"].rendering_mode,
+  //       Globals::g_VirtualScene["axes"].num_indices,
+  //       GL_UNSIGNED_INT,
+  //       (void *)Globals::g_VirtualScene["axes"].first_index);
+  // #pragma endregion
   // "Desligamos" o VAO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.
   glBindVertexArray(0);
@@ -415,5 +422,5 @@ void Scene3::Render()
   // passamos por todos os sistemas de coordenadas armazenados nas
   // matrizes the_model, the_view, e the_projection; e escrevemos na tela
   // as matrizes e pontos resultantes dessas transformações.
-  glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
+  // glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f); # TODO
 }

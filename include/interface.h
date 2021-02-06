@@ -27,6 +27,11 @@ public:
   void CleanUp();
 };
 
+class InterfaceScene2
+{
+public:
+  static void Show();
+};
 class InterfaceScene3
 {
 public:

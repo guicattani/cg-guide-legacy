@@ -15,3 +15,18 @@ T bezier3(float t, T a, T b, T c, T d)
   T abcd = lerp(t, abc, bcd);
   return abcd;
 }
+
+template <typename T>
+void sampledBezierPoints(GLfloat *coefficients, int samples, T a, T b, T c, T d)
+{
+  for (int i = 0; i < samples; i++)
+  {
+    auto point = bezier3(i / (float)samples, a, b, c, d);
+
+    int offset = i * 4;
+    coefficients[offset] = point.x;
+    coefficients[offset + 1] = point.y;
+    coefficients[offset + 2] = point.z;
+    coefficients[offset + 3] = 1.0f;
+  }
+}
