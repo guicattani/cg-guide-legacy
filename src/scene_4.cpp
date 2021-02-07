@@ -28,9 +28,7 @@ void Scene4::CreateBezierLine()
 
   glBindVertexArray(vertex_array_object_id);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
-
   glBufferData(GL_ARRAY_BUFFER, sizeof(bezier_line_coefficients), NULL, GL_DYNAMIC_DRAW);
-
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
 
   GLuint location = 0;            // "(location = 0)" em "shader_vertex.glsl"
@@ -46,8 +44,8 @@ void Scene4::CreateBezierLine()
 
   SceneObject bezier_lines;
   bezier_lines.name = "Linha Bezier";
-  bezier_lines.first_index = (void *)0;   // Primeiro índice está em indices[36]
-  bezier_lines.num_indices = 6;           // último índice está em indices[59]; total de 24 índices.
+  bezier_lines.first_index = (void *)0;
+  bezier_lines.num_indices = 6;
   bezier_lines.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
   bezier_lines.vertex_array_object_id = vertex_array_object_id;
   // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
@@ -237,22 +235,20 @@ void Scene4::Render()
   t = t - floor(t); // \in [0,1]
   t = flip ? 1.0 - t : t;
   t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
-  glm::vec3 a = glm::vec3(1.0f, 0.0f, 1.0f);
-  glm::vec3 b = glm::vec3(1.0f, 3.0f, 0.0f);
-  glm::vec3 c = glm::vec3(-1.0f, -2.0f, 0.0f);
-  glm::vec3 d = glm::vec3(-1.0f, 1.0f, -1.0f);
 
   auto p = bezier3(t, a, b, c, d);
   model = Matrix_Translate(p.x, p.y, p.z) * Matrix_Rotate_Z(g_AngleZ) * Matrix_Rotate_Y(g_AngleY) * Matrix_Rotate_X(g_AngleX);
   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
   glUniform1i(object_id_uniform, BUNNY);
   DrawVirtualObject("bunny");
+  glBindVertexArray(0);
 
   // Desenhamos o plano do chão
   model = Matrix_Translate(0.0f, -1.0f, 0.0f) * Matrix_Scale(2.0f, 1.0f, 2.0f);
   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
   glUniform1i(object_id_uniform, PLANE);
   DrawVirtualObject("plane");
+  glBindVertexArray(0);
 
   // int samples = 8;
   // GLfloat *bezier_line_coefficients = new GLfloat[samples * 4];
@@ -275,10 +271,17 @@ void Scene4::Render()
   // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * samples * 4, bezier_line_coefficients);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
 
-  delete[] bezier_line_coefficients;
+  // delete[] bezier_line_coefficients;
 
   model = Matrix_Identity(); // Reseta matriz de modelagem
   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
   glUniform1i(object_id_uniform, BEZIER_LINE);
   DrawVirtualObject("bezier_lines");
+
+  glPointSize(15.0f);
+  for (int i = 0; i < 4; i++)
+  {
+    glDrawArrays(GL_POINTS, i, 1);
+  }
+  glBindVertexArray(0);
 }

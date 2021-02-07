@@ -18,8 +18,6 @@
 #include "matrices.h"
 #endif
 
-#ifndef CLASS_SCENE_CLASS_HEADER
-#define CLASS_SCENE_CLASS_HEADER
 class Scene2
 {
 public:
@@ -60,10 +58,15 @@ private:
 public:
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
+  static int bezier_samples;
+
+  glm::vec3 a = glm::vec3(1.0f, 0.0f, 1.0f);
+  glm::vec3 b = glm::vec3(1.0f, 3.0f, 0.0f);
+  glm::vec3 c = glm::vec3(-1.0f, -2.0f, 0.0f);
+  glm::vec3 d = glm::vec3(-1.0f, 1.0f, -1.0f);
 
   void CreateBezierLine();
   void LoadShaderVariables(GLuint program_id);
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
   void Render();
 };
-#endif

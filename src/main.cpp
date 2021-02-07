@@ -19,6 +19,10 @@
 #define CLASS_HEADER_INITIALIZE_GLOBALS
 #include "initialize_globals.h"
 #endif
+#ifndef CLASS_HEADER_INITIALIZE_SCENES
+#define CLASS_HEADER_INITIALIZE_SCENES
+#include "initialize_scenes.h"
+#endif
 #ifndef CLASS_HEADER_SCENE
 #define CLASS_HEADER_SCENE
 #include "scene.h"
@@ -44,9 +48,6 @@
 #include "opengl_loader.h"
 
 void CreateScene(int scene);
-Scene2 *g_Scene2 = new Scene2();
-Scene3 *g_Scene3 = new Scene3();
-Scene4 *g_Scene4 = new Scene4();
 
 #pragma endregion HEADERS
 

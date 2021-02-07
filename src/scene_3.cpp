@@ -388,34 +388,6 @@ void Scene3::Render()
   }
 #pragma endregion
 
-  // #pragma region[rgba(10, 0, 100, 0.3)] Draw XYZ Axes
-  //   // Agora queremos desenhar os eixos XYZ de coordenadas GLOBAIS.
-  //   // Para tanto, colocamos a matriz de modelagem igual é identidade.
-  //   // Veja slide 134 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-  //   glm::mat4 model = Matrix_Identity();
-  //   // Enviamos a nova matriz "model" para a placa de vídeo (GPU). Veja o
-  //   // arquivo "shader_vertex.glsl".
-  //   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
-  //   // Pedimos para OpenGL desenhar linhas com largura de 10 pixels.
-  //   glLineWidth(10.0f);
-  //   // Informamos para a placa de vídeo (GPU) que a variável booleana
-  //   // "render_as_black" deve ser colocada como "false". Veja o arquivo
-  //   // "shader_vertex.glsl".
-  //   glUniform1i(render_as_black_uniform, false);
-
-  //   // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
-  //   // apontados pelo VAO como linhas. Veja a definição de
-  //   // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
-  //   // a documentação da função glDrawElements() em
-  //   // http://docs.gl/gl3/glDrawElements.
-  //   glDrawElements(
-  //       Globals::g_VirtualScene["axes"].rendering_mode,
-  //       Globals::g_VirtualScene["axes"].num_indices,
-  //       GL_UNSIGNED_INT,
-  //       (void *)Globals::g_VirtualScene["axes"].first_index);
-  // #pragma endregion
-  // "Desligamos" o VAO, evitando assim que operações posteriores venham a
-  // alterar o mesmo. Isso evita bugs.
   glBindVertexArray(0);
 
   // Pegamos um vértice com coordenadas de modelo (0.5, 0.5, 0.5, 1) e o

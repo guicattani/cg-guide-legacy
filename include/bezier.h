@@ -30,3 +30,13 @@ void sampledBezierPoints(GLfloat *coefficients, int samples, T a, T b, T c, T d)
     coefficients[offset + 3] = 1.0f;
   }
 }
+
+void createBezierIndices(GLuint *indices, int amount)
+{
+  for (int i = 0; i < amount; i++)
+  {
+    int offset = i * 2;
+    indices[offset] = i;
+    indices[offset] = i + 1;
+  }
+}
