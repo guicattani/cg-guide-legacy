@@ -229,14 +229,17 @@ void Scene4::Render()
   // DrawVirtualObject("sphere");
 
   // Desenhamos o modelo do coelho
-  float t = glfwGetTime();
-  t = t / 2;
+  float t = glfwGetTime() / 2;
   bool flip = (int)t % 2 == 1;
   t = t - floor(t); // \in [0,1]
   t = flip ? 1.0 - t : t;
   t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
 
+  PushToTimeArr(t);
+
   auto p = bezier3(t, a, b, c, d);
+
+  PushToBezierArr(p.x, p.y, p.z);
   model = Matrix_Translate(p.x, p.y, p.z) * Matrix_Rotate_Z(g_AngleZ) * Matrix_Rotate_Y(g_AngleY) * Matrix_Rotate_X(g_AngleX);
   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
   glUniform1i(object_id_uniform, BUNNY);
@@ -284,4 +287,26 @@ void Scene4::Render()
     glDrawArrays(GL_POINTS, i, 1);
   }
   glBindVertexArray(0);
+}
+
+void Scene4::PushToTimeArr(float t)
+{
+  int t_arr_length = sizeof(t_arr) / sizeof(t_arr[0]);
+  for (int i = 0; i < t_arr_length - 1; i++)
+    t_arr[i] = t_arr[i + 1];
+  t_arr[t_arr_length - 1] = t;
+}
+
+void Scene4::PushToBezierArr(float x, float y, float z)
+{
+  int t_arr_length = sizeof(bezier_arr_x) / sizeof(bezier_arr_x[0]);
+  for (int i = 0; i < t_arr_length - 1; i++)
+  {
+    bezier_arr_x[i] = bezier_arr_x[i + 1];
+    bezier_arr_y[i] = bezier_arr_y[i + 1];
+    bezier_arr_z[i] = bezier_arr_z[i + 1];
+  }
+  bezier_arr_x[t_arr_length - 1] = x;
+  bezier_arr_y[t_arr_length - 1] = y;
+  bezier_arr_z[t_arr_length - 1] = z;
 }

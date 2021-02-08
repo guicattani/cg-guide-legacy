@@ -60,6 +60,11 @@ public:
   static const char *shader_fragment_filepath;
   static int bezier_samples;
 
+  float t_arr[25] = {};
+  float bezier_arr_x[25] = {};
+  float bezier_arr_y[25] = {};
+  float bezier_arr_z[25] = {};
+
   glm::vec3 a = glm::vec3(1.0f, 0.0f, 1.0f);
   glm::vec3 b = glm::vec3(1.0f, 3.0f, 0.0f);
   glm::vec3 c = glm::vec3(-1.0f, -2.0f, 0.0f);
@@ -69,4 +74,6 @@ public:
   void LoadShaderVariables(GLuint program_id);
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
   void Render();
+  void PushToTimeArr(float t);
+  void PushToBezierArr(float x, float y, float z);
 };
