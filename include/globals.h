@@ -51,6 +51,7 @@ extern bool g_UsePerspectiveProjection;
 
 // Variável que controla o culling de faces
 extern bool g_BackfaceCulling;
+extern bool g_BackfaceCullingMonitor;
 
 // Variável que controla a posição do near plane do frustum.
 extern float g_FrustumNearPlane;
@@ -67,6 +68,12 @@ extern Camera *g_MainCamera;
 
 extern int g_CurrentScene;
 extern bool g_SceneChanged;
+
+extern bool g_HoldTime;
+extern int g_Frames;
+extern int g_Updates;
+
+extern double g_NowTime, g_DeltaTime, g_LastTime;
 
 class Globals
 {

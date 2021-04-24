@@ -1,5 +1,7 @@
 #include "globals.h"
 
+static double g_LimitFPS = 1.0 / 60.0;
+
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
 float g_ScreenRatio = 1.0f;
 
@@ -43,6 +45,7 @@ bool g_UsePerspectiveProjection = true;
 
 // Variável que controla o culling de faces
 bool g_BackfaceCulling = true;
+bool g_BackfaceCullingMonitor = true;
 
 // Variável que controla o tamanho do near plane do frustum.
 float g_FrustumNearPlane = -0.1f;
@@ -56,6 +59,14 @@ Camera *g_MainCamera;
 
 int g_CurrentScene = 3;
 bool g_SceneChanged = false;
+
+bool g_HoldTime = false;
+int g_Frames = 0;
+int g_Updates = 0;
+
+double g_NowTime = 0;
+double g_DeltaTime = 0;
+double g_LastTime = 0;
 
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);

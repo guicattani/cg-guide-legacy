@@ -8,8 +8,6 @@
 #include "globals.h"
 #endif
 
-#ifndef CLASS_INTERFACE_CLASS_HEADER
-#define CLASS_INTERFACE_CLASS_HEADER
 class Interface
 {
 private:
@@ -18,6 +16,7 @@ private:
   void SceneLoader();
   void CameraSettings();
   void ModelSettings();
+  void DebugSettings();
 
 public:
   Interface(bool show_demo_window);
@@ -40,7 +39,9 @@ public:
 
 class InterfaceScene4
 {
+  float maxRange = 1.0f;
+  float minRange = -1.0f;
+
 public:
   static void Show();
 };
-#endif

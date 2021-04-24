@@ -102,7 +102,7 @@ all: $(BIN)/$(EXE)
 $(BIN)/$(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) -L$(LIB) $(LIBS)
 
-run: all
+run:
 	cd ./bin;	./$(EXE);
 
 clean:

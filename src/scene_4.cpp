@@ -1,3 +1,4 @@
+#include <iostream>
 #ifndef CLASS_HEADER_SCENE
 #define CLASS_HEADER_SCENE
 #include "scene.h"
@@ -222,18 +223,21 @@ void Scene4::Render()
 #define PLANE 2
 #define BEZIER_LINE 3
 
-  // Desenhamos o modelo da esfera
-  // model = Matrix_Translate(-1.0f,0.0f,0.0f);
-  // glUniformMatrix4fv(model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-  // glUniform1i(object_id_uniform, SPHERE);
-  // DrawVirtualObject("sphere");
+  // If you want to get the old animation use the following
+  // t = glfwGetTime() / 2;
+  // bool flip = (int)t % 2 == 1;
+  // t = t - floor(t); // \in [0,1]
+  // t = flip ? 1.0 - t : t;
+  // t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
 
-  // Desenhamos o modelo do coelho
-  t = glfwGetTime() / 2;
-  bool flip = (int)t % 2 == 1;
-  t = t - floor(t); // \in [0,1]
-  t = flip ? 1.0 - t : t;
-  t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
+  if(!g_HoldTime) {
+    t = (double) last_frame / 100;
+    bool flip = (int)t % 2 == 1;
+    t = t - floor(t); // \in [0,1]
+    t = flip ? 1.0 - t : t;
+    t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
+    last_frame++;
+  }
 
   auto p = bezier3(t, a, b, c, d);
 
@@ -241,6 +245,7 @@ void Scene4::Render()
   y = p.y;
   z = p.z;
 
+  // Desenhamos o modelo do coelho
   model = Matrix_Translate(p.x, p.y, p.z) * Matrix_Rotate_Z(g_AngleZ) * Matrix_Rotate_Y(g_AngleY) * Matrix_Rotate_X(g_AngleX);
   glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
   glUniform1i(object_id_uniform, BUNNY);

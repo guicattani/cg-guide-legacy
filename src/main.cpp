@@ -48,6 +48,7 @@
 #include "opengl_loader.h"
 
 void CreateScene(int scene);
+void Update(Interface interface, GLFWwindow *window);
 
 #pragma endregion HEADERS
 
@@ -90,16 +91,9 @@ int main(int, char **)
   glEnable(GL_DEPTH_TEST);
 
   // Habilitamos o Backface Culling. Veja slides 22-34 do documento "Aula_13_Clipping_and_Culling.pdf".
-  bool culling_changed_monitor = g_BackfaceCulling;
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glFrontFace(GL_CCW);
-
-  // Variáveis auxiliares utilizadas para chamada de função
-  // TextRendering_ShowModelViewProjection(), armazenando matrizes 4x4.
-  glm::mat4 the_projection;
-  // glm::mat4 the_model;
-  glm::mat4 the_view;
 
   //Inicializa a Interface (Imgui)
   Interface interface = Interface(true);
@@ -114,20 +108,31 @@ int main(int, char **)
   {
     glClearColor(g_ClearColor.x, g_ClearColor.y, g_ClearColor.z, g_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // Poll and handle events (inputs, window resize, etc.)
-    // You can read the Globals::g_Io.WantCaptureMouse, Globals::g_Io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-    // - When Globals::g_Io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-    // - When Globals::g_Io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-    // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
     glfwPollEvents();
-    // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
-    // os shaders de vértice e fragmentos).
+    // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo os shaders de vértice e fragmentos).
     glUseProgram(g_ProgramId);
 
     g_MainCamera->Enable();
 
-    the_projection = g_MainCamera->projection;
-    the_view = g_MainCamera->view;
+    if (g_BackfaceCulling != g_BackfaceCullingMonitor)
+    {
+      if (g_BackfaceCulling)
+        glEnable(GL_CULL_FACE);
+      else
+        glDisable(GL_CULL_FACE);
+      g_BackfaceCullingMonitor = g_BackfaceCulling;
+    }
+
+    g_NowTime = glfwGetTime();
+    g_DeltaTime += (g_NowTime - g_LastTime) / g_LimitFPS;
+    g_LastTime = g_NowTime;
+
+    // TODO faz sentido ter um while pra update fisico?
+    // while (g_DeltaTime >= 1.0){
+    //   // Update(interface, window);   // - Update function
+    //   g_Updates++;
+    //   g_DeltaTime--;
+    // }
 
     if (g_SceneChanged)
     {
@@ -146,16 +151,7 @@ int main(int, char **)
       break;
     }
 
-    if (g_BackfaceCulling != culling_changed_monitor)
-    {
-      if (g_BackfaceCulling)
-        glEnable(GL_CULL_FACE);
-      else
-        glDisable(GL_CULL_FACE);
-
-      culling_changed_monitor = g_BackfaceCulling;
-    }
-
+    g_Frames++;
     interface.Show(window);
     glfwSwapBuffers(window);
   }
@@ -168,6 +164,10 @@ int main(int, char **)
 #pragma endregion DRAW_LOOP
 
 #pragma region[rgba(100, 0, 0, 0.3)] FUNCTIONS
+void Update(Interface interface, GLFWwindow *window) {
+ //PHYSICS LOGIC GO HERE
+}
+
 // TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
 void CreateScene(int scene)
 {

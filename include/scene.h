@@ -55,12 +55,14 @@ private:
   GLuint VBO_bezier_line;
   GLfloat bezier_line_coefficients[12];
 
+  int last_frame = -1;
+
 public:
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
   static int bezier_samples;
 
-  float t;
+  float t = 0;
   float x;
   float y;
   float z;

@@ -3383,7 +3383,7 @@ static PlotVarsMap g_PlotVarsMap;
 
 // Plot value over time
 // Call with 'value == FLT_MAX' to draw without adding new value to the buffer
-void ImGui::PlotVar(const char *label, float value, float scale_min, float scale_max, size_t buffer_size)
+void ImGui::PlotVar(const char *label, float value, bool hold_time, float scale_min, float scale_max, size_t buffer_size)
 {
   IM_ASSERT(label);
   if (buffer_size == 0)
@@ -3396,7 +3396,7 @@ void ImGui::PlotVar(const char *label, float value, float scale_min, float scale
   PlotVarData &pvd = g_PlotVarsMap[id];
 
   // Setup
-  if (pvd.Data.capacity() != buffer_size)
+  if (pvd.Data.capacity() != (int)buffer_size)
   {
     pvd.Data.resize(buffer_size);
     memset(&pvd.Data[0], 0, sizeof(float) * buffer_size);
@@ -3405,10 +3405,10 @@ void ImGui::PlotVar(const char *label, float value, float scale_min, float scale
   }
 
   // Insert (avoid unnecessary modulo operator)
-  if (pvd.DataInsertIdx == buffer_size)
+  if (pvd.DataInsertIdx == (int)buffer_size)
     pvd.DataInsertIdx = 0;
   int display_idx = pvd.DataInsertIdx;
-  if (value != FLT_MAX)
+  if (value != FLT_MAX && !hold_time)
     pvd.Data[pvd.DataInsertIdx++] = value;
 
   // Draw

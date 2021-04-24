@@ -58,6 +58,11 @@ void Interface::Show(GLFWwindow *window)
         ModelSettings();
         ImGui::EndTabItem();
       }
+      if (ImGui::BeginTabItem("Debug"))
+      {
+        DebugSettings();
+        ImGui::EndTabItem();
+      }
       ImGui::EndTabBar();
     }
     ImGui::End();
@@ -156,4 +161,16 @@ void Interface::ModelSettings()
   ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
   ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
   ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
+}
+
+void Interface::DebugSettings()
+{
+  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+  ImGui::Text("%d vertices, %d indices (%d triangles)", ImGui::GetIO().MetricsRenderVertices, ImGui::GetIO().MetricsRenderIndices, ImGui::GetIO().MetricsRenderIndices / 3);
+
+  ImGui::Separator();
+
+  ImGui::Text("Current scene: %d", g_CurrentScene);
+  ImGui::Text("Elapsed frames: %d", g_Frames);
+  ImGui::Text("Elapsed updates: %d", g_Updates);
 }
