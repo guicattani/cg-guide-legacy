@@ -24,10 +24,10 @@ extern float g_MoveZ;
 // Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
 // Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
 //glm::vec4 camera_position_c  ;
-//glm::vec4 camera_lookat_l    ;
-//glm::vec4 camera_view_vector ;
-//glm::vec4 camera_up_vector   ;
-//glm::vec4 camera_right_vector;
+//glm::vec4 g_Camera_lookat_l    ;
+//glm::vec4 g_Camera_view_vector ;
+//glm::vec4 g_Camera_up_vector   ;
+//glm::vec4 g_Camera_right_vector;
 
 extern bool WPressed;
 extern bool SPressed;
@@ -63,8 +63,14 @@ extern float g_FrustumFarPlane;
 extern ImVec4 g_ClearColor;
 
 extern GLuint g_ProgramId;
+extern GLuint g_sceneVertexShader;
+extern GLuint g_sceneFragmentShader;
 
 extern Camera *g_MainCamera;
+extern glm::vec4 g_Camera_lookat_l;
+extern glm::vec4 g_Camera_view_vector;
+extern glm::vec4 g_Camera_up_vector;
+extern glm::vec4 g_Camera_right_vector;
 
 extern int g_CurrentScene;
 extern bool g_SceneChanged;

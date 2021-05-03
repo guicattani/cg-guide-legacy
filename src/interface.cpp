@@ -139,6 +139,9 @@ void Interface::SceneLoader()
 
 void Interface::CameraSettings()
 {
+  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+  ImGui::Separator();
+
   // Edit 3 floats representing a color
   ImGui::Text("Change Clear Color");
   ImGui::ColorEdit3("clear color", (float *)&g_ClearColor);
@@ -153,7 +156,11 @@ void Interface::CameraSettings()
   ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -10.0f, 10.0f);
   ImGui::Separator();
 
-  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+  ImGui::Text("Camera Vectors");
+  ImGui::Text("Look at: %f %f %f %f", (float) g_Camera_lookat_l[0], (float) g_Camera_lookat_l[1], (float) g_Camera_lookat_l[2], (float) g_Camera_lookat_l[3]);
+  ImGui::Text("View   : %f %f %f %f", (float) g_Camera_view_vector[0], (float) g_Camera_view_vector[1], (float) g_Camera_view_vector[2], (float) g_Camera_view_vector[3]);
+  ImGui::Text("Up     : %f %f %f %f", (float) g_Camera_up_vector[0], (float) g_Camera_up_vector[1], (float) g_Camera_up_vector[2], (float) g_Camera_up_vector[3]);
+  ImGui::Text("Right  : %f %f %f %f", (float) g_Camera_right_vector[0], (float) g_Camera_right_vector[1], (float) g_Camera_right_vector[2], (float) g_Camera_right_vector[3]);
 }
 
 void Interface::ModelSettings()

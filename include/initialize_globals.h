@@ -18,10 +18,10 @@ float g_MoveZ = 0.0f;
 // Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
 // Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
 //glm::vec4 camera_position_c  ;
-//glm::vec4 camera_lookat_l    ;
-//glm::vec4 camera_view_vector ;
-//glm::vec4 camera_up_vector   ;
-//glm::vec4 camera_right_vector;
+//glm::vec4 g_Camera_lookat_l    ;
+//glm::vec4 g_Camera_view_vector ;
+//glm::vec4 g_Camera_up_vector   ;
+//glm::vec4 g_Camera_right_vector;
 
 bool WPressed = false;
 bool SPressed = false;
@@ -54,8 +54,14 @@ float g_FrustumNearPlane = -0.1f;
 float g_FrustumFarPlane = -10.0f;
 
 GLuint g_ProgramId;
+GLuint g_sceneVertexShader;
+GLuint g_sceneFragmentShader;
 
 Camera *g_MainCamera;
+glm::vec4 g_Camera_lookat_l;
+glm::vec4 g_Camera_view_vector;
+glm::vec4 g_Camera_up_vector;
+glm::vec4 g_Camera_right_vector;
 
 int g_CurrentScene = 3;
 bool g_SceneChanged = false;
