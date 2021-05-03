@@ -23,7 +23,7 @@ void main()
 {
     // A Variável gl_Position define a posição final de cada vértice
     // OBRIGATORIAMENTE em "normalized device coordinates" (NDC), onde cada
-    // coeficiente estaré entre -1 e 1 Após divisão por w.
+    // coeficiente estará entre -1 e 1 Após divisão por w.
     // Veja slides 144 e 150 do documento "Aula_09_Projecoes.pdf".
     //
     // O código em "main.cpp" define os vértices dos modelos em coordenadas
@@ -36,7 +36,7 @@ void main()
     gl_Position = projection * view * model * model_coefficients;
 
     // Como as variáveis acima  (tipo vec4) são vetores com 4 coeficientes,
-    // também é possével acessar e modificar cada coeficiente de maneira
+    // também é possível acessar e modificar cada coeficiente de maneira
     // independente. Esses são indexados pelos nomes x, y, z, e w (nessa
     // ordem, isto é, 'x' é o primeiro coeficiente, 'y' é o segundo, ...):
     //
@@ -47,7 +47,7 @@ void main()
     //
 
     // Agora definimos outros atributos dos vértices que serão interpolados pelo
-    // rasterizador para gerar atributos énicos para cada fragmento gerado.
+    // rasterizador para gerar atributos únicos para cada fragmento gerado.
 
     // posição do vértice atual no sistema de coordenadas global (World).
     position_world = model * model_coefficients;

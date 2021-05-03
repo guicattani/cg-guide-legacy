@@ -29,7 +29,7 @@ void main()
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 camera_position = inverse(view) * origin;
 
-    // O fragmento atual é coberto por um ponto que percente à superfície de um
+    // O fragmento atual é coberto por um ponto que pertencente à superfície de um
     // dos objetos virtuais da cena. Este ponto, p, possui uma posição no
     // sistema de coordenadas global (World coordinates). Esta posição é obtida
     // através da interpolação, feita pelo rasterizador, da posição de cada
