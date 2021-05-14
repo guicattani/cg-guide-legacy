@@ -1,7 +1,5 @@
 #include "globals.h"
 
-static double g_LimitFPS = 1.0 / 60.0;
-
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().
 float g_ScreenRatio = 1.0f;
 
@@ -64,7 +62,7 @@ glm::vec4 g_Camera_up_vector;
 glm::vec4 g_Camera_right_vector;
 
 int g_CurrentScene = 3;
-bool g_SceneChanged = false;
+bool g_SceneChanged = true;
 
 bool g_HoldTime = false;
 int g_Frames = 0;

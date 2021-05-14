@@ -22,10 +22,10 @@ class Camera
 {
 private:
   Quaternion quaternion;
-  glm::vec4 position;
   GLint view_uniform;       // Variável da matriz "view" em shader_vertex.glsl
   GLint projection_uniform; // Variável da matriz "projection" em shader_vertex.glsl
 public:
+  glm::vec4 position;
   glm::mat4 projection;
   glm::mat4 view;
 

@@ -47,6 +47,10 @@
 #include "callbacks.h"
 #include "opengl_loader.h"
 
+#ifndef SAFE_DELETE
+#define SAFE_DELETE(a) { if((a) != NULL) { delete (a);  (a) = NULL; }  }
+#endif
+
 void CreateScene(int scene);
 void Update(Interface interface, GLFWwindow *window);
 
@@ -85,7 +89,6 @@ int main(int, char **)
 
   //Seleciona a cena 4 como inicial
   g_CurrentScene = 4;
-  CreateScene(g_CurrentScene);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -99,7 +102,6 @@ int main(int, char **)
   Interface interface = Interface(true);
   interface.Init(window, glsl_version);
 
-  g_MainCamera = new Camera(g_ProgramId);
 #pragma endregion MAIN
 
 #pragma region[rgba(50, 100, 100, 0.2)] DRAW_LOOP
@@ -110,9 +112,7 @@ int main(int, char **)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
     // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo os shaders de vértice e fragmentos).
-    glUseProgram(g_ProgramId);
 
-    g_MainCamera->Enable();
 
     if (g_BackfaceCulling != g_BackfaceCullingMonitor)
     {
@@ -123,19 +123,10 @@ int main(int, char **)
       g_BackfaceCullingMonitor = g_BackfaceCulling;
     }
 
-    g_NowTime = glfwGetTime();
-    g_DeltaTime += (g_NowTime - g_LastTime) / g_LimitFPS;
-    g_LastTime = g_NowTime;
-
-    // TODO faz sentido ter um while pra update fisico?
-    // while (g_DeltaTime >= 1.0){
-    //   // Update(interface, window);   // - Update function
-    //   g_Updates++;
-    //   g_DeltaTime--;
-    // }
-
     if (g_SceneChanged)
     {
+      SAFE_DELETE(g_Scene3->camera);
+      SAFE_DELETE(g_Scene4->camera);
       CreateScene(g_CurrentScene);
       g_SceneChanged = false;
       continue;
@@ -144,9 +135,13 @@ int main(int, char **)
     switch (g_CurrentScene)
     {
     case 3:
+      glUseProgram(g_Scene3->program_id);
+      g_Scene3->camera->Enable();
       g_Scene3->Render();
       break;
     case 4:
+      glUseProgram(g_Scene4->program_id);
+      g_Scene4->camera->Enable();
       g_Scene4->Render();
       break;
     }
@@ -164,9 +159,6 @@ int main(int, char **)
 #pragma endregion DRAW_LOOP
 
 #pragma region[rgba(100, 0, 0, 0.3)] FUNCTIONS
-void Update(Interface interface, GLFWwindow *window) {
- //PHYSICS LOGIC GO HERE
-}
 
 // TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
 void CreateScene(int scene)
@@ -178,11 +170,15 @@ void CreateScene(int scene)
     g_Scene2->BuildTrianglesAndAddToVirtualScene();
     break;
   case 3:
-    g_Scene3->LoadShaderVariables(g_ProgramId);
+    g_Scene3->program_id = g_ProgramId;
+    g_Scene3->camera = new Camera(g_ProgramId);
+    g_Scene3->LoadShaderVariables();
     g_Scene3->BuildTrianglesAndAddToVirtualScene();
     break;
   case 4:
-    g_Scene4->LoadShaderVariables(g_ProgramId);
+    g_Scene4->program_id = g_ProgramId;
+    g_Scene4->camera = new Camera(g_ProgramId);
+    g_Scene4->LoadShaderVariables();
     g_Scene4->CreateBezierLine();
 
     ObjModel bunnymodel("../data/bunny.obj");

@@ -7,10 +7,9 @@ layout (location = 1) in vec4 normal_coefficients;
 layout (location = 2) in vec2 texture_coefficients;
 
 // Matrizes computadas no código C++ e enviadas para a GPU
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-uniform bool render_as_black;
+uniform mat4 camera_projection;
+uniform mat4 camera_view;
+uniform mat4 scene4_model;
 
 // Atributos de vértice que serão gerados como saída ("out") pelo Vertex Shader.
 // ** Estes serão interpolados pelo rasterizador! ** gerando, assim, valores
@@ -33,7 +32,7 @@ void main()
     // deste Vertex Shader, a placa de vídeo (GPU) fará a divisão por W. Veja
     // slide 189 do documento "Aula_09_Projecoes.pdf".
 
-    gl_Position = projection * view * model * model_coefficients;
+    gl_Position = camera_projection * camera_view * scene4_model * model_coefficients;
 
     // Como as variáveis acima  (tipo vec4) são vetores com 4 coeficientes,
     // também é possível acessar e modificar cada coeficiente de maneira
@@ -50,10 +49,10 @@ void main()
     // rasterizador para gerar atributos únicos para cada fragmento gerado.
 
     // posição do vértice atual no sistema de coordenadas global (World).
-    position_world = model * model_coefficients;
+    position_world = scene4_model * model_coefficients;
 
     // Normal do vértice atual no sistema de coordenadas global (World).
     // Veja slide 107 do documento "Aula_07_Transformacoes_Geometricas_3D.pdf".
-    normal = inverse(transpose(model)) * normal_coefficients;
+    normal = inverse(transpose(scene4_model)) * normal_coefficients;
     normal.w = 0.0;
 }

@@ -13,14 +13,16 @@
 #include "model_loader.h"
 #endif
 
-#ifndef CLASS_HEADER_MATRICES
-#define CLASS_HEADER_MATRICES
-#include "matrices.h"
+#ifndef CLASS_HEADER_CAMERA
+#define CLASS_HEADER_CAMERA
+#include "camera.h"
 #endif
 
 class Scene2
 {
 public:
+  Camera* camera;
+  int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
 
@@ -35,10 +37,12 @@ private:
   GLint render_as_black_uniform;
 
 public:
+  Camera* camera;
+  int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
 
-  void LoadShaderVariables(GLuint program_id);
+  void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
 };
@@ -58,6 +62,8 @@ private:
   int last_frame = -1;
 
 public:
+  Camera* camera;
+  int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
   static int bezier_samples;
@@ -73,7 +79,7 @@ public:
   glm::vec3 d = glm::vec3(-1.0f, 1.0f, -1.0f);
 
   void CreateBezierLine();
-  void LoadShaderVariables(GLuint program_id);
+  void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
   void Render();
 };

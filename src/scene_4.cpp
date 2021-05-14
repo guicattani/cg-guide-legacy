@@ -68,15 +68,16 @@ void Scene4::CreateBezierLine()
   glBindVertexArray(0);
 }
 
-void Scene4::LoadShaderVariables(GLuint program_id)
+void Scene4::LoadShaderVariables()
 {
   // Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
   // Utilizaremos estas variáveis para enviar dados para a placa de vídeo
   // (GPU)! Veja arquivo "shader_vertex.glsl" e "shader_fragment.glsl".
-  model_uniform = glGetUniformLocation(program_id, "model");           // Variável da matriz "model"
-  view_uniform = glGetUniformLocation(program_id, "view");             // Variável da matriz "view" em shader_vertex.glsl
-  projection_uniform = glGetUniformLocation(program_id, "projection"); // Variável da matriz "projection" em shader_vertex.glsl
-  object_id_uniform = glGetUniformLocation(program_id, "object_id");   // Variável "object_id" em shader_fragment.glsl
+
+  model_uniform = glGetUniformLocation(this->program_id, "scene4_model");           // Variável da matriz "model"
+  view_uniform = glGetUniformLocation(this->program_id, "scene4_view");             // Variável da matriz "view" em shader_vertex.glsl
+  projection_uniform = glGetUniformLocation(this->program_id, "scene4_projection"); // Variável da matriz "projection" em shader_vertex.glsl
+  object_id_uniform = glGetUniformLocation(this->program_id, "object_id");   // Variável "object_id" em shader_fragment.glsl
 }
 
 void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel *model)
@@ -215,8 +216,8 @@ void Scene4::Render()
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo
   // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
   // efetivamente aplicadas em todos os pontos.
-  glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(g_MainCamera->view));
-  glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(g_MainCamera->projection));
+  glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(this->camera->view));
+  glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(this->camera->projection));
 
 #define SPHERE 0
 #define BUNNY 1
@@ -228,7 +229,7 @@ void Scene4::Render()
   // bool flip = (int)t % 2 == 1;
   // t = t - floor(t); // \in [0,1]
   // t = flip ? 1.0 - t : t;
-  // t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f;
+  // t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f';
 
   if(!g_HoldTime) {
     t = (double) last_frame / 100;

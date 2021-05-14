@@ -4,8 +4,8 @@ Camera::Camera(GLuint program_id)
 {
   position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-  view_uniform = glGetUniformLocation(program_id, "view");
-  projection_uniform = glGetUniformLocation(program_id, "projection");
+  view_uniform = glGetUniformLocation(program_id, "camera_view");
+  projection_uniform = glGetUniformLocation(program_id, "camera_projection");
 }
 
 void Camera::Enable()
@@ -19,23 +19,23 @@ void Camera::Enable()
   quaternion.z = 2.0f * cos(g_CameraPhi) * cos(g_CameraTheta);
   // Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
   // Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-  g_Camera_lookat_l = glm::vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
-  g_Camera_view_vector = g_Camera_lookat_l - position;                                                                     // Vetor "view", sentido para onde a câmera está virada
-  g_Camera_up_vector = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);                                                                // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
-  g_Camera_right_vector = crossproduct(g_Camera_view_vector, g_Camera_up_vector);
+  glm::vec4 camera_lookat_l = glm::vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
+  glm::vec4 camera_view_vector = camera_lookat_l - position;                                                                     // Vetor "view", sentido para onde a câmera está virada
+  glm::vec4 camera_up_vector = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);                                                                // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
+  glm::vec4 camera_right_vector = crossproduct(camera_view_vector, camera_up_vector);
   if (WPressed)
-    position += 0.01f * g_Camera_view_vector;
+    position += 0.01f * camera_view_vector;
   if (SPressed)
-    position -= 0.01f * g_Camera_view_vector;
+    position -= 0.01f * camera_view_vector;
   if (APressed)
-    position -= 0.01f * g_Camera_right_vector;
+    position -= 0.01f * camera_right_vector;
   if (DPressed)
-    position += 0.01f * g_Camera_right_vector;
+    position += 0.01f * camera_right_vector;
 
   // Computamos a matriz "View" utilizando os parâmetros da câmera para
   // definir o sistema de coordenadas da câmera.  Veja slide 169 do
   // documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-  view = Matrix_Camera_View(position, g_Camera_view_vector, g_Camera_up_vector);
+  view = Matrix_Camera_View(position, camera_view_vector, camera_up_vector);
 
   // Agora computamos a matriz de Projeção.
   // Note que, no sistema de coordenadas da câmera, os planos near e far

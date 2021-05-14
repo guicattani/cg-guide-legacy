@@ -9,10 +9,10 @@ const char *Scene3::shader_fragment_filepath = "../src/scene_3_shader_fragment.g
 // Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
 // Utilizaremos estas variáveis para enviar dados para a placa de vídeo
 // (GPU)! Veja arquivo "shader_vertex.glsl".
-void Scene3::LoadShaderVariables(GLuint program_id)
+void Scene3::LoadShaderVariables()
 {
-  model_uniform = glGetUniformLocation(program_id, "model");                     // Variável da matriz "model"
-  render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
+  model_uniform = glGetUniformLocation(this->program_id, "scene3_model");                     // Variável da matriz "model"
+  render_as_black_uniform = glGetUniformLocation(this->program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
 }
 
 /*
