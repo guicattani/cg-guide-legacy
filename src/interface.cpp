@@ -112,6 +112,11 @@ void Interface::Start()
 
 void Interface::SceneLoader()
 {
+  if (ImGui::Button("Scene 2"))
+  {
+    g_CurrentScene = 2;
+    g_SceneChanged = true;
+  }
   if (ImGui::Button("Scene 3"))
   {
     g_CurrentScene = 3;
@@ -128,6 +133,9 @@ void Interface::SceneLoader()
 
   switch (g_CurrentScene)
   {
+  case 2:
+    InterfaceScene2::Show();
+    break;
   case 3:
     InterfaceScene3::Show();
     break;

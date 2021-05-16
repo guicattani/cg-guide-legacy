@@ -1,14 +1,6 @@
 #include "camera.h"
 
-Camera::Camera(GLuint program_id)
-{
-  position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-  view_uniform = glGetUniformLocation(program_id, "camera_view");
-  projection_uniform = glGetUniformLocation(program_id, "camera_projection");
-}
-
-void Camera::Enable()
+void FreeCamera::Enable()
 {
   // Computamos a posição da câmera utilizando coordenadas esféricas.  As
   // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são

@@ -20,6 +20,13 @@ public:
 
 class Camera
 {
+public:
+  Camera(GLuint program_id) {};
+  void Enable();
+};
+
+class FreeCamera : public Camera
+{
 private:
   Quaternion quaternion;
   GLint view_uniform;       // Variável da matriz "view" em shader_vertex.glsl
@@ -29,7 +36,21 @@ public:
   glm::mat4 projection;
   glm::mat4 view;
 
-  Camera(GLuint program_id);
+  FreeCamera(GLuint program_id) : Camera(program_id) {
+    position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    view_uniform = glGetUniformLocation(program_id, "camera_view");
+    projection_uniform = glGetUniformLocation(program_id, "camera_projection");
+  };
   void Enable();
 };
+
+class Camera2D : public Camera
+{
+public:
+  Camera2D(GLuint program_id) : Camera(program_id) {};
+  void Enable();
+};
+
+
 #endif

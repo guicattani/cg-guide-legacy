@@ -113,7 +113,6 @@ int main(int, char **)
     glfwPollEvents();
     // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo os shaders de vértice e fragmentos).
 
-
     if (g_BackfaceCulling != g_BackfaceCullingMonitor)
     {
       if (g_BackfaceCulling)
@@ -134,6 +133,10 @@ int main(int, char **)
 
     switch (g_CurrentScene)
     {
+    case 2:
+      glUseProgram(g_Scene2->program_id);
+      g_Scene2->Render();
+      break;
     case 3:
       glUseProgram(g_Scene3->program_id);
       g_Scene3->camera->Enable();
@@ -167,17 +170,18 @@ void CreateScene(int scene)
   switch (scene)
   {
   case 2:
-    g_Scene2->BuildTrianglesAndAddToVirtualScene();
+    g_Scene2->program_id = g_ProgramId;
+    g_Scene2->camera = new Camera2D(g_ProgramId);
     break;
   case 3:
     g_Scene3->program_id = g_ProgramId;
-    g_Scene3->camera = new Camera(g_ProgramId);
+    g_Scene3->camera = new FreeCamera(g_ProgramId);
     g_Scene3->LoadShaderVariables();
     g_Scene3->BuildTrianglesAndAddToVirtualScene();
     break;
   case 4:
     g_Scene4->program_id = g_ProgramId;
-    g_Scene4->camera = new Camera(g_ProgramId);
+    g_Scene4->camera = new FreeCamera(g_ProgramId);
     g_Scene4->LoadShaderVariables();
     g_Scene4->CreateBezierLine();
 

@@ -20,13 +20,22 @@
 
 class Scene2
 {
+private:
+  static const float pi;
+  static const int zero_vertices;
+  static const int one_vertices;
+
+  static const float zero_up_radius_small;
+  static const float zero_up_radius_big;
+  static const float zero_side_radius_small;
+  static const float zero_side_radius_big;
 public:
-  Camera* camera;
+  Camera2D* camera;
   int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
 
-  void BuildTrianglesAndAddToVirtualScene();
+  GLuint BuildTriangles();
   void Render();
 };
 
@@ -37,7 +46,7 @@ private:
   GLint render_as_black_uniform;
 
 public:
-  Camera* camera;
+  FreeCamera* camera;
   int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
@@ -62,7 +71,7 @@ private:
   int last_frame = -1;
 
 public:
-  Camera* camera;
+  FreeCamera* camera;
   int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
