@@ -25,17 +25,20 @@ private:
   static const int zero_vertices;
   static const int one_vertices;
 
+  static const int num_of_digits;
+
   static const float zero_up_radius_small;
   static const float zero_up_radius_big;
   static const float zero_side_radius_small;
   static const float zero_side_radius_big;
 public:
   Camera2D* camera;
+  int seconds;
   int program_id;
   static const char *shader_vertex_filepath;
   static const char *shader_fragment_filepath;
 
-  GLuint BuildTriangles();
+  GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
 };
 

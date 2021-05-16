@@ -134,6 +134,7 @@ int main(int, char **)
     switch (g_CurrentScene)
     {
     case 2:
+      g_Scene2->seconds = (int)glfwGetTime();
       glUseProgram(g_Scene2->program_id);
       g_Scene2->Render();
       break;
