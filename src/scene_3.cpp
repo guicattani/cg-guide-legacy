@@ -3,18 +3,6 @@
 #include "scene.h"
 #endif
 
-const char *Scene3::shader_vertex_filepath = "../src/scene_3_shader_vertex.glsl";
-const char *Scene3::shader_fragment_filepath = "../src/scene_3_shader_fragment.glsl";
-
-// Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
-// Utilizaremos estas variáveis para enviar dados para a placa de vídeo
-// (GPU)! Veja arquivo "shader_vertex.glsl".
-void Scene3::LoadShaderVariables()
-{
-  model_uniform = glGetUniformLocation(this->program_id, "scene3_model");                     // Variável da matriz "model"
-  render_as_black_uniform = glGetUniformLocation(this->program_id, "render_as_black"); // Variável booleana em shader_vertex.glsl
-}
-
 /*
 Constrói triângulos para renderização
 */
@@ -276,6 +264,8 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
 
 void Scene3::Render()
 {
+  this->camera->Enable();
+
 #pragma region[rgba(0, 50, 50, 0.3)] Draw cube_faces
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
   // vértices apontados pelo VAO criado pela função BuildTriangles(). Veja
@@ -324,11 +314,11 @@ void Scene3::Render()
     // Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o
     // arquivo "shader_vertex.glsl", onde esta é efetivamente
     // aplicada em todos os pontos.
-    glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+    shader.setMat4("scene3_model", model);
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "false". Veja o arquivo
     // "shader_vertex.glsl".
-    glUniform1i(render_as_black_uniform, false);
+    shader.setBool("render_as_black", false);
     // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
     // VAO como triângulos, formando as faces do cubo. Esta
     // renderização irá executar o Vertex Shader definido no arquivo
@@ -366,7 +356,7 @@ void Scene3::Render()
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "true". Veja o arquivo
     // "shader_vertex.glsl".
-    glUniform1i(render_as_black_uniform, true);
+    shader.setBool("render_as_black", true);
     // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
     // VAO como linhas, formando as arestas pretas do cubo. Veja a
     // definição de Globals::g_VirtualScene["cube_edges"] dentro da função

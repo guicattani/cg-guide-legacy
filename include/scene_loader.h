@@ -8,9 +8,9 @@
 #include "globals.h"
 #endif
 
-#ifndef CLASS_HEADER_SHADERS
-#define CLASS_HEADER_SHADERS
-#include "shaders.h"
+#ifndef CLASS_HEADER_SHADER
+#define CLASS_HEADER_SHADER
+#include "shader.h"
 #endif
 
 void CreateProgramForScene(int scene);

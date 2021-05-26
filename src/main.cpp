@@ -31,9 +31,9 @@
 #define CLASS_HEADER_MODEL_LOADER
 #include "model_loader.h"
 #endif
-#ifndef CLASS_HEADER_SHADERS
-#define CLASS_HEADER_SHADERS
-#include "shaders.h"
+#ifndef CLASS_HEADER_SHADER
+#define CLASS_HEADER_SHADER
+#include "shader.h"
 #endif
 #ifndef CLASS_HEADER_CAMERA
 #define CLASS_HEADER_CAMERA
@@ -43,6 +43,8 @@
 #define CLASS_HEADER_INTERFACE
 #include "interface.h"
 #endif
+
+
 #include "scene_loader.h"
 #include "callbacks.h"
 #include "opengl_loader.h"
@@ -87,8 +89,18 @@ int main(int, char **)
   }
   PrintGPUInformation();
 
+  g_InterfaceScene4 = new InterfaceScene4();
+
+  g_Scene2 = new Scene2();
+  g_Scene3 = new Scene3();
+  g_Scene4 = new Scene4();
+
   //Seleciona a cena 4 como inicial
-  g_CurrentScene = 4;
+  g_CurrentScene = 3;
+
+  CreateScene(2);
+  CreateScene(3);
+  CreateScene(4);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -111,7 +123,6 @@ int main(int, char **)
     glClearColor(g_ClearColor.x, g_ClearColor.y, g_ClearColor.z, g_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
-    // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo os shaders de vértice e fragmentos).
 
     if (g_BackfaceCulling != g_BackfaceCullingMonitor)
     {
@@ -122,30 +133,19 @@ int main(int, char **)
       g_BackfaceCullingMonitor = g_BackfaceCulling;
     }
 
-    if (g_SceneChanged)
-    {
-      SAFE_DELETE(g_Scene3->camera);
-      SAFE_DELETE(g_Scene4->camera);
-      CreateScene(g_CurrentScene);
-      g_SceneChanged = false;
-      continue;
-    }
-
     switch (g_CurrentScene)
     {
     case 2:
       g_Scene2->seconds = (int)glfwGetTime();
-      glUseProgram(g_Scene2->program_id);
+      g_Scene2->shader.use();
       g_Scene2->Render();
       break;
     case 3:
-      glUseProgram(g_Scene3->program_id);
-      g_Scene3->camera->Enable();
+      g_Scene3->shader.use();
       g_Scene3->Render();
       break;
     case 4:
-      glUseProgram(g_Scene4->program_id);
-      g_Scene4->camera->Enable();
+      g_Scene4->shader.use();
       g_Scene4->Render();
       break;
     }
@@ -167,23 +167,17 @@ int main(int, char **)
 // TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
 void CreateScene(int scene)
 {
-  CreateProgramForScene(scene);
   switch (scene)
   {
   case 2:
-    g_Scene2->program_id = g_ProgramId;
-    g_Scene2->camera = new Camera2D(g_ProgramId);
+    g_Scene2->camera = new Camera2D(g_Scene2->shader.ID);
     break;
   case 3:
-    g_Scene3->program_id = g_ProgramId;
-    g_Scene3->camera = new FreeCamera(g_ProgramId);
-    g_Scene3->LoadShaderVariables();
+    g_Scene3->camera = new FreeCamera(g_Scene3->shader.ID);
     g_Scene3->BuildTrianglesAndAddToVirtualScene();
     break;
   case 4:
-    g_Scene4->program_id = g_ProgramId;
-    g_Scene4->camera = new FreeCamera(g_ProgramId);
-    g_Scene4->LoadShaderVariables();
+    g_Scene4->camera = new FreeCamera(g_Scene4->shader.ID);
     g_Scene4->CreateBezierLine();
 
     ObjModel bunnymodel("../data/bunny.obj");

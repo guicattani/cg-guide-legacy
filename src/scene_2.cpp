@@ -14,10 +14,6 @@ const float Scene2::zero_up_radius_big = 0.3;
 const float Scene2::zero_side_radius_small = 0.1;
 const float Scene2::zero_side_radius_big = 0.2;
 
-
-const char *Scene2::shader_vertex_filepath = "../src/scene_2_shader_vertex.glsl";
-const char *Scene2::shader_fragment_filepath = "../src/scene_2_shader_fragment.glsl";
-
 GLuint Scene2::BuildTriangles(int seconds, bool isAOne, int digitLocation)
 {
     float angle = (2*this->pi)/(this->zero_vertices);
@@ -145,6 +141,7 @@ GLfloat NDC_coefficients[sizeOfArray*4*4];
     glBindBuffer(GL_ARRAY_BUFFER, VBO_color_coefficients_id);
     glBufferData(GL_ARRAY_BUFFER, sizeof(color_coefficients), NULL, GL_STATIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(color_coefficients), color_coefficients);
+
     location = 1; // "(location = 1)" em "shader_vertex.glsl"
     number_of_dimensions = 4; // vec4 em "shader_vertex.glsl"
     glVertexAttribPointer(location, number_of_dimensions, GL_FLOAT, GL_FALSE, 0, 0);

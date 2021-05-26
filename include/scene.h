@@ -18,6 +18,11 @@
 #include "camera.h"
 #endif
 
+#ifndef CLASS_HEADER_SHADER
+#define CLASS_HEADER_SHADER
+#include "shader.h"
+#endif
+
 class Scene2
 {
 private:
@@ -35,8 +40,7 @@ public:
   Camera2D* camera;
   int seconds;
   int program_id;
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
+  Shader shader = Shader("../src/scene_2_shader_vertex.glsl", "../src/scene_2_shader_fragment.glsl");
 
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
@@ -44,17 +48,11 @@ public:
 
 class Scene3
 {
-private:
-  GLint model_uniform;
-  GLint render_as_black_uniform;
-
 public:
   FreeCamera* camera;
   int program_id;
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
+  Shader shader = Shader("../src/scene_3_shader_vertex.glsl", "../src/scene_3_shader_fragment.glsl");
 
-  void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
 };
@@ -62,12 +60,6 @@ public:
 class Scene4
 {
 private:
-  GLint model_uniform;
-  GLint view_uniform;
-  GLint projection_uniform;
-  GLint object_id_uniform;
-  GLint render_as_black_uniform;
-
   GLuint VBO_bezier_line;
   GLfloat bezier_line_coefficients[12];
 
@@ -76,8 +68,7 @@ private:
 public:
   FreeCamera* camera;
   int program_id;
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
+  Shader shader = Shader("../src/scene_4_shader_vertex.glsl", "../src/scene_4_shader_fragment.glsl");
   static int bezier_samples;
 
   float t = 0;
@@ -91,7 +82,22 @@ public:
   glm::vec3 d = glm::vec3(-1.0f, 1.0f, -1.0f);
 
   void CreateBezierLine();
-  void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
+  void Render();
+};
+
+class Scene5
+{
+private:
+  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+
+public:
+  FreeCamera* camera;
+  int program_id;
+  static const char *shader_vertex_filepath;
+  static const char *shader_fragment_filepath;
+
+  void LoadShaderVariables();
+  void BuildTrianglesAndAddToVirtualScene();
   void Render();
 };
