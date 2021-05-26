@@ -1,4 +1,7 @@
+#ifndef CLASS_HEADER_SCENE_GLOBALS
+#define CLASS_HEADER_SCENE_GLOBALS
 #include "globals_scenes.h"
+#endif
 
 #ifndef CLASS_HEADER_INTERFACE
 #define CLASS_HEADER_INTERFACE

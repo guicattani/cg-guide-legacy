@@ -10,7 +10,7 @@
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-#pragma region[rgba(80, 80, 0, 0.2)] HEADERS
+#pragma region HEADERS
 #ifndef CLASS_HEADER_MATRICES
 #define CLASS_HEADER_MATRICES
 #include "matrices.h"
@@ -43,9 +43,11 @@
 #define CLASS_HEADER_INTERFACE
 #include "interface.h"
 #endif
-
-
+#ifndef CLASS_HEADER_SCENE_LOADER
+#define CLASS_HEADER_SCENE_LOADER
 #include "scene_loader.h"
+#endif
+
 #include "callbacks.h"
 #include "opengl_loader.h"
 
@@ -58,7 +60,7 @@ void Update(Interface interface, GLFWwindow *window);
 
 #pragma endregion HEADERS
 
-#pragma region[rgba(10, 10, 10, 0.5)] MAIN
+#pragma region MAIN
 int main(int, char **)
 {
   // Setup window
@@ -116,7 +118,7 @@ int main(int, char **)
 
 #pragma endregion MAIN
 
-#pragma region[rgba(50, 100, 100, 0.2)] DRAW_LOOP
+#pragma region DRAW_LOOP
   // Main loop
   while (!glfwWindowShouldClose(window))
   {
@@ -161,33 +163,3 @@ int main(int, char **)
   return 0;
 }
 #pragma endregion DRAW_LOOP
-
-#pragma region[rgba(100, 0, 0, 0.3)] FUNCTIONS
-
-// TODO idealmente isso fica no scene loader, mas n consegui colocar lá sem ter problemas
-void CreateScene(int scene)
-{
-  switch (scene)
-  {
-  case 2:
-    g_Scene2->camera = new Camera2D(g_Scene2->shader.ID);
-    break;
-  case 3:
-    g_Scene3->camera = new FreeCamera(g_Scene3->shader.ID);
-    g_Scene3->BuildTrianglesAndAddToVirtualScene();
-    break;
-  case 4:
-    g_Scene4->camera = new FreeCamera(g_Scene4->shader.ID);
-    g_Scene4->CreateBezierLine();
-
-    ObjModel bunnymodel("../data/bunny.obj");
-    ComputeNormals(&bunnymodel);
-    g_Scene4->BuildTrianglesAndAddToVirtualScene(&bunnymodel);
-
-    ObjModel planemodel("../data/plane.obj");
-    ComputeNormals(&planemodel);
-    g_Scene4->BuildTrianglesAndAddToVirtualScene(&planemodel);
-    break;
-  }
-}
-#pragma endregion

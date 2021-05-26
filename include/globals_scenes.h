@@ -6,6 +6,10 @@
 #define CLASS_HEADER_INTERFACE
 #include "interface.h"
 #endif
+#ifndef CLASS_HEADER_INITIALIZE_GLOBALS
+#define CLASS_HEADER_INITIALIZE_GLOBALS
+#include "initialize_globals.h"
+#endif
 
 extern InterfaceScene4 *g_InterfaceScene4;
 

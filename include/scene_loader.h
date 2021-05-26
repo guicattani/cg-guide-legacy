@@ -1,8 +1,3 @@
-#ifndef CLASS_HEADER_SCENE
-#define CLASS_HEADER_SCENE
-#include "scene.h"
-#endif
-
 #ifndef CLASS_HEADER_INITIALIZE_GLOBALS
 #define CLASS_HEADER_INITIALIZE_GLOBALS
 #include "globals.h"
@@ -13,5 +8,9 @@
 #include "shader.h"
 #endif
 
-void CreateProgramForScene(int scene);
+#ifndef CLASS_HEADER_SCENE_GLOBALS
+#define CLASS_HEADER_SCENE_GLOBALS
+#include "globals_scenes.h"
+#endif
+
 void CreateScene(int scene);
