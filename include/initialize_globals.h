@@ -75,6 +75,5 @@ double g_LastTime = 0;
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-std::map<std::string, SceneObject> Globals::g_VirtualScene;
 double Globals::g_LastCursorPosX, Globals::g_LastCursorPosY;
 ImGuiIO *Globals::g_Io;

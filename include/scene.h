@@ -23,6 +23,8 @@
 #include "shader.h"
 #endif
 
+using namespace std;
+
 class Scene2
 {
 private:
@@ -39,7 +41,6 @@ private:
 public:
   Camera2D* camera;
   int seconds;
-  int program_id;
   Shader shader = Shader("../src/scene_2_shader_vertex.glsl", "../src/scene_2_shader_fragment.glsl");
 
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
@@ -49,8 +50,8 @@ public:
 class Scene3
 {
 public:
+  map<string, SceneObject> virtualScene;
   FreeCamera* camera;
-  int program_id;
   Shader shader = Shader("../src/scene_3_shader_vertex.glsl", "../src/scene_3_shader_fragment.glsl");
 
   void BuildTrianglesAndAddToVirtualScene();
@@ -66,8 +67,8 @@ private:
   int last_frame = -1;
 
 public:
+  map<string, SceneObject> virtualScene;
   FreeCamera* camera;
-  int program_id;
   Shader shader = Shader("../src/scene_4_shader_vertex.glsl", "../src/scene_4_shader_fragment.glsl");
   static int bezier_samples;
 
@@ -92,10 +93,10 @@ private:
   glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
 public:
+  map<string, SceneObject> virtualScene;
   FreeCamera* camera;
-  int program_id;
-  static const char *shader_vertex_filepath;
-  static const char *shader_fragment_filepath;
+  Shader lightingShader = Shader("../src/scene_5_color_vertex.glsl", "../src/scene_5_color_fragment.glsl");
+  Shader lightCubeShader = Shader("../src/scene_5_light_vertex.glsl", "../src/scene_5_light_fragment.glsl");
 
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();

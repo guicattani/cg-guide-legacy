@@ -46,8 +46,8 @@ void Scene4::CreateBezierLine()
   bezier_lines.num_indices = 6;
   bezier_lines.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
   bezier_lines.vertex_array_object_id = vertex_array_object_id;
-  // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
-  Globals::g_VirtualScene["bezier_lines"] = bezier_lines;
+  // Adicionamos o objeto criado acima na nossa cena virtual (this->virtualScene).
+  this->virtualScene["bezier_lines"] = bezier_lines;
 
   // Criamos um buffer OpenGL para armazenar os índices acima
   GLuint indices_id;
@@ -135,7 +135,7 @@ void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel *model)
     theobject.rendering_mode = GL_TRIANGLES;              // Índices correspondem ao tipo de rasterização GL_TRIANGLES.
     theobject.vertex_array_object_id = vertex_array_object_id;
 
-    Globals::g_VirtualScene[model->shapes[shape].name] = theobject;
+    this->virtualScene[model->shapes[shape].name] = theobject;
   }
 
   GLuint VBO_model_coefficients_id;
@@ -236,14 +236,14 @@ void Scene4::Render()
   model = Matrix_Translate(p.x, p.y, p.z) * Matrix_Rotate_Z(g_AngleZ) * Matrix_Rotate_Y(g_AngleY) * Matrix_Rotate_X(g_AngleX);
   shader.setMat4("scene4_model", model);
   shader.setInt("object_id", BUNNY);
-  DrawVirtualObject("bunny");
+  DrawVirtualObject(this->virtualScene["bunny"]);
   glBindVertexArray(0);
 
   // Desenhamos o plano do chão
   model = Matrix_Translate(0.0f, -1.0f, 0.0f) * Matrix_Scale(2.0f, 1.0f, 2.0f);
   shader.setMat4("scene4_model", model);
   shader.setInt("object_id", PLANE);
-  DrawVirtualObject("plane");
+  DrawVirtualObject(this->virtualScene["plane"]);
   glBindVertexArray(0);
 
   // int samples = 8;
@@ -260,7 +260,7 @@ void Scene4::Render()
   };
   // clang-format on
 
-  glBindVertexArray(Globals::g_VirtualScene["bezier_lines"].vertex_array_object_id);
+  glBindVertexArray(this->virtualScene["bezier_lines"].vertex_array_object_id);
   // Mexe no buffer dinamicamente, atualizando a posição dos vértices da linha.
   glBindBuffer(GL_ARRAY_BUFFER, VBO_bezier_line);
   // Utilizamos BufferSubData para alterar os valores sem realocar memória (glBufferData faz realocação).
@@ -272,7 +272,7 @@ void Scene4::Render()
   model = Matrix_Identity(); // Reseta matriz de modelagem
   shader.setMat4("scene4_model", model);
   shader.setInt("object_id", BEZIER_LINE);
-  DrawVirtualObject("bezier_lines");
+  DrawVirtualObject(this->virtualScene["bezier_lines"]);
 
   glPointSize(15.0f);
   for (int i = 0; i < 4; i++)

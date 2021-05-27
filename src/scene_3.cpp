@@ -212,10 +212,10 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   cube_faces.rendering_mode = GL_TRIANGLES; // índices correspondem ao tipo de rasterização GL_TRIANGLES.
 
   cube_faces.vertex_array_object_id = vertex_array_object_id;
-  Globals::g_VirtualScene["cube_faces"] = cube_faces;
+  this->virtualScene["cube_faces"] = cube_faces;
 
-  // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
-  // Globals::g_VirtualScene["cube_faces"] = cube_faces;
+  // Adicionamos o objeto criado acima na nossa cena virtual (this->virtualScene).
+  // this->virtualScene["cube_faces"] = cube_faces;
 
   // Criamos um segundo objeto virtual (SceneObject) que se refere às arestas
   // pretas do cubo.
@@ -225,8 +225,8 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   cube_edges.num_indices = 24;                            // último índice está em indices[59]; total de 24 índices.
   cube_edges.rendering_mode = GL_LINES;                   // índices correspondem ao tipo de rasterização GL_LINES.
 
-  // Adicionamos o objeto criado acima na nossa cena virtual (Globals::g_VirtualScene).
-  Globals::g_VirtualScene["cube_edges"] = cube_edges;
+  // Adicionamos o objeto criado acima na nossa cena virtual (this->virtualScene).
+  this->virtualScene["cube_edges"] = cube_edges;
 
   // Criamos um terceiro objeto virtual (SceneObject) que se refere aos eixos XYZ.
   SceneObject axes;
@@ -234,7 +234,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   axes.first_index = (void *)(60 * sizeof(GLuint)); // Primeiro índice está em indices[60]
   axes.num_indices = 6;                             // último índice está em indices[65]; total de 6 índices.
   axes.rendering_mode = GL_LINES;                   // índices correspondem ao tipo de rasterização GL_LINES.
-  Globals::g_VirtualScene["axes"] = axes;
+  this->virtualScene["axes"] = axes;
 
   // Criamos um buffer OpenGL para armazenar os índices acima
   GLuint indices_id;
@@ -270,7 +270,7 @@ void Scene3::Render()
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
   // vértices apontados pelo VAO criado pela função BuildTriangles(). Veja
   // comentários detalhados dentro da definição de BuildTriangles().
-  glBindVertexArray(Globals::g_VirtualScene["cube_faces"].vertex_array_object_id);
+  glBindVertexArray(this->virtualScene["cube_faces"].vertex_array_object_id);
 
   // Vamos desenhar 3 instâncias (cópias) do cubo
   for (int i = 1; i <= 3; ++i)
@@ -326,20 +326,20 @@ void Scene3::Render()
     // "model", "view" e "projection" definidas acima e já enviadas
     // para a placa de vídeo (GPU).
     //
-    // Veja a definição de Globals::g_VirtualScene["cube_faces"] dentro da
+    // Veja a definição de this->virtualScene["cube_faces"] dentro da
     // função BuildTriangles(), e veja a documentação da função
     // glDrawElements() em http://docs.gl/gl3/glDrawElements.
     glDrawElements(
-        Globals::g_VirtualScene["cube_faces"].rendering_mode, // Veja slide 178 do documento "Aula_04_Modelagem_Geometrica_3D.pdf".
-        Globals::g_VirtualScene["cube_faces"].num_indices,    //
+        this->virtualScene["cube_faces"].rendering_mode, // Veja slide 178 do documento "Aula_04_Modelagem_Geometrica_3D.pdf".
+        this->virtualScene["cube_faces"].num_indices,    //
         GL_UNSIGNED_INT,
-        (void *)Globals::g_VirtualScene["cube_faces"].first_index);
+        (void *)this->virtualScene["cube_faces"].first_index);
 
     // Pedimos para OpenGL desenhar linhas com largura de 4 pixels.
     glLineWidth(4.0f);
     // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
     // apontados pelo VAO como linhas. Veja a definição de
-    // Globals::g_VirtualScene["axes"] dentro da função BuildTriangles(), e veja
+    // this->virtualScene["axes"] dentro da função BuildTriangles(), e veja
     // a documentação da função glDrawElements() em
     // http://docs.gl/gl3/glDrawElements.
     //
@@ -348,10 +348,10 @@ void Scene3::Render()
     // geométricas que o cubo. Isto é, estes eixos estarão
     // representando o sistema de coordenadas do modelo (e não o global)!
     glDrawElements(
-        Globals::g_VirtualScene["axes"].rendering_mode,
-        Globals::g_VirtualScene["axes"].num_indices,
+        this->virtualScene["axes"].rendering_mode,
+        this->virtualScene["axes"].num_indices,
         GL_UNSIGNED_INT,
-        (void *)Globals::g_VirtualScene["axes"].first_index);
+        (void *)this->virtualScene["axes"].first_index);
 
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "true". Veja o arquivo
@@ -359,14 +359,14 @@ void Scene3::Render()
     shader.setBool("render_as_black", true);
     // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
     // VAO como linhas, formando as arestas pretas do cubo. Veja a
-    // definição de Globals::g_VirtualScene["cube_edges"] dentro da função
+    // definição de this->virtualScene["cube_edges"] dentro da função
     // BuildTriangles(), e veja a documentação da função
     // glDrawElements() em http://docs.gl/gl3/glDrawElements.
     glDrawElements(
-        Globals::g_VirtualScene["cube_edges"].rendering_mode,
-        Globals::g_VirtualScene["cube_edges"].num_indices,
+        this->virtualScene["cube_edges"].rendering_mode,
+        this->virtualScene["cube_edges"].num_indices,
         GL_UNSIGNED_INT,
-        (void *)Globals::g_VirtualScene["cube_edges"].first_index);
+        (void *)this->virtualScene["cube_edges"].first_index);
     // Desenhamos um ponto de tamanho 15 pixels em cima do terceiro vértice
     // do terceiro cubo. Este vértice tem coordenada de modelo igual é
     // (0.5, 0.5, 0.5, 1.0).

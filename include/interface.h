@@ -45,3 +45,9 @@ class InterfaceScene4
 public:
   static void Show();
 };
+
+class InterfaceScene5
+{
+public:
+  static void Show();
+};

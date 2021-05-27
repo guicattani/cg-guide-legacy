@@ -3,25 +3,25 @@
 #include "model_loader.h"
 #endif
 
-// Função que desenha um objeto armazenado em g_VirtualScene. Veja definição
+// Função que desenha um objeto armazenado em virtualScene. Veja definição
 // dos objetos na função BuildTrianglesAndAddToVirtualScene().
-void DrawVirtualObject(const char *object_name)
+void DrawVirtualObject(SceneObject sceneObject)
 {
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
   // vértices apontados pelo VAO criado pela função BuildTrianglesAndAddToVirtualScene(). Veja
   // comentários detalhados dentro da definição de BuildTrianglesAndAddToVirtualScene().
-  glBindVertexArray(Globals::g_VirtualScene[object_name].vertex_array_object_id);
+  glBindVertexArray(sceneObject.vertex_array_object_id);
 
   // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
   // apontados pelo VAO como linhas. Veja a definição de
-  // g_VirtualScene[""] dentro da função BuildTrianglesAndAddToVirtualScene(), e veja
+  // virtualScene[""] dentro da função BuildTrianglesAndAddToVirtualScene(), e veja
   // a documentação da função glDrawElements() em
   // http://docs.gl/gl3/glDrawElements.
   glDrawElements(
-      Globals::g_VirtualScene[object_name].rendering_mode,
-      Globals::g_VirtualScene[object_name].num_indices,
+      sceneObject.rendering_mode,
+      sceneObject.num_indices,
       GL_UNSIGNED_INT,
-      (void *)Globals::g_VirtualScene[object_name].first_index);
+      (void *)sceneObject.first_index);
 
   // "Desligamos" o VAO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.

@@ -84,9 +84,6 @@ extern double g_NowTime, g_DeltaTime, g_LastTime;
 class Globals
 {
 public:
-  // Variável da cena atual.
-  static std::map<std::string, SceneObject> g_VirtualScene;
-
   // Variáveis globais que armazenam a última posição do cursor do mouse, para
   // que possamos calcular quanto que o mouse se movimentou entre dois instantes
   // de tempo. Utilizadas no callback CursorPosCallback() abaixo.
