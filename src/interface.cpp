@@ -117,6 +117,7 @@ void Interface::SceneLoader()
     g_CurrentScene = 2;
     g_SceneChanged = true;
   }
+  ImGui::SameLine();
   if (ImGui::Button("Scene 3"))
   {
     g_CurrentScene = 3;

@@ -8,23 +8,23 @@ void CreateScene(int scene)
   switch (scene)
   {
   case 2:
-    g_Scene2->camera = new Camera2D(g_Scene2->shader.ID);
+    g_Scene2->camera = new Camera2D();
     break;
   case 3:
-    g_Scene3->camera = new FreeCamera(g_Scene3->shader.ID);
+    g_Scene3->camera = new FreeCamera();
     g_Scene3->BuildTrianglesAndAddToVirtualScene();
     break;
   case 4:
-    g_Scene4->camera = new FreeCamera(g_Scene4->shader.ID);
+    g_Scene4->camera = new FreeCamera();
     g_Scene4->CreateBezierLine();
 
-    ObjModel bunnymodel("../data/bunny.obj");
-    ComputeNormals(&bunnymodel);
-    g_Scene4->BuildTrianglesAndAddToVirtualScene(&bunnymodel);
+    g_Scene4->sceneModels["bunny_model"] = ObjModel("../data/bunny.obj");
+    ComputeNormals(&g_Scene4->sceneModels["bunny_model"]);
+    g_Scene4->BuildTrianglesAndAddToVirtualScene(&g_Scene4->sceneModels["bunny_model"]);
 
-    ObjModel planemodel("../data/plane.obj");
-    ComputeNormals(&planemodel);
-    g_Scene4->BuildTrianglesAndAddToVirtualScene(&planemodel);
+    g_Scene4->sceneModels["plane"] = ObjModel("../data/plane.obj");
+    ComputeNormals(&g_Scene4->sceneModels["plane"]);
+    g_Scene4->BuildTrianglesAndAddToVirtualScene(&g_Scene4->sceneModels["plane"]);
     break;
   }
 }

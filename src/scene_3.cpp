@@ -206,7 +206,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // Criamos um primeiro objeto virtual (SceneObject) que se refere às faces
   // coloridas do cubo.
   SceneObject cube_faces;
-  cube_faces.name = "Cubo (faces coloridas)";
+  cube_faces.name = "Cube (colored faces)";
   cube_faces.first_index = (void *)0;       // Primeiro índice está em indices[0]
   cube_faces.num_indices = 36;              // último índice está em indices[35]; total de 36 índices.
   cube_faces.rendering_mode = GL_TRIANGLES; // índices correspondem ao tipo de rasterização GL_TRIANGLES.
@@ -220,7 +220,7 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   // Criamos um segundo objeto virtual (SceneObject) que se refere às arestas
   // pretas do cubo.
   SceneObject cube_edges;
-  cube_edges.name = "Cubo (arestas pretas)";
+  cube_edges.name = "Cube (black lines)";
   cube_edges.first_index = (void *)(36 * sizeof(GLuint)); // Primeiro índice está em indices[36]
   cube_edges.num_indices = 24;                            // último índice está em indices[59]; total de 24 índices.
   cube_edges.rendering_mode = GL_LINES;                   // índices correspondem ao tipo de rasterização GL_LINES.
@@ -264,7 +264,8 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
 
 void Scene3::Render()
 {
-  this->camera->Enable();
+  this->camera->Enable(this->shaders);
+  this->shaders["scene"].use();
 
 #pragma region[rgba(0, 50, 50, 0.3)] Draw cube_faces
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
@@ -314,11 +315,11 @@ void Scene3::Render()
     // Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o
     // arquivo "shader_vertex.glsl", onde esta é efetivamente
     // aplicada em todos os pontos.
-    shader.setMat4("scene3_model", model);
+    shaders["scene"].setMat4("scene3_model", model);
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "false". Veja o arquivo
     // "shader_vertex.glsl".
-    shader.setBool("render_as_black", false);
+    shaders["scene"].setBool("render_as_black", false);
     // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
     // VAO como triângulos, formando as faces do cubo. Esta
     // renderização irá executar o Vertex Shader definido no arquivo
@@ -356,7 +357,7 @@ void Scene3::Render()
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "true". Veja o arquivo
     // "shader_vertex.glsl".
-    shader.setBool("render_as_black", true);
+    shaders["scene"].setBool("render_as_black", true);
     // Pedimos para a GPU rasterizar os vértices do cubo apontados pelo
     // VAO como linhas, formando as arestas pretas do cubo. Veja a
     // definição de this->virtualScene["cube_edges"] dentro da função

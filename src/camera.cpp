@@ -1,6 +1,11 @@
+#ifndef CLASS_HEADER_SHADER
+#define CLASS_HEADER_SHADER
+#include "shader.h"
+#endif
 #include "camera.h"
+using namespace std;
 
-void FreeCamera::Enable()
+void FreeCamera::Enable(map<string, Shader> shaders)
 {
   // Computamos a posição da câmera utilizando coordenadas esféricas.  As
   // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
@@ -58,6 +63,13 @@ void FreeCamera::Enable()
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo
   // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
   // efetivamente aplicadas em todos os pontos.
-  glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(view));
-  glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projection));
+
+  for (auto const& shader : shaders)
+  {
+    GLint view_uniform = glGetUniformLocation(shader.second.ID, "camera_view");
+    GLint projection_uniform = glGetUniformLocation(shader.second.ID, "camera_projection");
+
+    glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projection));
+  }
 }

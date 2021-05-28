@@ -202,6 +202,9 @@ GLfloat NDC_coefficients[sizeOfArray*4*4];
 
 void Scene2::Render()
 {
+  this->seconds = (int)glfwGetTime();
+  this->shader.use();
+
   bool binary[4];
   int index;
   int sizeOfArray = 0;

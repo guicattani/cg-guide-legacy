@@ -41,7 +41,7 @@ void Scene4::CreateBezierLine()
       2, 3};
 
   SceneObject bezier_lines;
-  bezier_lines.name = "Linha Bezier";
+  bezier_lines.name = "Bezier Lines";
   bezier_lines.first_index = (void *)0;
   bezier_lines.num_indices = 6;
   bezier_lines.rendering_mode = GL_LINES; // índices correspondem ao tipo de rasterização GL_LINES.
@@ -194,7 +194,9 @@ void Scene4::BuildTrianglesAndAddToVirtualScene(ObjModel *model)
 
 void Scene4::Render()
 {
-  this->camera->Enable();
+  this->camera->Enable(this->shaders);
+  this->shaders["scene"].use();
+
   glLineWidth(1.0f);
 
   glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
@@ -202,8 +204,8 @@ void Scene4::Render()
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo
   // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
   // efetivamente aplicadas em todos os pontos.
-  shader.setMat4("camera_view", this->camera->view);
-  shader.setMat4("camera_projection", this->camera->projection);
+  shaders["scene"].setMat4("camera_view", this->camera->view);
+  shaders["scene"].setMat4("camera_projection", this->camera->projection);
 
 #define SPHERE 0
 #define BUNNY 1
@@ -234,15 +236,15 @@ void Scene4::Render()
 
   // Desenhamos o modelo do coelho
   model = Matrix_Translate(p.x, p.y, p.z) * Matrix_Rotate_Z(g_AngleZ) * Matrix_Rotate_Y(g_AngleY) * Matrix_Rotate_X(g_AngleX);
-  shader.setMat4("scene4_model", model);
-  shader.setInt("object_id", BUNNY);
+  shaders["scene"].setMat4("scene4_model", model);
+  shaders["scene"].setInt("object_id", BUNNY);
   DrawVirtualObject(this->virtualScene["bunny"]);
   glBindVertexArray(0);
 
   // Desenhamos o plano do chão
   model = Matrix_Translate(0.0f, -1.0f, 0.0f) * Matrix_Scale(2.0f, 1.0f, 2.0f);
-  shader.setMat4("scene4_model", model);
-  shader.setInt("object_id", PLANE);
+  shaders["scene"].setMat4("scene4_model", model);
+  shaders["scene"].setInt("object_id", PLANE);
   DrawVirtualObject(this->virtualScene["plane"]);
   glBindVertexArray(0);
 
@@ -270,8 +272,8 @@ void Scene4::Render()
   // delete[] bezier_line_coefficients;
 
   model = Matrix_Identity(); // Reseta matriz de modelagem
-  shader.setMat4("scene4_model", model);
-  shader.setInt("object_id", BEZIER_LINE);
+  shaders["scene"].setMat4("scene4_model", model);
+  shaders["scene"].setInt("object_id", BEZIER_LINE);
   DrawVirtualObject(this->virtualScene["bezier_lines"]);
 
   glPointSize(15.0f);

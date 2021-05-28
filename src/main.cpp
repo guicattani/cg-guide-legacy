@@ -138,16 +138,12 @@ int main(int, char **)
     switch (g_CurrentScene)
     {
     case 2:
-      g_Scene2->seconds = (int)glfwGetTime();
-      g_Scene2->shader.use();
       g_Scene2->Render();
       break;
     case 3:
-      g_Scene3->shader.use();
       g_Scene3->Render();
       break;
     case 4:
-      g_Scene4->shader.use();
       g_Scene4->Render();
       break;
     }

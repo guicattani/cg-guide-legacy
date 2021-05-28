@@ -54,6 +54,7 @@ struct ObjModel
   std::vector<tinyobj::shape_t> shapes;
   std::vector<tinyobj::material_t> materials;
 
+  ObjModel() {};
   // Este construtor lê o modelo de um arquivo utilizando a biblioteca tinyobjloader.
   // Veja: https://github.com/syoyo/tinyobjloader
   ObjModel(const char *filename, const char *basepath = NULL, bool triangulate = true)

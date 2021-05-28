@@ -41,7 +41,8 @@ private:
 public:
   Camera2D* camera;
   int seconds;
-  Shader shader = Shader("../src/scene_2_shader_vertex.glsl", "../src/scene_2_shader_fragment.glsl");
+  Shader shader = Shader("../src/shaders/scene_2_shader_vertex.glsl",
+                         "../src/shaders/scene_2_shader_fragment.glsl");
 
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
@@ -51,11 +52,16 @@ class Scene3
 {
 public:
   map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
   FreeCamera* camera;
-  Shader shader = Shader("../src/scene_3_shader_vertex.glsl", "../src/scene_3_shader_fragment.glsl");
 
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
+
+  Scene3() {
+    shaders["scene"] = Shader("../src/shaders/scene_3_shader_vertex.glsl",
+                              "../src/shaders/scene_3_shader_fragment.glsl");
+  }
 };
 
 class Scene4
@@ -67,9 +73,10 @@ private:
   int last_frame = -1;
 
 public:
+  map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
   FreeCamera* camera;
-  Shader shader = Shader("../src/scene_4_shader_vertex.glsl", "../src/scene_4_shader_fragment.glsl");
   static int bezier_samples;
 
   float t = 0;
@@ -85,20 +92,9 @@ public:
   void CreateBezierLine();
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
   void Render();
-};
 
-class Scene5
-{
-private:
-  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
-
-public:
-  map<string, SceneObject> virtualScene;
-  FreeCamera* camera;
-  Shader lightingShader = Shader("../src/scene_5_color_vertex.glsl", "../src/scene_5_color_fragment.glsl");
-  Shader lightCubeShader = Shader("../src/scene_5_light_vertex.glsl", "../src/scene_5_light_fragment.glsl");
-
-  void LoadShaderVariables();
-  void BuildTrianglesAndAddToVirtualScene();
-  void Render();
+  Scene4() {
+    shaders["scene"] = Shader("../src/shaders/scene_4_shader_vertex.glsl",
+                              "../src/shaders/scene_4_shader_fragment.glsl");
+  }
 };

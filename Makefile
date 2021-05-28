@@ -19,7 +19,7 @@ BIN=./bin
 
 EXE = main
 SOURCES = ./src/main.cpp
-SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/shaders.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
+SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
 SOURCES += ./src/model_loader.cpp
 SOURCES += ./src/scene_loader.cpp ./src/scene_2.cpp ./src/scene_2_interface.cpp ./src/scene_3.cpp ./src/scene_3_interface.cpp ./src/scene_4.cpp ./src/scene_4_interface.cpp
 
