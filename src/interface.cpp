@@ -129,6 +129,12 @@ void Interface::SceneLoader()
     g_CurrentScene = 4;
     g_SceneChanged = true;
   }
+  ImGui::SameLine();
+  if (ImGui::Button("Scene 5"))
+  {
+    g_CurrentScene = 5;
+    g_SceneChanged = true;
+  }
 
   ImGui::Separator();
 
@@ -142,6 +148,9 @@ void Interface::SceneLoader()
     break;
   case 4:
     InterfaceScene4::Show();
+    break;
+  case 5:
+    InterfaceScene5::Show();
     break;
   }
 }

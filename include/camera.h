@@ -43,7 +43,8 @@ public:
   glm::mat4 view;
 
   FreeCamera() : Camera() {};
-  void Enable(map<string, Shader> shaders);
+  void Enable();
+  void UpdateShaderUniforms(Shader shader);
 };
 
 class Camera2D : public Camera

@@ -96,13 +96,15 @@ int main(int, char **)
   g_Scene2 = new Scene2();
   g_Scene3 = new Scene3();
   g_Scene4 = new Scene4();
+  g_Scene5 = new Scene5();
 
   //Seleciona a cena 4 como inicial
-  g_CurrentScene = 3;
+  g_CurrentScene = 5;
 
   CreateScene(2);
   CreateScene(3);
   CreateScene(4);
+  CreateScene(5);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -145,6 +147,9 @@ int main(int, char **)
       break;
     case 4:
       g_Scene4->Render();
+      break;
+    case 5:
+      g_Scene5->Render();
       break;
     }
 

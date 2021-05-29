@@ -264,8 +264,9 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
 
 void Scene3::Render()
 {
-  this->camera->Enable(this->shaders);
   this->shaders["scene"].use();
+  this->camera->Enable();
+  this->camera->UpdateShaderUniforms(this->shaders["scene"]);
 
 #pragma region[rgba(0, 50, 50, 0.3)] Draw cube_faces
   // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
@@ -315,7 +316,7 @@ void Scene3::Render()
     // Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o
     // arquivo "shader_vertex.glsl", onde esta é efetivamente
     // aplicada em todos os pontos.
-    shaders["scene"].setMat4("scene3_model", model);
+    shaders["scene"].setMat4("model", model);
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "false". Veja o arquivo
     // "shader_vertex.glsl".

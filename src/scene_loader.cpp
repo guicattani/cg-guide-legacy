@@ -26,5 +26,9 @@ void CreateScene(int scene)
     ComputeNormals(&g_Scene4->sceneModels["plane"]);
     g_Scene4->BuildTrianglesAndAddToVirtualScene(&g_Scene4->sceneModels["plane"]);
     break;
+  case 5:
+    g_Scene5->camera = new FreeCamera();
+    g_Scene5->BuildTrianglesAndAddToVirtualScene();
+    break;
   }
 }

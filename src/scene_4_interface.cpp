@@ -29,7 +29,10 @@ void InterfaceScene4::Show()
 
   ImGui::Separator();
 
-  // ImGui::Text("Camera");
-  // ImGui::Text("Position: %f %f %f %f", (float) g_Scene4->camera->position[0], (float) g_Scene4->camera->position[1], (float) g_Scene4->camera->position[2], (float) g_Scene4->camera->position[3]);
+  ImGui::Text("Camera");
+  ImGui::Text("Position: %f %f %f %f", (float) g_Scene4->camera->position[0],
+                                       (float) g_Scene4->camera->position[1],
+                                       (float) g_Scene4->camera->position[2],
+                                       (float) g_Scene4->camera->position[3]);
 
 }

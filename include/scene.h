@@ -98,5 +98,25 @@ public:
                               "../src/shaders/scene_4_shader_scene_fragment.glsl");
   }
 };
+
+class Scene5
+{
+private:
+  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+
+public:
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  FreeCamera* camera;
+
+  void LoadShaderVariables();
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+
+  Scene5() {
+    shaders["color_shader"] = Shader("../src/shaders/scene_5_color_vertex.glsl",
+                                     "../src/shaders/scene_5_color_fragment.glsl");
+    shaders["light_shader"] = Shader("../src/shaders/scene_5_light_vertex.glsl",
+                                     "../src/shaders/scene_5_light_fragment.glsl");
   }
 };
