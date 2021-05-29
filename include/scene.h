@@ -41,8 +41,8 @@ private:
 public:
   Camera2D* camera;
   int seconds;
-  Shader shader = Shader("../src/shaders/scene_2_shader_scene_vertex.glsl",
-                         "../src/shaders/scene_2_shader_scene_fragment.glsl");
+  Shader shader = Shader("../src/shaders/scene_2_shader_scene.vert",
+                         "../src/shaders/scene_2_shader_scene.frag");
 
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
@@ -59,8 +59,8 @@ public:
   void Render();
 
   Scene3() {
-    shaders["scene"] = Shader("../src/shaders/scene_3_shader_scene_vertex.glsl",
-                              "../src/shaders/scene_3_shader_scene_fragment.glsl");
+    shaders["scene"] = Shader("../src/shaders/scene_3_shader_scene.vert",
+                              "../src/shaders/scene_3_shader_scene.frag");
   }
 };
 
@@ -94,8 +94,8 @@ public:
   void Render();
 
   Scene4() {
-    shaders["scene"] = Shader("../src/shaders/scene_4_shader_scene_vertex.glsl",
-                              "../src/shaders/scene_4_shader_scene_fragment.glsl");
+    shaders["scene"] = Shader("../src/shaders/scene_4_shader_scene.vert",
+                              "../src/shaders/scene_4_shader_scene.frag");
   }
 };
 
@@ -114,9 +114,9 @@ public:
   void Render();
 
   Scene5() {
-    shaders["color_shader"] = Shader("../src/shaders/scene_5_color_vertex.glsl",
-                                     "../src/shaders/scene_5_color_fragment.glsl");
-    shaders["light_shader"] = Shader("../src/shaders/scene_5_light_vertex.glsl",
-                                     "../src/shaders/scene_5_light_fragment.glsl");
+    shaders["color_shader"] = Shader("../src/shaders/scene_5_shader_color.vert",
+                                     "../src/shaders/scene_5_shader_color.frag");
+    shaders["light_shader"] = Shader("../src/shaders/scene_5_shader_light.vert",
+                                     "../src/shaders/scene_5_shader_light.frag");
   }
 };
