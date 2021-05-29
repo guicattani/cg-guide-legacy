@@ -8,42 +8,47 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
 {
   // This is not using EBO
   GLfloat vertices[] = {
-	    -0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	-0.5f,	 0.5f,
-	    -0.5f,	 0.5f,	 0.5f,
-	     0.5f,	 0.5f,	-0.5f,
-	    -0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	 0.5f,	-0.5f,
-	     0.5f,	-0.5f,	 0.5f,
-	    -0.5f,	-0.5f,	-0.5f,
-	     0.5f,	-0.5f,	-0.5f,
-	     0.5f,	 0.5f,	-0.5f,
-	     0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	 0.5f,	 0.5f,
-	    -0.5f,	 0.5f,	-0.5f,
-	     0.5f,	-0.5f,	 0.5f,
-	    -0.5f,	-0.5f,	 0.5f,
-	    -0.5f,	-0.5f,	-0.5f,
-	    -0.5f,	 0.5f,	 0.5f,
-	    -0.5f,	-0.5f,	 0.5f,
-	     0.5f,	-0.5f,	 0.5f,
-	     0.5f,	 0.5f,	 0.5f,
-	     0.5f,	-0.5f,	-0.5f,
-	     0.5f,	 0.5f,	-0.5f,
-	     0.5f,	-0.5f,	-0.5f,
-	     0.5f,	 0.5f,	 0.5f,
-	     0.5f,	-0.5f,	 0.5f,
-	     0.5f,	 0.5f,	 0.5f,
-	     0.5f,	 0.5f,	-0.5f,
-	    -0.5f,	 0.5f,	-0.5f,
-	     0.5f,	 0.5f,	 0.5f,
-	    -0.5f,	 0.5f,	-0.5f,
-	    -0.5f,	 0.5f,	 0.5f,
-	     0.5f,	 0.5f,	 0.5f,
-	    -0.5f,	 0.5f,	 0.5f,
-	     0.5f,	-0.5f,	 0.5f
+      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  // Left Side
+      -1.0f,-1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
+      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
+      -1.0f, 1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  // Left Side
+
+       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  // Back Side
+      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
+       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
+       1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
+      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  // Back Side
+
+       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,  // Bottom Side
+      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,
+       1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,
+       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,
+      -1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,
+      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,  // Bottom Side
+
+      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // Front Side
+      -1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+       1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // Front Side
+
+       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  // Right Side
+       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
+       1.0f, 1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
+       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
+       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
+       1.0f,-1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  // Right Side
+
+       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // Top Side
+       1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
+       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f   // Top Side
     };
 
   GLuint VBO_vertices_id, VAO_cube_id, VAO_light_cube_id;
@@ -54,7 +59,12 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   glBindVertexArray(VAO_cube_id);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  // normal attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   SceneObject cube;
   cube.name = "Cube";
@@ -69,7 +79,7 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
   glGenVertexArrays(1, &VAO_light_cube_id);
   glBindVertexArray(VAO_light_cube_id);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_vertices_id);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 
   SceneObject light_cube;
   light_cube.name = "Light Cube";
@@ -89,12 +99,11 @@ void Scene5::Render()
   this->camera->UpdateShaderUniforms(this->shaders["color_shader"]);
   this->shaders["color_shader"].setVec3("objectColor", 1.0f, 0.5f, 0.31f);
   this->shaders["color_shader"].setVec3("lightColor",  1.0f, 1.0f, 1.0f);
+  this->shaders["color_shader"].setVec3("lightPos",  this->lightPos);
 
   glm::mat4 model = glm::mat4(1.0f);
   this->shaders["color_shader"].setMat4("model", model);
 
-  this->shaders["color_shader"].setMat4("view", this->camera->view);
-  this->shaders["color_shader"].setMat4("projection", this->camera->projection);
 
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);

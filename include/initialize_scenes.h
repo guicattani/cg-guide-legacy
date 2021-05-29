@@ -9,3 +9,4 @@ Scene2 *g_Scene2;
 Scene3 *g_Scene3;
 Scene4 *g_Scene4;
 Scene5 *g_Scene5;
+Scene6 *g_Scene6;

@@ -30,5 +30,9 @@ void CreateScene(int scene)
     g_Scene5->camera = new FreeCamera();
     g_Scene5->BuildTrianglesAndAddToVirtualScene();
     break;
+  case 6:
+    g_Scene6->camera = new FreeCamera();
+    g_Scene6->BuildTrianglesAndAddToVirtualScene();
+    break;
   }
 }

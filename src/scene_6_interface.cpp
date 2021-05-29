@@ -8,10 +8,8 @@
 #include "interface.h"
 #endif
 
-void InterfaceScene5::Show()
+void InterfaceScene6::Show()
 {
-  ImGui::SliderFloat3("Light Position", (float *)&g_Scene5->lightPos, -3.0f, 3.0f);
-
   ImGui::Text("Camera");
   ImGui::Text("Position: %f %f %f %f", (float) g_Scene5->camera->position[0],
                                        (float) g_Scene5->camera->position[1],

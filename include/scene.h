@@ -101,13 +101,12 @@ public:
 
 class Scene5
 {
-private:
-  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
-
 public:
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
   FreeCamera* camera;
+
+  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
@@ -118,5 +117,26 @@ public:
                                      "../src/shaders/scene_5_shader_color.frag");
     shaders["light_shader"] = Shader("../src/shaders/scene_5_shader_light.vert",
                                      "../src/shaders/scene_5_shader_light.frag");
+  }
+};
+
+class Scene6
+{
+public:
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  FreeCamera* camera;
+
+  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+
+  void LoadShaderVariables();
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+
+  Scene6() {
+    shaders["color_shader"] = Shader("../src/shaders/scene_6_shader_color.vert",
+                                     "../src/shaders/scene_6_shader_color.frag");
+    shaders["light_shader"] = Shader("../src/shaders/scene_6_shader_light.vert",
+                                     "../src/shaders/scene_6_shader_light.frag");
   }
 };
