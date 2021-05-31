@@ -97,9 +97,13 @@ void Scene5::Render()
 
   this->shaders["color_shader"].use();
   this->camera->UpdateShaderUniforms(this->shaders["color_shader"]);
+  this->shaders["color_shader"].setFloat("ambientStrength",  this->ambientStrength);
+  this->shaders["color_shader"].setFloat("gouradSpecularStrength",  this->gouradSpecularStrength);
+  this->shaders["color_shader"].setFloat("phongSpecularStrength",  this->phongSpecularStrength);
   this->shaders["color_shader"].setVec3("objectColor", 1.0f, 0.5f, 0.31f);
   this->shaders["color_shader"].setVec3("lightColor",  1.0f, 1.0f, 1.0f);
   this->shaders["color_shader"].setVec3("lightPos",  this->lightPos);
+  this->shaders["color_shader"].setVec3("viewPos",  this->camera->position);
 
   glm::mat4 model = glm::mat4(1.0f);
   this->shaders["color_shader"].setMat4("model", model);

@@ -106,6 +106,9 @@ public:
   map<string, Shader> shaders;
   FreeCamera* camera;
 
+  float ambientStrength = 0.1f;
+  float gouradSpecularStrength = 0.f;
+  float phongSpecularStrength = 1.f;
   glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
 
   void LoadShaderVariables();
