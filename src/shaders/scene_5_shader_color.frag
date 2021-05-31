@@ -11,6 +11,7 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform float ambientStrength;
 uniform float phongSpecularStrength;
+uniform float diffuseStrength;
 
 void main()
 {
@@ -26,7 +27,7 @@ void main()
     //For that reason we use the max function that returns the highest of both its
     //parameters to make sure the diffuse component (and thus the colors) never become negative.
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 diffuse = diff * lightColor * diffuseStrength;
 
     //Phong Specular
     vec3 viewDir = normalize(viewPos - FragPos);

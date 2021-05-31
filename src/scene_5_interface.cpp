@@ -10,8 +10,9 @@
 
 void InterfaceScene5::Show()
 {
-  ImGui::SliderFloat3("Light Position", (float *)&g_Scene5->lightPos, -3.0f, 3.0f);
+  ImGui::SliderFloat3("Light Position", (float *)&g_Scene5->lightPos, -5.0f, 5.0f);
   ImGui::SliderFloat("Ambient Strength", (float *)&g_Scene5->ambientStrength, 0.0f, 1.0f);
+  ImGui::SliderFloat("Diffuse Strength", (float *)&g_Scene5->diffuseStrength, 0.0f, 3.0f);
   ImGui::SliderFloat("Gourad (Vertex based) Specular Strength", (float *)&g_Scene5->gouradSpecularStrength, 0.0f, 3.0f);
   ImGui::SliderFloat("Phong (Fragment based) Specular Strength", (float *)&g_Scene5->phongSpecularStrength, 0.0f, 3.0f);
 
