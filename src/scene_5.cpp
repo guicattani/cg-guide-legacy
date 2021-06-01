@@ -8,47 +8,47 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
 {
   // This is not using EBO
   GLfloat vertices[] = {
-      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  // Left Side
-      -1.0f,-1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
-      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
-      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,
-      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,
-      -1.0f, 1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  // Left Side
+      -0.3f,-0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,  // Left Side
+      -0.3f,-0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,
+      -0.3f, 0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,
+      -0.3f,-0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,
+      -0.3f, 0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,
+      -0.3f, 0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,  // Left Side
 
-       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  // Back Side
-      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
-      -1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
-       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
-       1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,
-      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  // Back Side
+       0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  // Back Side
+      -0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,
+      -0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,
+       0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,
+       0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,
+      -0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  // Back Side
 
-       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,  // Bottom Side
-      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,
-       1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,
-       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,
-      -1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,
-      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,  // Bottom Side
+       0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,  // Bottom Side
+      -0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,
+       0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,
+       0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,
+      -0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,
+      -0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,  // Bottom Side
 
-      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // Front Side
-      -1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-       1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  // Front Side
+      -0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  // Front Side
+      -0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,
+       0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,
+       0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,
+      -0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,
+       0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  // Front Side
 
-       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  // Right Side
-       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
-       1.0f, 1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
-       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,
-       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-       1.0f,-1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  // Right Side
+       0.3f, 0.3f, 0.3f,   1.0f, 0.0f, 0.0f,  // Right Side
+       0.3f,-0.3f,-0.3f,   1.0f, 0.0f, 0.0f,
+       0.3f, 0.3f,-0.3f,   1.0f, 0.0f, 0.0f,
+       0.3f,-0.3f,-0.3f,   1.0f, 0.0f, 0.0f,
+       0.3f, 0.3f, 0.3f,   1.0f, 0.0f, 0.0f,
+       0.3f,-0.3f, 0.3f,   1.0f, 0.0f, 0.0f,  // Right Side
 
-       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  // Top Side
-       1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
-      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
-       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,
-      -1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f   // Top Side
+       0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f,  // Top Side
+       0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,
+      -0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,
+       0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f,
+      -0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,
+      -0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f   // Top Side
     };
 
   GLuint VBO_vertices_id, VAO_cube_id, VAO_light_cube_id;
@@ -97,28 +97,66 @@ void Scene5::Render()
 
   this->shaders["color_shader"].use();
   this->camera->UpdateShaderUniforms(this->shaders["color_shader"]);
-  this->shaders["color_shader"].setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+  this->shaders["color_shader"].setVec3("objectColor", 1.0f, 0.4f, 0.31f);
   this->shaders["color_shader"].setVec3("lightColor",  1.0f, 1.0f, 1.0f);
   this->shaders["color_shader"].setVec3("lightPos",  this->lightPos);
   this->shaders["color_shader"].setVec3("viewPos",  this->camera->position);
 
-  this->shaders["color_shader"].setFloat("ambientStrength",  this->ambientStrength);
-  this->shaders["color_shader"].setFloat("gouradSpecularStrength",  this->gouradSpecularStrength);
-  this->shaders["color_shader"].setFloat("phongSpecularStrength",  this->phongSpecularStrength);
-  this->shaders["color_shader"].setFloat("diffuseStrength",  this->diffuseStrength);
-
+  // Ambient cube
+  this->shaders["color_shader"].setFloat("gouradSpecularStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("phongSpecularStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("diffuseStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("ambientStrength", this->ambientStrength);
   glm::mat4 model = glm::mat4(1.0f);
-  this->shaders["color_shader"].setMat4("model", model);
+  model = glm::translate(model, glm::vec3(2.0f, 0.0f, 2.5f));
 
+  this->shaders["color_shader"].setMat4("model", model);
+  glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
+  glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
+
+
+  // Diffuse cube
+  this->shaders["color_shader"].setFloat("gouradSpecularStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("phongSpecularStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("diffuseStrength", this->diffuseStrength);
+  this->shaders["color_shader"].setFloat("ambientStrength", 0.0f);
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(1.0f, 0.0f, 2.5f));
+  this->shaders["color_shader"].setMat4("model", model);
+  glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
+  glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
+
+
+  // Specular cube
+  this->shaders["color_shader"].setFloat("gouradSpecularStrength", this->gouradSpecularStrength);
+  this->shaders["color_shader"].setFloat("phongSpecularStrength", this->phongSpecularStrength);
+  this->shaders["color_shader"].setFloat("diffuseStrength", 0.0f);
+  this->shaders["color_shader"].setFloat("ambientStrength", 0.0f);
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.5f));
+  this->shaders["color_shader"].setMat4("model", model);
 
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
 
+  // Combined cube
+  this->shaders["color_shader"].setFloat("gouradSpecularStrength", this->gouradSpecularStrength);
+  this->shaders["color_shader"].setFloat("phongSpecularStrength", this->phongSpecularStrength);
+  this->shaders["color_shader"].setFloat("diffuseStrength", this->diffuseStrength);
+  this->shaders["color_shader"].setFloat("ambientStrength", this->ambientStrength);
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.5f));
+  this->shaders["color_shader"].setMat4("model", model);
+
+  glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
+  glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
+
+  //Light cube
   this->shaders["light_shader"].use();
   this->camera->UpdateShaderUniforms(this->shaders["light_shader"]);
   model = glm::mat4(1.0f);
   model = glm::translate(model, this->lightPos);
-  model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+  model = glm::scale(model, glm::vec3(0.5f)); // a smaller cube
   this->shaders["light_shader"].setMat4("model", model);
 
   glBindVertexArray(this->virtualScene["light_cube"].vertex_array_object_id);
