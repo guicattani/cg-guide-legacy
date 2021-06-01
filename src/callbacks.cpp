@@ -1,3 +1,8 @@
+#ifndef CLASS_HEADER_SCENE_GLOBALS
+#define CLASS_HEADER_SCENE_GLOBALS
+#include "globals_scenes.h"
+#endif
+
 #include "callbacks.h"
 
 // definição da função que será chamada sempre que a janela do sistema
@@ -64,20 +69,52 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
   float dx = float(xpos - Globals::g_LastCursorPosX);
   float dy = float(ypos - Globals::g_LastCursorPosY);
 
-  // Atualizamos parâmetros da câmera com os deslocamentos
-  g_CameraTheta -= 0.01f * dx;
-  g_CameraPhi += 0.01f * dy;
-
-  // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
   float phimax = 3.141592f / 2;
   float phimin = -phimax;
 
-  if (g_CameraPhi > phimax)
-    g_CameraPhi = phimax;
+  switch (g_CurrentScene)
+  {
+  case 3:
+    g_Scene3->camera->theta -= 0.01f * dx;
+    g_Scene3->camera->phi += 0.01f * dy;
 
-  if (g_CameraPhi < phimin)
-    g_CameraPhi = phimin;
+    if (g_Scene3->camera->phi > phimax) {
+      g_Scene3->camera->phi = phimax;
+    } else if (g_Scene3->camera->phi < phimin) {
+      g_Scene3->camera->phi = phimin;
+    }
+    break;
+  case 4:
+    g_Scene4->camera->theta -= 0.01f * dx;
+    g_Scene4->camera->phi += 0.01f * dy;
 
+    if (g_Scene4->camera->phi > phimax) {
+      g_Scene4->camera->phi = phimax;
+    } else if (g_Scene4->camera->phi < phimin) {
+      g_Scene4->camera->phi = phimin;
+    }
+    break;
+  case 5:
+    g_Scene5->camera->theta -= 0.01f * dx;
+    g_Scene5->camera->phi += 0.01f * dy;
+
+    if (g_Scene5->camera->phi > phimax) {
+      g_Scene5->camera->phi = phimax;
+    } else if (g_Scene5->camera->phi < phimin) {
+      g_Scene5->camera->phi = phimin;
+    }
+    break;
+  case 6:
+    g_Scene6->camera->theta -= 0.01f * dx;
+    g_Scene6->camera->phi += 0.01f * dy;
+
+    if (g_Scene6->camera->phi > phimax) {
+      g_Scene6->camera->phi = phimax;
+    } else if (g_Scene6->camera->phi < phimin) {
+      g_Scene6->camera->phi = phimin;
+    }
+    break;
+  }
   // Atualizamos as variáveis globais para armazenar a posição atual do
   // cursor como sendo a última posição conhecida do cursor.
   Globals::g_LastCursorPosX = xpos;

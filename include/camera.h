@@ -17,6 +17,7 @@
 #define CLASS_CAMERA_CLASS_HEADER
 
 using namespace std;
+using namespace glm;
 
 class Quaternion
 {
@@ -38,11 +39,19 @@ class FreeCamera : public Camera
 private:
   Quaternion quaternion;
 public:
-  glm::vec4 position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-  glm::mat4 projection;
-  glm::mat4 view;
+  float theta;
+  float phi;
 
-  FreeCamera() : Camera() {};
+  vec4 lookAt;
+  vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+  mat4 projection;
+  mat4 view;
+
+  FreeCamera(vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f), float theta = 0.0f, float phi = 0.0f) : Camera() {
+    this->position = position;
+    this->theta = theta;
+    this->phi = phi;
+  };
   void Enable();
   void UpdateShaderUniforms(Shader shader);
 };

@@ -4,6 +4,7 @@
 #endif
 #include "camera.h"
 using namespace std;
+using namespace glm;
 
 void FreeCamera::Enable()
 {
@@ -11,15 +12,15 @@ void FreeCamera::Enable()
   // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
   // controladas pelo mouse do usuário. Veja as funções CursorPosCallback()
   // e ScrollCallback().
-  quaternion.x = 2.0f * cos(g_CameraPhi) * sin(g_CameraTheta);
-  quaternion.y = 2.0f * sin(g_CameraPhi);
-  quaternion.z = 2.0f * cos(g_CameraPhi) * cos(g_CameraTheta);
+  quaternion.x = 2.0f * cos(phi) * sin(theta);
+  quaternion.y = 2.0f * sin(phi);
+  quaternion.z = 2.0f * cos(phi) * cos(theta);
   // Abaixo definimos as variáveis que efetivamente definem a câmera virtual.
   // Veja slide 165 do documento "Aula_08_Sistemas_de_Coordenadas.pdf".
-  glm::vec4 camera_lookat_l = glm::vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
-  glm::vec4 camera_view_vector = camera_lookat_l - position;                                                                     // Vetor "view", sentido para onde a câmera está virada
-  glm::vec4 camera_up_vector = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);                                                                // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
-  glm::vec4 camera_right_vector = crossproduct(camera_view_vector, camera_up_vector);
+  vec4 camera_lookat_l = vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
+  vec4 camera_view_vector = camera_lookat_l - position;                                                                     // Vetor "view", sentido para onde a câmera está virada
+  vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);                                                                // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
+  vec4 camera_right_vector = crossproduct(camera_view_vector, camera_up_vector);
   if (WPressed)
     position += 0.01f * camera_view_vector;
   if (SPressed)

@@ -3,6 +3,8 @@
 #include "scene_loader.h"
 #endif
 
+using namespace glm;
+
 void CreateScene(int scene)
 {
   switch (scene)
@@ -27,7 +29,7 @@ void CreateScene(int scene)
     g_Scene4->BuildTrianglesAndAddToVirtualScene(&g_Scene4->sceneModels["plane"]);
     break;
   case 5:
-    g_Scene5->camera = new FreeCamera();
+    g_Scene5->camera = new FreeCamera(vec4(-1.5f, 0.5f, -0.3f, 1.0f), 0.56f, 0.07f);
     g_Scene5->BuildTrianglesAndAddToVirtualScene();
     break;
   case 6:

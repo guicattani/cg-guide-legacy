@@ -21,4 +21,7 @@ void InterfaceScene5::Show()
                                        (float) g_Scene5->camera->position[1],
                                        (float) g_Scene5->camera->position[2],
                                        (float) g_Scene5->camera->position[3]);
+
+  ImGui::Text("Theta: %f", (float) g_Scene5->camera->theta);
+  ImGui::Text("Phi: %f", (float) g_Scene5->camera->phi);
 }
