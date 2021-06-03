@@ -68,5 +68,6 @@ void FreeCamera::Enable()
 
 void FreeCamera::UpdateShaderUniforms(Shader shader) {
   shader.setMat4("view", view);
+  shader.setVec3("viewPos", position);
   shader.setMat4("projection", projection);
 }

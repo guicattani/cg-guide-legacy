@@ -158,6 +158,9 @@ void Interface::SceneLoader()
   case 5:
     InterfaceScene5::Show();
     break;
+  case 6:
+    InterfaceScene6::Show();
+    break;
   }
 }
 

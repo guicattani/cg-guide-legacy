@@ -24,6 +24,7 @@
 #endif
 
 using namespace std;
+using namespace glm;
 
 class Scene2
 {
@@ -84,10 +85,10 @@ public:
   float y;
   float z;
 
-  glm::vec3 a = glm::vec3(1.0f, 0.0f, 1.0f);
-  glm::vec3 b = glm::vec3(1.0f, 3.0f, 0.0f);
-  glm::vec3 c = glm::vec3(-1.0f, -2.0f, 0.0f);
-  glm::vec3 d = glm::vec3(-1.0f, 1.0f, -1.0f);
+  vec3 a = vec3(1.0f, 0.0f, 1.0f);
+  vec3 b = vec3(1.0f, 3.0f, 0.0f);
+  vec3 c = vec3(-1.0f, -2.0f, 0.0f);
+  vec3 d = vec3(-1.0f, 1.0f, -1.0f);
 
   void CreateBezierLine();
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
@@ -107,10 +108,10 @@ public:
   FreeCamera* camera;
 
   float ambientStrength = 0.1f;
-  float gouradSpecularStrength = 0.f;
+  float gouradSpecularStrength = 0.0f;
   float phongSpecularStrength = 1.0f;
   float diffuseStrength = 1.0f;
-  glm::vec3 lightPos = glm::vec3(0.5f, 0.0f, 1.6f);
+  vec3 lightPos = vec3(0.5f, 0.0f, 1.6f);
 
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
@@ -127,17 +128,42 @@ public:
 class Scene6
 {
 public:
+  struct Material {
+      vec3 ambient;
+      vec3 diffuse;
+      vec3 specular;
+      float shininess;
+  };
+
+  struct Light {
+      vec3 position;
+      vec3 ambient;
+      vec3 diffuse;
+      vec3 specular;
+  };
+
+  float gouradSpecularStrength = 0.0f;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
   FreeCamera* camera;
-
-  glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+  Material* material;
+  Light* light;
 
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
 
   Scene6() {
+    material = new Material { vec3(1.0f, 0.5f, 0.31f),
+                              vec3(1.0f, 0.5f, 0.31f),
+                              vec3(0.5f, 0.5f, 0.5f),
+                              32.0f };
+
+    light = new Light { vec3(1.2f, 1.0f, 2.0f),
+                        vec3(1.0f, 1.0f, 1.0f),
+                        vec3(1.0f, 1.0f, 1.0f),
+                        vec3(1.0f, 1.0f, 1.0f) };
+
     shaders["color_shader"] = Shader("../src/shaders/scene_6_shader_color.vert",
                                      "../src/shaders/scene_6_shader_color.frag");
     shaders["light_shader"] = Shader("../src/shaders/scene_6_shader_light.vert",

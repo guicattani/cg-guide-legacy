@@ -100,7 +100,6 @@ void Scene5::Render()
   this->shaders["color_shader"].setVec3("objectColor", 1.0f, 0.4f, 0.31f);
   this->shaders["color_shader"].setVec3("lightColor",  1.0f, 1.0f, 1.0f);
   this->shaders["color_shader"].setVec3("lightPos",  this->lightPos);
-  this->shaders["color_shader"].setVec3("viewPos",  this->camera->position);
 
   // Ambient cube
   this->shaders["color_shader"].setFloat("gouradSpecularStrength", 0.0f);
