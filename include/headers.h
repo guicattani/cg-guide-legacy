@@ -14,7 +14,6 @@
 #endif
 
 #include <GLFW/glfw3.h>
-#include <SOIL2/SOIL2.h>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>

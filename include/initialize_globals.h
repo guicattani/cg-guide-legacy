@@ -64,6 +64,8 @@ glm::vec4 g_Camera_right_vector;
 int g_CurrentScene = 3;
 bool g_SceneChanged = true;
 
+unsigned int g_NumLoadedTextures = 0;
+
 bool g_HoldTime = false;
 int g_Frames = 0;
 int g_Updates = 0;

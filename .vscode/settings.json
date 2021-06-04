@@ -94,6 +94,7 @@
     "projecoes",
     "respectivamente",
     "roboto",
+    "storei",
     "sulzbach",
     "texcoord",
     "tiny",
@@ -105,7 +106,13 @@
     "ypos"
   ],
   "cSpell.words": [
+    "flip",
     "gourad",
-    "phong"
+    "load",
+    "on",
+    "phong",
+    "set",
+    "stbi",
+    "vertically"
   ]
 }

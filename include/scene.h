@@ -129,6 +129,8 @@ class Scene6
 {
 public:
   struct Material {
+      GLuint diffuseTextureId;
+      GLuint specularTextureId;
       vec3 ambient;
       vec3 diffuse;
       vec3 specular;
@@ -142,6 +144,9 @@ public:
       vec3 specular;
   };
 
+  bool useTexture = false;
+  bool useDiffuseTexture = true;
+  bool useSpecularTexture = true;
   float gouradSpecularStrength = 0.0f;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
@@ -154,7 +159,9 @@ public:
   void Render();
 
   Scene6() {
-    material = new Material { vec3(1.0f, 0.5f, 0.31f),
+    material = new Material { 0,
+                              0,
+                              vec3(1.0f, 0.5f, 0.31f),
                               vec3(1.0f, 0.5f, 0.31f),
                               vec3(0.5f, 0.5f, 0.5f),
                               32.0f };

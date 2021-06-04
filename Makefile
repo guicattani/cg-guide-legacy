@@ -48,7 +48,7 @@ SOURCES += ./libs/tiny_obj_loader/tiny_obj_loader.cpp
 SOURCES += ./libs/imgui/imgui_impl_glfw.cpp ./libs/imgui/imgui_impl_opengl3.cpp
 SOURCES += ./libs/imgui/imgui.cpp ./libs/imgui/imgui_demo.cpp ./libs/imgui/imgui_draw.cpp ./libs/imgui/imgui_widgets.cpp
 
-CXXFLAGS += -I./libs/imgui  -I./libs/tiny_obj_loader -I./libs/KHR/ -I./libs/glfw/include
+CXXFLAGS += -I./libs/imgui -I./libs/tiny_obj_loader -I./libs/KHR/ -I./libs/glfw/include
 
 ##---------------------------------------------------------------------
 ## BUILD FLAGS PER PLATFORM
@@ -77,7 +77,7 @@ endif
 
 ifeq ($(OS),Windows_NT)
 	ECHO_MESSAGE = "MinGW"
-	LIBS += -lglfw3 -lgdi32 -lopengl32 -limm32 -lsoil2
+	LIBS += -lglfw3 -lgdi32 -lopengl32 -limm32
 
 	CFLAGS = $(CXXFLAGS)
 endif

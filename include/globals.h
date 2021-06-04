@@ -75,6 +75,8 @@ extern glm::vec4 g_Camera_right_vector;
 extern int g_CurrentScene;
 extern bool g_SceneChanged; // TODO Decide if this is going to be used
 
+extern unsigned int g_NumLoadedTextures;
+
 extern bool g_HoldTime;
 extern int g_Frames;
 extern int g_Updates;

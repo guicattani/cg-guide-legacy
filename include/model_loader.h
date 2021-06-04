@@ -18,3 +18,4 @@
 void ComputeNormals(ObjModel *model);            // Computa normais de um ObjModel, caso não existam.
 void DrawVirtualObject(SceneObject sceneObject); // Desenha um objeto armazenado em virtualScene
 void PrintObjModelInfo(ObjModel *);              // Função para debugging
+GLuint LoadTextureImage(const char* filename);   // Função que carrega uma imagem para ser utilizada como textura

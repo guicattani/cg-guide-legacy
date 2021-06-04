@@ -3,6 +3,56 @@
 #include "model_loader.h"
 #endif
 
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image/stb_image.h"
+#endif
+using namespace std;
+using namespace glm;
+
+// Função que carrega uma imagem para ser utilizada como textura
+GLuint LoadTextureImage(const char* filename)
+{
+    printf("Carregando imagem \"%s\"... ", filename);
+
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(filename, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+         printf("OK.\n");
+    }
+    else
+    {
+        cout << "Texture failed to load at path: " << filename << endl;
+        stbi_image_free(data);
+    }
+
+
+    g_NumLoadedTextures += 1;
+    return textureID;
+}
+
 // Função que desenha um objeto armazenado em virtualScene. Veja definição
 // dos objetos na função BuildTrianglesAndAddToVirtualScene().
 void DrawVirtualObject(SceneObject sceneObject)
@@ -42,8 +92,8 @@ void ComputeNormals(ObjModel *model)
 
   size_t num_vertices = model->attrib.vertices.size() / 3;
 
-  std::vector<int> num_triangles_per_vertex(num_vertices, 0);
-  std::vector<glm::vec4> vertex_normals(num_vertices, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+  vector<int> num_triangles_per_vertex(num_vertices, 0);
+  vector<vec4> vertex_normals(num_vertices, vec4(0.0f, 0.0f, 0.0f, 0.0f));
 
   for (size_t shape = 0; shape < model->shapes.size(); ++shape)
   {
@@ -53,21 +103,21 @@ void ComputeNormals(ObjModel *model)
     {
       assert(model->shapes[shape].mesh.num_face_vertices[triangle] == 3);
 
-      glm::vec4 vertices[3];
+      vec4 vertices[3];
       for (size_t vertex = 0; vertex < 3; ++vertex)
       {
         tinyobj::index_t idx = model->shapes[shape].mesh.indices[3 * triangle + vertex];
         const float vx = model->attrib.vertices[3 * idx.vertex_index + 0];
         const float vy = model->attrib.vertices[3 * idx.vertex_index + 1];
         const float vz = model->attrib.vertices[3 * idx.vertex_index + 2];
-        vertices[vertex] = glm::vec4(vx, vy, vz, 1.0);
+        vertices[vertex] = vec4(vx, vy, vz, 1.0);
       }
 
-      const glm::vec4 a = vertices[0];
-      const glm::vec4 b = vertices[1];
-      const glm::vec4 c = vertices[2];
+      const vec4 a = vertices[0];
+      const vec4 b = vertices[1];
+      const vec4 c = vertices[2];
 
-      const glm::vec4 n = crossproduct(b - a, c - a);
+      const vec4 n = crossproduct(b - a, c - a);
 
       for (size_t vertex = 0; vertex < 3; ++vertex)
       {
@@ -83,7 +133,7 @@ void ComputeNormals(ObjModel *model)
 
   for (size_t i = 0; i < vertex_normals.size(); ++i)
   {
-    glm::vec4 n = vertex_normals[i] / (float)num_triangles_per_vertex[i];
+    vec4 n = vertex_normals[i] / (float)num_triangles_per_vertex[i];
     n /= norm(n);
     model->attrib.normals[3 * i + 0] = n.x;
     model->attrib.normals[3 * i + 1] = n.y;
@@ -97,8 +147,8 @@ void ComputeNormals(ObjModel *model)
 void PrintObjModelInfo(ObjModel *model)
 {
   const tinyobj::attrib_t &attrib = model->attrib;
-  const std::vector<tinyobj::shape_t> &shapes = model->shapes;
-  const std::vector<tinyobj::material_t> &materials = model->materials;
+  const vector<tinyobj::shape_t> &shapes = model->shapes;
+  const vector<tinyobj::material_t> &materials = model->materials;
 
   printf("# of vertices  : %d\n", (int)(attrib.vertices.size() / 3));
   printf("# of normals   : %d\n", (int)(attrib.normals.size() / 3));
@@ -262,9 +312,9 @@ void PrintObjModelInfo(ObjModel *model)
     printf("  material.map_Pm = %s\n", materials[i].metallic_texname.c_str());
     printf("  material.map_Ps = %s\n", materials[i].sheen_texname.c_str());
     printf("  material.norm   = %s\n", materials[i].normal_texname.c_str());
-    std::map<std::string, std::string>::const_iterator it(
+    map<string, string>::const_iterator it(
         materials[i].unknown_parameter.begin());
-    std::map<std::string, std::string>::const_iterator itEnd(
+    map<string, string>::const_iterator itEnd(
         materials[i].unknown_parameter.end());
 
     for (; it != itEnd; it++)

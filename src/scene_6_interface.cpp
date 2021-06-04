@@ -11,9 +11,16 @@
 void InterfaceScene6::Show()
 {
   ImGui::Text("Material");
-  ImGui::ColorEdit3("Material Ambient", (float *)&g_Scene6->material->ambient);
-  ImGui::ColorEdit3("Material Specular", (float *)&g_Scene6->material->specular);
-  ImGui::ColorEdit3("Material Diffuse", (float *)&g_Scene6->material->diffuse);
+  ImGui::Checkbox("Use texture", &g_Scene6->useTexture);
+  if (ImGui::CollapsingHeader("Texture options", &g_Scene6->useTexture)) {
+    ImGui::Checkbox("Use diffuse", &g_Scene6->useDiffuseTexture);
+    ImGui::Checkbox("Use specular", &g_Scene6->useSpecularTexture);
+  }
+  if(!g_Scene6->useTexture) {
+    ImGui::ColorEdit3("Material Ambient", (float *)&g_Scene6->material->ambient);
+    ImGui::ColorEdit3("Material Specular", (float *)&g_Scene6->material->specular);
+    ImGui::ColorEdit3("Material Diffuse", (float *)&g_Scene6->material->diffuse);
+  }
   ImGui::SliderFloat("Material Shininess", (float *)&g_Scene6->material->shininess, -1.0f, 100.0f);
   ImGui::SliderFloat("Gourad Specular Strength", (float *)&g_Scene6->gouradSpecularStrength, 0.0f, 3.0f);
 
