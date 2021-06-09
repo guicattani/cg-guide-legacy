@@ -42,8 +42,8 @@ private:
 public:
   Camera2D* camera;
   int seconds;
-  Shader shader = Shader("../src/shaders/scene_2_shader_scene.vert",
-                         "../src/shaders/scene_2_shader_scene.frag");
+  Shader shader = Shader("../src/scenes/scene_2/shader_scene.vert",
+                         "../src/scenes/scene_2/shader_scene.frag");
 
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
@@ -60,8 +60,8 @@ public:
   void Render();
 
   Scene3() {
-    shaders["scene"] = Shader("../src/shaders/scene_3_shader_scene.vert",
-                              "../src/shaders/scene_3_shader_scene.frag");
+    shaders["scene"] = Shader("../src/scenes/scene_3/shader_scene.vert",
+                              "../src/scenes/scene_3/shader_scene.frag");
   }
 };
 
@@ -95,8 +95,8 @@ public:
   void Render();
 
   Scene4() {
-    shaders["scene"] = Shader("../src/shaders/scene_4_shader_scene.vert",
-                              "../src/shaders/scene_4_shader_scene.frag");
+    shaders["scene"] = Shader("../src/scenes/scene_4/shader_scene.vert",
+                              "../src/scenes/scene_4/shader_scene.frag");
   }
 };
 
@@ -118,10 +118,10 @@ public:
   void Render();
 
   Scene5() {
-    shaders["color_shader"] = Shader("../src/shaders/scene_5_shader_color.vert",
-                                     "../src/shaders/scene_5_shader_color.frag");
-    shaders["light_shader"] = Shader("../src/shaders/scene_5_shader_light.vert",
-                                     "../src/shaders/scene_5_shader_light.frag");
+    shaders["color_shader"] = Shader("../src/scenes/scene_5/shader_color.vert",
+                                     "../src/scenes/scene_5/shader_color.frag");
+    shaders["light_shader"] = Shader("../src/scenes/scene_5/shader_light.vert",
+                                     "../src/scenes/scene_5/shader_light.frag");
   }
 };
 
@@ -171,9 +171,9 @@ public:
                         vec3(1.0f, 1.0f, 1.0f),
                         vec3(1.0f, 1.0f, 1.0f) };
 
-    shaders["color_shader"] = Shader("../src/shaders/scene_6_shader_color.vert",
-                                     "../src/shaders/scene_6_shader_color.frag");
-    shaders["light_shader"] = Shader("../src/shaders/scene_6_shader_light.vert",
-                                     "../src/shaders/scene_6_shader_light.frag");
+    shaders["color_shader"] = Shader("../src/scenes/scene_6/shader_color.vert",
+                                     "../src/scenes/scene_6/shader_color.frag");
+    shaders["light_shader"] = Shader("../src/scenes/scene_6/shader_light.vert",
+                                     "../src/scenes/scene_6/shader_light.frag");
   }
 };
