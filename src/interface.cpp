@@ -179,8 +179,8 @@ void Interface::CameraSettings()
   ImGui::Separator();
 
   ImGui::Text("Frustum Settings");
-  ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -10.0f, 10.0f);
-  ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -10.0f, 10.0f);
+  ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -100.0f, 100.0f);
+  ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -100.0f, 100.0f);
   ImGui::Separator();
 
   ImGui::Text("Camera Vectors");
