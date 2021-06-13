@@ -72,6 +72,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
   float phimax = 3.141592f / 2;
   float phimin = -phimax;
 
+  //TODO fix this, this is very ugly
   switch (g_CurrentScene)
   {
   case 3:
@@ -112,6 +113,16 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene6->camera->phi = phimax;
     } else if (g_Scene6->camera->phi < phimin) {
       g_Scene6->camera->phi = phimin;
+    }
+    break;
+  case 7:
+    g_Scene7->camera->theta -= 0.01f * dx;
+    g_Scene7->camera->phi += 0.01f * dy;
+
+    if (g_Scene7->camera->phi > phimax) {
+      g_Scene7->camera->phi = phimax;
+    } else if (g_Scene7->camera->phi < phimin) {
+      g_Scene7->camera->phi = phimin;
     }
     break;
   }

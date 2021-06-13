@@ -25,7 +25,8 @@ SOURCES += ./src/scene_loader.cpp ./src/scenes/scene_2.cpp ./src/scenes/scene_2_
 																	./src/scenes/scene_3.cpp ./src/scenes/scene_3_interface.cpp \
 																	./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
 																	./src/scenes/scene_5.cpp ./src/scenes/scene_5_interface.cpp \
-																	./src/scenes/scene_6.cpp ./src/scenes/scene_6_interface.cpp
+																	./src/scenes/scene_6.cpp ./src/scenes/scene_6_interface.cpp \
+																	./src/scenes/scene_7.cpp ./src/scenes/scene_7_interface.cpp
 
 INCLUDE	:= ./include
 LIB		  := ./lib
@@ -101,6 +102,8 @@ $(BIN)/%.o:./src/scenes/scene_4/%.cpp
 $(BIN)/%.o:./src/scenes/scene_5/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 $(BIN)/%.o:./src/scenes/scene_6/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+$(BIN)/%.o:./src/scenes/scene_7/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
 $(BIN)/%.o:./libs/imgui/%.cpp

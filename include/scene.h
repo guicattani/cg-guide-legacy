@@ -177,3 +177,80 @@ public:
                                      "../src/scenes/scene_6/shader_light.frag");
   }
 };
+
+class Scene7
+{
+public:
+  struct Material {
+      GLuint diffuseTextureId;
+      GLuint specularTextureId;
+      vec3 ambient;
+      vec3 diffuse;
+      vec3 specular;
+      float shininess;
+  };
+
+  bool directionalLightOn = true;
+  struct DirectionalLight {
+      vec3 direction;
+      vec3 ambient;
+      vec3 diffuse;
+      vec3 specular;
+  };
+
+  bool pointLightOn = true;
+  struct PointLight {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
+  };
+
+  bool useTexture = false;
+  bool useDiffuseTexture = true;
+  bool useSpecularTexture = true;
+  float gouradSpecularStrength = 0.0f;
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  FreeCamera* camera;
+  Material* material;
+  DirectionalLight* directional_light;
+  PointLight* point_light;
+
+  void LoadShaderVariables();
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+
+  Scene7() {
+    material = new Material { 0,
+                              0,
+                              vec3(1.0f, 0.5f, 0.31f),
+                              vec3(1.0f, 0.5f, 0.31f),
+                              vec3(0.5f, 0.5f, 0.5f),
+                              32.0f };
+
+    directional_light = new DirectionalLight { vec3(-1.2f, -1.0f, -2.0f),
+                                               vec3( 0.5f,  0.5f,  0.5f),
+                                               vec3( 0.5f,  0.5f,  0.5f),
+                                               vec3( 0.5f,  0.5f,  0.5f) };
+
+    point_light = new PointLight { vec3(2.0f, 1.0f, 2.0f),
+                                   vec3(0.5f, 0.5f, 0.5f),
+                                   vec3(0.5f, 0.5f, 0.5f),
+                                   vec3(0.5f, 0.5f, 0.5f),
+                                   1.0f,
+                                   0.09f,
+                                   0.032f };
+
+    shaders["color_shader"] = Shader("../src/scenes/scene_7/shader_color.vert",
+                                     "../src/scenes/scene_7/shader_color.frag");
+    shaders["light_shader"] = Shader("../src/scenes/scene_7/shader_light.vert",
+                                     "../src/scenes/scene_7/shader_light.frag");
+    shaders["plane_shader"] = Shader("../src/scenes/scene_7/shader_plane.vert",
+                                     "../src/scenes/scene_7/shader_plane.frag");
+  }
+};
