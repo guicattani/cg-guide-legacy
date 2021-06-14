@@ -15,27 +15,26 @@ RoadMap:
 - Demos
   - [x] Bezier Lines
   - [ ] Culling demo
-  - [ ] Matrix operations
+  - [x] Matrix operations
   - [ ] Texture mapping
-  - [ ] Different shading techniques (Gourad, Phong, Flat)
+  - [x] Different shading techniques (Gourad, Phong, Flat)
   - [ ] Frustrum demo
-  - [ ] Lighting
+  - [x] Lighting
   - [ ] Camera movement
   - [ ] 2D transformations
   - [ ] Normal mapping
   - [ ] Raycasting
-  - [ ] Lerp and other built in OpenGL functions
   - [ ] Portals
   - [ ] Geometric Shaders
   - [ ] Simple 3D Modeling
   - [ ] Colliders
 
+# Build
+
 # Pre Requisites
 
 - Download GLFW3 pre-compiled binaries ([here](https://www.glfw.org/download.html)) for the **same** version as your MinGW/VS version and put it at /lib.
 - No specific IDE is necessary, you use either with makefile or Visual Studio / Code Blocks (projects solutions provided)
-
-# Build
 
 ## Windows
 
