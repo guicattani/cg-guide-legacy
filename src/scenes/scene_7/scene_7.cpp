@@ -4,11 +4,12 @@
 #include "scene.h"
 #endif
 
+using namespace glm;
 
 void Scene7::BuildTrianglesAndAddToVirtualScene()
 {
   // This is not using EBO
-  GLfloat vertices[] = {
+  GLfloat cube_vertices[] = {
       // positions        // normals          //texture coords
       -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Left Side // -X
       -1.0f,-1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
@@ -62,12 +63,40 @@ void Scene7::BuildTrianglesAndAddToVirtualScene()
     -1.0f, 0.0f, 1.0f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f  // Top Side
   };
 
-  GLuint VBO_vertices_id, VBO_plane_vertices_id, VAO_plane_id, VAO_cube_id, VAO_light_cube_id;
-  glGenVertexArrays(1, &VAO_cube_id);
-  glGenBuffers(1, &VBO_vertices_id);
+  GLfloat pyramid_vertices[] = {
+      // positions        // normals
+       1.0f,-1.0f, 1.0f,	-0.5f, 0.0f, 0.5f, // Front Side // +Z
+       0.0f, 1.0f, 0.0f,	-0.5f, 0.0f, 0.5f,
+      -1.0f,-1.0f, 1.0f,	-0.5f, 0.0f, 0.5f, // Front Side
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_vertices_id);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+      -1.0f,-1.0f, 1.0f,	-0.5f, 0.0f, 0.5f, // Right Side // -X
+       0.0f, 1.0f, 0.0f,	-0.5f, 0.0f, 0.5f,
+      -1.0f,-1.0f,-1.0f,	-0.5f, 0.0f, 0.5f, // Right Side
+
+       1.0f,-1.0f,-1.0f,	 0.5f, 0.0f, 0.5f, // Left Side // +X
+       0.0f, 1.0f, 0.0f,   0.5f, 0.0f, 0.5f,
+       1.0f,-1.0f, 1.0f,	 0.5f, 0.0f, 0.5f, // Left Side
+
+      -1.0f,-1.0f,-1.0f,	 0.0f, 0.5f, 0.5f, // Back Side // -Z
+       0.0f, 1.0f, 0.0f,	 0.0f, 0.5f, 0.5f,
+       1.0f,-1.0f,-1.0f,	 0.0f, 0.5f, 0.5f, // Back Side
+
+       1.0f,-1.0f,-1.0f,	 0.0f,-1.0f, 0.0f, // Bottom Side First // -Y
+      -1.0f,-1.0f, 1.0f,	 0.0f,-1.0f, 0.0f,
+      -1.0f,-1.0f,-1.0f,	 0.0f,-1.0f, 0.0f, // Bottom Side
+
+       1.0f,-1.0f,-1.0f,	 0.0f,-1.0f, 0.0f, // Bottom Side Second // -Y
+       1.0f,-1.0f, 1.0f,	 0.0f,-1.0f, 0.0f,
+      -1.0f,-1.0f, 1.0f,	 0.0f,-1.0f, 0.0f, // Bottom Side
+  };
+
+  GLuint VBO_cube_vertices_id, VBO_plane_vertices_id, VBO_pyramid_vertices_id,
+         VAO_plane_id, VAO_cube_id, VAO_light_cube_id, VAO_light_pyramid_id;
+  glGenVertexArrays(1, &VAO_cube_id);
+  glGenBuffers(1, &VBO_cube_vertices_id);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_cube_vertices_id);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), cube_vertices, GL_STATIC_DRAW);
 
   glBindVertexArray(VAO_cube_id);
   // position attribute
@@ -89,10 +118,18 @@ void Scene7::BuildTrianglesAndAddToVirtualScene()
   this->virtualScene["cube"] = cube;
   glEnableVertexAttribArray(0);
 
+  // load texture
+  this->material->diffuseTextureId = LoadTextureImage("../data/container2.png");
+  this->material->specularTextureId = LoadTextureImage("../data/container2_specular.png");
+
+  this->shaders["color_shader"].use();
+  this->shaders["color_shader"].setInt("material.diffuseTexture", 0);
+  this->shaders["color_shader"].setInt("material.specularTexture", 1);
+
   // light VAO
   glGenVertexArrays(1, &VAO_light_cube_id);
   glBindVertexArray(VAO_light_cube_id);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_vertices_id);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_cube_vertices_id);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 
   SceneObject light_cube;
@@ -104,12 +141,30 @@ void Scene7::BuildTrianglesAndAddToVirtualScene()
   this->virtualScene["light_cube"] = light_cube;
   glEnableVertexAttribArray(0);
 
-  this->material->diffuseTextureId = LoadTextureImage("../data/container2.png");
-  this->material->specularTextureId = LoadTextureImage("../data/container2_specular.png");
+  // pyramid light VAO
+  glGenVertexArrays(1, &VAO_light_pyramid_id);
+  glGenBuffers(1, &VBO_pyramid_vertices_id);
 
-  this->shaders["color_shader"].use();
-  this->shaders["color_shader"].setInt("material.diffuseTexture", 0);
-  this->shaders["color_shader"].setInt("material.specularTexture", 1);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_pyramid_vertices_id);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(pyramid_vertices), pyramid_vertices, GL_STATIC_DRAW);
+
+  glBindVertexArray(VAO_light_pyramid_id);
+
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  // normal attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
+  SceneObject light_pyramid;
+  light_pyramid.name = "Light Pyramid";
+  light_pyramid.first_index = (void *)0;
+  light_pyramid.num_indices = 18;
+  light_pyramid.rendering_mode = GL_TRIANGLES;
+  light_pyramid.vertex_array_object_id = VAO_light_pyramid_id;
+  this->virtualScene["light_pyramid"] = light_pyramid;
+  glEnableVertexAttribArray(0);
 
   //plane
   glGenVertexArrays(1, &VAO_plane_id);
@@ -176,17 +231,31 @@ void Scene7::Render()
     glDrawArrays(this->virtualScene["light_cube"].rendering_mode, 0, this->virtualScene["light_cube"].num_indices);
   }
 
+  // spot light
+  if(this->spotLightOn) {
+    this->shaders["light_shader"].use();
+    this->camera->UpdateShaderUniforms(this->shaders["light_shader"]);
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, this->spot_light->position);
+    model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+    this->shaders["light_shader"].setVec3("color", this->spot_light->ambient + this->spot_light->diffuse);
+    this->shaders["light_shader"].setMat4("model", model);
+
+    glBindVertexArray(this->virtualScene["light_pyramid"].vertex_array_object_id);
+    glDrawArrays(this->virtualScene["light_pyramid"].rendering_mode, 0, this->virtualScene["light_pyramid"].num_indices);
+  }
+
   this->shaders["color_shader"].use();
   this->camera->UpdateShaderUniforms(this->shaders["color_shader"]);
 
-  this->shaders["color_shader"].setBool("directionalLightOn", this->directionalLightOn);
+  this->shaders["color_shader"].setBool("directionalLightOn",         this->directionalLightOn);
   this->shaders["color_shader"].setVec3("directionalLight.direction", this->directional_light->direction);
   this->shaders["color_shader"].setVec3("directionalLight.ambient",   this->directional_light->ambient);
   this->shaders["color_shader"].setVec3("directionalLight.diffuse",   this->directional_light->diffuse);
   this->shaders["color_shader"].setVec3("directionalLight.specular",  this->directional_light->specular);
 
-  this->shaders["color_shader"].setBool("pointLightOn", this->pointLightOn);
-  this->shaders["color_shader"].setVec3("pointLight.position",  this->point_light->position);
+  this->shaders["color_shader"].setBool("pointLightOn",          this->pointLightOn);
+  this->shaders["color_shader"].setVec3("pointLight.position",   this->point_light->position);
   this->shaders["color_shader"].setVec3("pointLight.ambient",    this->point_light->ambient);
   this->shaders["color_shader"].setVec3("pointLight.diffuse",    this->point_light->diffuse);
   this->shaders["color_shader"].setVec3("pointLight.specular",   this->point_light->specular);
@@ -194,8 +263,20 @@ void Scene7::Render()
   this->shaders["color_shader"].setFloat("pointLight.linear",    this->point_light->linear);
   this->shaders["color_shader"].setFloat("pointLight.quadratic", this->point_light->quadratic);
 
+  this->shaders["color_shader"].setBool("spotLightOn",            this->spotLightOn);
+  this->shaders["color_shader"].setVec3("spotLight.position",     this->spot_light->position);
+  this->shaders["color_shader"].setVec3("spotLight.direction",    this->spot_light->direction);
+  this->shaders["color_shader"].setVec3("spotLight.ambient",      this->spot_light->ambient);
+  this->shaders["color_shader"].setVec3("spotLight.diffuse",      this->spot_light->diffuse);
+  this->shaders["color_shader"].setVec3("spotLight.specular",     this->spot_light->specular);
+  this->shaders["color_shader"].setFloat("spotLight.constant",    this->spot_light->constant);
+  this->shaders["color_shader"].setFloat("spotLight.linear",      this->spot_light->linear);
+  this->shaders["color_shader"].setFloat("spotLight.quadratic",   this->spot_light->quadratic);
+  this->shaders["color_shader"].setFloat("spotLight.cutOff",      cos(radians(this->spot_light->cutOff)));
+  this->shaders["color_shader"].setFloat("spotLight.outerCutOff", cos(radians(this->spot_light->outerCutOff)));
+
   // material properties
-  this->shaders["color_shader"].setVec3("material.ambient",         this->material->ambient);
+  this->shaders["color_shader"].setVec3("material.ambient",        this->material->ambient);
   this->shaders["color_shader"].setVec3("material.diffuse",         this->material->diffuse);
   this->shaders["color_shader"].setVec3("material.specular",        this->material->specular); // specular lighting doesn't have full effect on this object's material
   this->shaders["color_shader"].setFloat("material.shininess",      this->material->shininess);

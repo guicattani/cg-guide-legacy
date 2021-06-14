@@ -210,6 +210,21 @@ public:
     float quadratic;
   };
 
+  bool spotLightOn = true;
+  struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
+
+    float cutOff;
+    float outerCutOff;
+  };
+
   bool useTexture = false;
   bool useDiffuseTexture = true;
   bool useSpecularTexture = true;
@@ -220,6 +235,7 @@ public:
   Material* material;
   DirectionalLight* directional_light;
   PointLight* point_light;
+  SpotLight* spot_light;
 
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
@@ -245,6 +261,17 @@ public:
                                    1.0f,
                                    0.09f,
                                    0.032f };
+
+    spot_light = new SpotLight { vec3(0.0f, 2.0f, 0.0f),
+                                 vec3(0.0f,-1.0f, 0.0f),
+                                 vec3(0.5f, 0.5f, 0.5f),
+                                 vec3(0.5f, 0.5f, 0.5f),
+                                 vec3(0.5f, 0.5f, 0.5f),
+                                 1.0f,
+                                 0.09f,
+                                 0.032f,
+                                 12.5f,
+                                 15.0f};
 
     shaders["color_shader"] = Shader("../src/scenes/scene_7/shader_color.vert",
                                      "../src/scenes/scene_7/shader_color.frag");
