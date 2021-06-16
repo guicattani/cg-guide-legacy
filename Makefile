@@ -89,6 +89,17 @@ endif
 
 OBJS = $(addsuffix .o, $(basename $(addprefix $(BIN)/,$(notdir $(SOURCES)))))
 
+## Make release build by calling: make RELEASE=1
+## necessary folders are:
+## 	./data
+## 	./misc
+## 	./src/scenes/** (only *.vert and *.frag)
+##
+ifeq ($(RELEASE),1)
+   CXXFLAGS += -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive
+	 LIBS += -static-libgcc -static-libstdc++
+endif
+
 $(BIN)/%.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
@@ -120,6 +131,9 @@ all: $(BIN)/$(EXE)
 
 $(BIN)/$(EXE): $(OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) -L$(LIB) $(LIBS)
+
+release: all
+
 
 run:
 	cd ./bin;	./$(EXE);
