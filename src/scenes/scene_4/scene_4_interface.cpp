@@ -19,13 +19,13 @@ void InterfaceScene4::Show()
 
   ImGui::Checkbox("Hold time", &g_HoldTime);
 
-  ImGui::SliderFloat("Min Range of Graph", (float *)&g_InterfaceScene4->minRange, -3.0f, 3.0f);
-  ImGui::SliderFloat("Max Range of Graph", (float *)&g_InterfaceScene4->maxRange, -3.0f, 3.0f);
+  ImGui::SliderFloat("Min Range of Graph", (float *)&g_Scene4->graphMinRange, -3.0f, 3.0f);
+  ImGui::SliderFloat("Max Range of Graph", (float *)&g_Scene4->graphMaxRange, -3.0f, 3.0f);
 
-  ImGui::PlotVar("Current T", g_Scene4->t, g_HoldTime, g_InterfaceScene4->maxRange, g_InterfaceScene4->minRange);
-  ImGui::PlotVar("Current X", g_Scene4->x, g_HoldTime, g_InterfaceScene4->maxRange, g_InterfaceScene4->minRange);
-  ImGui::PlotVar("Current Y", g_Scene4->y, g_HoldTime, g_InterfaceScene4->maxRange, g_InterfaceScene4->minRange);
-  ImGui::PlotVar("Current Z", g_Scene4->z, g_HoldTime, g_InterfaceScene4->maxRange, g_InterfaceScene4->minRange);
+  ImGui::PlotVar("Current T", g_Scene4->t, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
+  ImGui::PlotVar("Current X", g_Scene4->x, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
+  ImGui::PlotVar("Current Y", g_Scene4->y, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
+  ImGui::PlotVar("Current Z", g_Scene4->z, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
 
   ImGui::Separator();
 

@@ -80,6 +80,9 @@ public:
   FreeCamera* camera;
   static int bezier_samples;
 
+  float graphMinRange = -2.0f;
+  float graphMaxRange = 1.0f;
+
   float t = 0;
   float x;
   float y;
