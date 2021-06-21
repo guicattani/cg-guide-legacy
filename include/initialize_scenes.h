@@ -3,6 +3,7 @@
 #include "globals_scenes.h"
 #endif
 
+Scene1 *g_Scene1;
 Scene2 *g_Scene2;
 Scene3 *g_Scene3;
 Scene4 *g_Scene4;

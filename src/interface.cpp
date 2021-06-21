@@ -31,14 +31,47 @@ void Interface::Init(GLFWwindow *window, const char *glsl_version)
 void Interface::Show(GLFWwindow *window)
 {
   Start();
-  //1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
   if (m_show_demo_window)
     ImGui::ShowDemoWindow(&m_show_demo_window);
 
-  // Usamos um par Begin/End para criar uma nova janela nomeada.
+
+  ImGui::SetNextWindowPos(ImVec2(680, 60), ImGuiCond_FirstUseEver);
+  ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_FirstUseEver);
+
   {
-    // Create a window called "Hello, world!" and append into it.
-    ImGui::Begin("Settings");
+    ImGui::Begin("Details", NULL);
+
+    switch (g_CurrentScene)
+    {
+    case 1:
+      InterfaceScene1::ShowText();
+      break;
+    case 2:
+      InterfaceScene2::ShowText();
+      break;
+    case 3:
+      InterfaceScene3::ShowText();
+      break;
+    case 4:
+      InterfaceScene4::ShowText();
+      break;
+    case 5:
+      InterfaceScene5::ShowText();
+      break;
+    case 6:
+      InterfaceScene6::ShowText();
+      break;
+    case 7:
+      InterfaceScene7::ShowText();
+      break;
+    }
+    ImGui::End();
+  }
+
+  ImGuiWindowFlags window_flags = 0;
+  window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+  {
+    ImGui::Begin("Settings", NULL, window_flags);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
@@ -53,11 +86,6 @@ void Interface::Show(GLFWwindow *window)
         CameraSettings();
         ImGui::EndTabItem();
       }
-      if (ImGui::BeginTabItem("Model"))
-      {
-        ModelSettings();
-        ImGui::EndTabItem();
-      }
       if (ImGui::BeginTabItem("Debug"))
       {
         DebugSettings();
@@ -67,6 +95,7 @@ void Interface::Show(GLFWwindow *window)
     }
     ImGui::End();
   }
+
 
   // Rendering
   ImGui::Render();
@@ -112,6 +141,12 @@ void Interface::Start()
 
 void Interface::SceneLoader()
 {
+  if (ImGui::Button("Scene 1"))
+  {
+    g_CurrentScene = 1;
+    g_SceneChanged = true;
+  }
+  ImGui::SameLine();
   if (ImGui::Button("Scene 2"))
   {
     g_CurrentScene = 2;
@@ -152,23 +187,26 @@ void Interface::SceneLoader()
 
   switch (g_CurrentScene)
   {
+  case 1:
+    InterfaceScene1::ShowControls();
+    break;
   case 2:
-    InterfaceScene2::Show();
+    InterfaceScene2::ShowControls();
     break;
   case 3:
-    InterfaceScene3::Show();
+    InterfaceScene3::ShowControls();
     break;
   case 4:
-    InterfaceScene4::Show();
+    InterfaceScene4::ShowControls();
     break;
   case 5:
-    InterfaceScene5::Show();
+    InterfaceScene5::ShowControls();
     break;
   case 6:
-    InterfaceScene6::Show();
+    InterfaceScene6::ShowControls();
     break;
   case 7:
-    InterfaceScene7::Show();
+    InterfaceScene7::ShowControls();
     break;
   }
 }
@@ -191,19 +229,6 @@ void Interface::CameraSettings()
   ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -100.0f, 100.0f);
   ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -100.0f, 100.0f);
   ImGui::Separator();
-
-  ImGui::Text("Camera Vectors");
-  ImGui::Text("Look at: %f %f %f %f", (float) g_Camera_lookat_l[0], (float) g_Camera_lookat_l[1], (float) g_Camera_lookat_l[2], (float) g_Camera_lookat_l[3]);
-  ImGui::Text("View   : %f %f %f %f", (float) g_Camera_view_vector[0], (float) g_Camera_view_vector[1], (float) g_Camera_view_vector[2], (float) g_Camera_view_vector[3]);
-  ImGui::Text("Up     : %f %f %f %f", (float) g_Camera_up_vector[0], (float) g_Camera_up_vector[1], (float) g_Camera_up_vector[2], (float) g_Camera_up_vector[3]);
-  ImGui::Text("Right  : %f %f %f %f", (float) g_Camera_right_vector[0], (float) g_Camera_right_vector[1], (float) g_Camera_right_vector[2], (float) g_Camera_right_vector[3]);
-}
-
-void Interface::ModelSettings()
-{
-  ImGui::SliderFloat("Angle Z", &g_AngleZ, -10.0f, 10.0f);
-  ImGui::SliderFloat("Angle Y", &g_AngleY, -10.0f, 10.0f);
-  ImGui::SliderFloat("Angle X", &g_AngleX, -10.0f, 10.0f);
 }
 
 void Interface::DebugSettings()
@@ -216,4 +241,6 @@ void Interface::DebugSettings()
   ImGui::Text("Current scene: %d", g_CurrentScene);
   ImGui::Text("Elapsed frames: %d", g_Frames);
   ImGui::Text("Elapsed updates: %d", g_Updates);
+
+  ImGui::Checkbox("Show demo window", &m_show_demo_window);
 }

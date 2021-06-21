@@ -9,6 +9,9 @@ void CreateScene(int scene)
 {
   switch (scene)
   {
+  case 1:
+    g_Scene1->camera = new Camera2D();
+    break;
   case 2:
     g_Scene2->camera = new Camera2D();
     break;

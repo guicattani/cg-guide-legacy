@@ -21,7 +21,8 @@ EXE = main
 SOURCES = ./src/main.cpp
 SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
 SOURCES += ./src/model_loader.cpp
-SOURCES += ./src/scene_loader.cpp ./src/scenes/scene_2.cpp ./src/scenes/scene_2_interface.cpp \
+SOURCES += ./src/scene_loader.cpp ./src/scenes/scene_1.cpp ./src/scenes/scene_1_interface.cpp \
+																	./src/scenes/scene_2.cpp ./src/scenes/scene_2_interface.cpp \
 																	./src/scenes/scene_3.cpp ./src/scenes/scene_3_interface.cpp \
 																	./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
 																	./src/scenes/scene_5.cpp ./src/scenes/scene_5_interface.cpp \
@@ -104,6 +105,8 @@ $(BIN)/%.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
 ### TODO find a way to improve this
+$(BIN)/%.o:./src/scenes/scene_1/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 $(BIN)/%.o:./src/scenes/scene_2/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 $(BIN)/%.o:./src/scenes/scene_3/%.cpp

@@ -8,7 +8,7 @@
 #include "interface.h"
 #endif
 
-void InterfaceScene5::Show()
+void InterfaceScene5::ShowControls()
 {
   ImGui::SliderFloat3("Light Position", (float *)&g_Scene5->lightPos, -5.0f, 5.0f);
   ImGui::SliderFloat("Ambient Strength", (float *)&g_Scene5->ambientStrength, 0.0f, 1.0f);
@@ -24,4 +24,9 @@ void InterfaceScene5::Show()
 
   ImGui::Text("Theta: %f", (float) g_Scene5->camera->theta);
   ImGui::Text("Phi: %f", (float) g_Scene5->camera->phi);
+}
+
+void InterfaceScene5::ShowText() {
+  ImGui::TextWrapped("This text should automatically wrap on the edge of the window. The current implementation for text wrapping follows simple rules suitable for English and possibly other languages.");
+
 }

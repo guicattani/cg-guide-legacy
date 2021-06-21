@@ -8,7 +8,7 @@
 #include "interface.h"
 #endif
 
-void InterfaceScene6::Show()
+void InterfaceScene6::ShowControls()
 {
   ImGui::Text("Material");
   ImGui::Checkbox("Use texture", &g_Scene6->useTexture);
@@ -42,4 +42,9 @@ void InterfaceScene6::Show()
                                        (float) g_Scene6->camera->position[3]);
   ImGui::Text("Theta: %f", (float) g_Scene6->camera->theta);
   ImGui::Text("Phi: %f", (float) g_Scene6->camera->phi);
+}
+
+void InterfaceScene6::ShowText() {
+  ImGui::TextWrapped("This text should automatically wrap on the edge of the window. The current implementation for text wrapping follows simple rules suitable for English and possibly other languages.");
+
 }

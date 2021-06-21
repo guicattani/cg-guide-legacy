@@ -91,6 +91,7 @@ int main(int, char **)
   }
   PrintGPUInformation();
 
+  g_Scene1 = new Scene1();
   g_Scene2 = new Scene2();
   g_Scene3 = new Scene3();
   g_Scene4 = new Scene4();
@@ -98,9 +99,9 @@ int main(int, char **)
   g_Scene6 = new Scene6();
   g_Scene7 = new Scene7();
 
-  //Seleciona a cena 4 como inicial
-  g_CurrentScene = 7;
+  g_CurrentScene = 1;
 
+  CreateScene(1);
   CreateScene(2);
   CreateScene(3);
   CreateScene(4);
@@ -117,7 +118,7 @@ int main(int, char **)
   glFrontFace(GL_CCW);
 
   //Inicializa a Interface (Imgui)
-  Interface interface = Interface(true);
+  Interface interface = Interface(false);
   interface.Init(window, glsl_version);
 
 #pragma endregion MAIN
@@ -141,6 +142,9 @@ int main(int, char **)
 
     switch (g_CurrentScene)
     {
+    case 1:
+      g_Scene1->Render();
+      break;
     case 2:
       g_Scene2->Render();
       break;

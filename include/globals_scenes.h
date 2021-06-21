@@ -11,6 +11,7 @@
 #include "initialize_globals.h"
 #endif
 
+extern Scene1 *g_Scene1;
 extern Scene2 *g_Scene2;
 extern Scene3 *g_Scene3;
 extern Scene4 *g_Scene4;

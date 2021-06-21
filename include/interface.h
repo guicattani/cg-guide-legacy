@@ -26,15 +26,23 @@ public:
   void CleanUp();
 };
 
+class InterfaceScene1
+{
+public:
+  static void ShowControls();
+  static void ShowText();
+};
 class InterfaceScene2
 {
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };
 class InterfaceScene3
 {
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };
 
 class InterfaceScene4
@@ -43,23 +51,27 @@ class InterfaceScene4
   float minRange = -1.0f;
 
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };
 
 class InterfaceScene5
 {
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };
 
 class InterfaceScene6
 {
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };
 
 class InterfaceScene7
 {
 public:
-  static void Show();
+  static void ShowControls();
+  static void ShowText();
 };

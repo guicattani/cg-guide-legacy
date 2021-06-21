@@ -8,7 +8,7 @@
 #include "interface.h"
 #endif
 
-void InterfaceScene4::Show()
+void InterfaceScene4::ShowControls()
 {
   ImGui::SliderFloat3("A", (float *)&g_Scene4->a, -3.0f, 3.0f);
   ImGui::SliderFloat3("B", (float *)&g_Scene4->b, -3.0f, 3.0f);
@@ -34,5 +34,11 @@ void InterfaceScene4::Show()
                                        (float) g_Scene4->camera->position[1],
                                        (float) g_Scene4->camera->position[2],
                                        (float) g_Scene4->camera->position[3]);
+
+}
+
+void InterfaceScene4::ShowText()
+{
+  ImGui::TextWrapped("This text should automatically wrap on the edge of the window. The current implementation for text wrapping follows simple rules suitable for English and possibly other languages.");
 
 }
