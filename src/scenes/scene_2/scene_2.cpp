@@ -23,13 +23,11 @@ GLuint Scene2::BuildTriangles(int seconds, bool isAOne, int digitLocation)
         sizeOfArray = this->one_vertices;
     else
         sizeOfArray = this->zero_vertices;
-GLfloat NDC_coefficients[sizeOfArray*4*4];
 
-    //printf("\nangle=%f",angle);
-    int i;
+    GLfloat NDC_coefficients[sizeOfArray*4*4];
 
     float translation = 0.75f - 0.5f*digitLocation;
-
+    int i;
     if(isAOne)
     {
         NDC_coefficients[0] = -0.05f-translation;
