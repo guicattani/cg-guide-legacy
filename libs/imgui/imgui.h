@@ -717,6 +717,8 @@ namespace ImGui
     // Call this periodically to discard old/unused data
     IMGUI_API void PlotVarFlushOldEntries();
 
+    // Helper to display a little (?) mark which shows a tooltip when hovered.
+    IMGUI_API void HelpMarker(const char* desc);
 } // namespace ImGui
 
 //-----------------------------------------------------------------------------

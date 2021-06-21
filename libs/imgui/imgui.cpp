@@ -3436,6 +3436,20 @@ void ImGui::PlotVarFlushOldEntries()
       ++it;
   }
 }
+
+// Helper to display a little (?) mark which shows a tooltip when hovered.
+void ImGui::HelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
 #pragma endregion
 
 const char *ImGui::GetClipboardText()
