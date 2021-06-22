@@ -202,6 +202,8 @@ void Scene2::Render()
 {
   this->seconds = (int)glfwGetTime();
   this->shader.use();
+  this->camera->Enable();
+  this->camera->UpdateShaderUniforms(this->shader);
 
   bool binary[4];
   int index;

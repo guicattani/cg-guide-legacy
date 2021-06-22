@@ -71,3 +71,23 @@ void FreeCamera::UpdateShaderUniforms(Shader shader) {
   shader.setVec3("viewPos", position);
   shader.setMat4("projection", projection);
 }
+
+void Camera2D::Enable() {
+  vec4 camera_lookat_l = vec4(position.x, position.y, position.z - 1.0f, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
+  vec4 camera_view_vector = camera_lookat_l - position;                  // Vetor "view", sentido para onde a câmera está virada
+  vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);                  // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
+
+  view = Matrix_Camera_View(position, camera_view_vector, camera_up_vector);
+
+  float t = 1.5f * g_CameraDistance / 2.5f;
+  float b = -t;
+  float r = t * g_ScreenRatio;
+  float l = -r;
+  projection = Matrix_Orthographic(l, r, b, t, 0.0f, -10.0f);
+}
+
+void Camera2D::UpdateShaderUniforms(Shader shader) {
+  shader.setMat4("view", view);
+  shader.setVec3("viewPos", position);
+  shader.setMat4("projection", projection);
+}

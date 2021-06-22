@@ -5,6 +5,9 @@
 layout (location = 0) in vec4 NDC_coefficients;
 layout (location = 1) in vec4 color_coefficients;
 
+uniform mat4 view;
+uniform mat4 projection;
+
 // Atributos de vértice que serão gerados como saída ("out") pelo Vertex Shader.
 // ** Estes serão interpolados pelo rasterizador! ** gerando, assim, valores
 // para cada fragmento, os quais serão recebidos como entrada pelo Fragment
@@ -21,7 +24,7 @@ void main()
     // Como o código em "main.cpp" já define estes vértices em NDC (veja o
     // array NDC_coefficients), simplesmente copiamos tais valores para a
     // variável gl_Position.
-    gl_Position = NDC_coefficients;
+    gl_Position = projection * view * NDC_coefficients;
 
     // Como as variáveis acima são vetores com 4 coeficientes (tipo vec4),
     // também é possível acessar e modificar cada coeficiente de maneira

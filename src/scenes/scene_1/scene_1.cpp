@@ -36,6 +36,9 @@ GLuint Scene1::BuildTriangle()
 void Scene1::Render()
 {
   this->shader.use();
+  this->camera->Enable();
+  this->camera->UpdateShaderUniforms(this->shader);
+
   GLuint vertex_array_object_id = BuildTriangle();
   glBindVertexArray(vertex_array_object_id);
 

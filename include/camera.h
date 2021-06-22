@@ -59,8 +59,13 @@ public:
 class Camera2D : public Camera
 {
 public:
+  vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+  mat4 projection;
+  mat4 view;
+
   Camera2D() : Camera() {};
   void Enable();
+  void UpdateShaderUniforms(Shader shader);
 };
 
 
