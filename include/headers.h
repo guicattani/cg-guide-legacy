@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "imgui.h"
+#include "imgui_markdown.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
@@ -71,4 +72,8 @@ struct ObjModel
     printf("OK.\n");
   }
 };
+
+static ImGui::MarkdownConfig mdConfig;
+#include <Windows.h>
+#include "Shellapi.h"
 #endif

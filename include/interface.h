@@ -75,3 +75,9 @@ public:
   static void ShowControls();
   static void ShowText();
 };
+
+namespace ImGuiMarkdown {
+  void LinkCallback( ImGui::MarkdownLinkCallbackData data_ );
+  inline ImGui::MarkdownImageData ImageCallback( ImGui::MarkdownLinkCallbackData data_ );
+  void Markdown( const std::string& markdown_ );
+}

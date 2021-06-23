@@ -17,8 +17,26 @@ void InterfaceScene1::ShowControls()
 
 void InterfaceScene1::ShowText() {
   ImGui::TextColored(ImVec4(0.0f,1.0f,1.0f,1.0f), "Drawing your first triangle");
-  ImGui::SameLine(); ImGui::HelpMarker("The TextDisabled color is stored in ImGuiStyle.");
-  ImGui::TextWrapped("This text should automatically wrap on the edge of the window.\
- The current implementation for text wrapping follows simple rules\
- suitable for English and possibly other languages.");
+  const std::string markdownText  = u8R"(
+    hello ~test~ HELLOO
+    hi ~test~ hi
+    HELLOO     ~test~ aaaaaaaaaaaaaaaaaaaaaaaaHELLOO
+    ~test~
+    # H1 Header: Text and Links
+    You can add [links like this one to enkisoftware](https://www.enkisoftware.com/) and lines will wrap well.
+    You can also insert images ![Lenna](../data/lenna.jpg)
+    Horizontal rules:
+    ***
+    ___
+    *Emphasis* and **strong emphasis** change the appearance of the text.
+    ## H2 Header: indented text.
+      This text has an indent (two leading spaces).
+        This one has two.
+    ### H3 Header: Lists
+      * Unordered lists
+        * Lists can be indented with two extra spaces.
+      * Lists can have [links like this one to Avoyd](https://www.avoyd.com/) and *emphasized text*
+    )";
+   ImGuiMarkdown::Markdown(markdownText);
+   ImGui::SameLine();
 }
