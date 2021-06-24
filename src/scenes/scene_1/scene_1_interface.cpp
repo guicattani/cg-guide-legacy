@@ -24,7 +24,7 @@ void InterfaceScene1::ShowText() {
     ~test~
     # H1 Header: Text and Links
     You can add [links like this one to enkisoftware](https://www.enkisoftware.com/) and lines will wrap well.
-    You can also insert images ![Lenna](../data/lenna.jpg)
+    You can also insert images ![Mars](mars)
     Horizontal rules:
     ***
     ___

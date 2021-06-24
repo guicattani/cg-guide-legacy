@@ -17,12 +17,13 @@ private:
   void CameraSettings();
   void ModelSettings();
   void DebugSettings();
+  void LoadFonts();
+  void LoadImages();
 
 public:
   Interface(bool show_demo_window);
   void Init(GLFWwindow *window, const char *glsl_version);
   void Show(GLFWwindow *window);
-  void LoadFonts();
   void CleanUp();
 };
 

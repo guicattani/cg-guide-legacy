@@ -490,7 +490,7 @@ namespace ImGui
                       }
                       else                 // it's a link, render it.
                       {
-                          // textRegion.RenderLinkTextWrapped( markdown_ + link.text.start, markdown_ + link.text.start + link.text.size(), link, markdown_, mdConfig_, &linkHoverStart, false );
+                          textRegion.RenderLinkTextWrapped( markdown_ + link.text.start, markdown_ + link.text.start + link.text.size(), link, markdown_, mdConfig_, &linkHoverStart, false );
                       }
                       ImGui::SameLine( 0.0f, 0.0f );
                       // reset the link by reinitializing it

@@ -2,6 +2,12 @@
 #define CLASS_HEADER_INTERFACE
 #include "interface.h"
 #endif
+
+#ifndef CLASS_HEADER_MODEL_LOADER
+#define CLASS_HEADER_MODEL_LOADER
+#include "model_loader.h"
+#endif
+
 namespace ImGuiMarkdown {
   void LinkCallback( ImGui::MarkdownLinkCallbackData data_ )
   {
@@ -14,14 +20,14 @@ namespace ImGuiMarkdown {
 
   inline ImGui::MarkdownImageData ImageCallback( ImGui::MarkdownLinkCallbackData data_ )
   {
-      // In your application you would load an image based on data_ input. Here we just use the imgui font texture.
-      ImTextureID image = ImGui::GetIO().Fonts->TexID;
+      std::string filename(data_.link, data_.link + data_.linkLength);
+      Image image =  g_Images[filename.c_str()];
       // > C++14 can use ImGui::MarkdownImageData imageData{ true, false, image, ImVec2( 40.0f, 20.0f ) };
       ImGui::MarkdownImageData imageData;
       imageData.isValid =         true;
       imageData.useLinkCallback = false;
-      imageData.user_texture_id = image;
-      imageData.size =            ImVec2( 40.0f, 20.0f );
+      imageData.user_texture_id = (ImTextureID*) image.texture_id;
+      imageData.size            = ImVec2( image.size.x , image.size.y );
 
       // For image resize when available size.x > image width, add
       ImVec2 const contentSize = ImGui::GetContentRegionAvail();
@@ -47,10 +53,9 @@ namespace ImGuiMarkdown {
   }
 }
 
-
-
 Interface::Interface(bool show_demo_window)
 {
+  LoadImages();
   m_show_demo_window = show_demo_window;
 }
 
@@ -170,6 +175,14 @@ void Interface::LoadFonts()
   //Globals::g_Io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
   //ImFont* font = Globals::g_Io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, Globals::g_Io.Fonts->GetGlyphRangesJapanese());
   //IM_ASSERT(font != NULL);
+}
+
+void Interface::LoadImages() {
+  Image mars;
+  mars.size = glm::vec2(512,512);
+  mars.texture_id = LoadTextureImage("../data/img_mars.jpg");
+
+  g_Images["mars"] = mars;
 }
 
 void Interface::CleanUp()

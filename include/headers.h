@@ -46,6 +46,13 @@ struct SceneObject
   GLuint vertex_array_object_id; // ID do VAO onde estão armazenados os atributos do modelo
 };
 
+// Hold image attributes
+class Image {
+public:
+  glm::vec2 size;
+  GLuint texture_id;
+};
+
 // Estrutura que representa um modelo geométrico carregado a partir de um
 // arquivo ".obj". Veja https://en.wikipedia.org/wiki/Wavefront_.obj_file .
 struct ObjModel

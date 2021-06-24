@@ -74,6 +74,8 @@ double g_NowTime = 0;
 double g_DeltaTime = 0;
 double g_LastTime = 0;
 
+map<string, Image> g_Images;
+
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
