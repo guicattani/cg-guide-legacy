@@ -26,7 +26,7 @@ namespace ImGuiMarkdown {
       ImGui::MarkdownImageData imageData;
       imageData.isValid =         true;
       imageData.useLinkCallback = false;
-      imageData.user_texture_id = (ImTextureID*) image.texture_id;
+      imageData.user_texture_id = (ImTextureID)(intptr_t) image.texture_id;
       imageData.size            = ImVec2( image.size.x , image.size.y );
 
       // For image resize when available size.x > image width, add
