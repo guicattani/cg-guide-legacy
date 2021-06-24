@@ -409,7 +409,6 @@ namespace ImGui
                     }
                 }
             }
-
             // Test to see if we have a link
             switch( link.state )
               {
@@ -491,7 +490,7 @@ namespace ImGui
                       }
                       else                 // it's a link, render it.
                       {
-                          textRegion.RenderLinkTextWrapped( markdown_ + link.text.start, markdown_ + link.text.start + link.text.size(), link, markdown_, mdConfig_, &linkHoverStart, false );
+                          // textRegion.RenderLinkTextWrapped( markdown_ + link.text.start, markdown_ + link.text.start + link.text.size(), link, markdown_, mdConfig_, &linkHoverStart, false );
                       }
                       ImGui::SameLine( 0.0f, 0.0f );
                       // reset the link by reinitializing it
@@ -500,153 +499,155 @@ namespace ImGui
                       break;
                   }
               }
-
-        // Test to see if we have emphasis styling
-        switch( em.state )
-        {
-        case Emphasis::NONE:
-          if( link.state == Link::NO_LINK && !line.isHeading )
-                  {
-                      int next = i + 1;
-                      int prev = i - 1;
-            if( ( c == '*' || c == '_' )
-                          && ( i == line.lineStart
-                              || markdown_[ prev ] == ' '
-                              || markdown_[ prev ] == '\t' ) // emphasis must be preceded by whitespace or line start
-                          && (int)markdownLength_ > next // emphasis must precede non-whitespace
-                          && markdown_[ next ] != ' '
-                          && markdown_[ next ] != '\n'
-                          && markdown_[ next ] != '\t' )
+            // Test to see if we have emphasis styling
+            switch( em.state )
+            {
+            case Emphasis::NONE:
+              if( link.state == Link::NO_LINK && !line.isHeading )
                       {
-              em.state = Emphasis::LEFT;
-              em.sym = c;
-              em.text.start = i;
-              line.emphasisCount = 1;
-              continue;
-            }
-          }
-          break;
-        case Emphasis::LEFT:
-          if( em.sym == c )
-                  {
-            ++line.emphasisCount;
-            continue;
-          }
-                  else
-                  {
-            em.text.start = i;
-            em.state = Emphasis::MIDDLE;
-          }
-          break;
-        case Emphasis::MIDDLE:
-          if( em.sym == c )
-                  {
-            em.state = Emphasis::RIGHT;
-            em.text.stop = i;
-                    // pass through to case Emphasis::RIGHT
-          }
-                  else
-                  {
-                      break;
-                  }
-        case Emphasis::RIGHT:
-          if( em.sym == c )
-                  {
-            if( line.emphasisCount < 3 && ( i - em.text.stop + 1 == line.emphasisCount ) )
+                          int next = i + 1;
+                          int prev = i - 1;
+                if( ( c == '*' || c == '_' )
+                              && ( i == line.lineStart
+                                  || markdown_[ prev ] == ' '
+                                  || markdown_[ prev ] == '\t' ) // emphasis must be preceded by whitespace or line start
+                              && (int)markdownLength_ > next // emphasis must precede non-whitespace
+                              && markdown_[ next ] != ' '
+                              && markdown_[ next ] != '\n'
+                              && markdown_[ next ] != '\t' )
+                          {
+                  em.state = Emphasis::LEFT;
+                  em.sym = c;
+                  em.text.start = i;
+                  line.emphasisCount = 1;
+                  continue;
+                }
+              }
+              break;
+            case Emphasis::LEFT:
+              if( em.sym == c )
                       {
-                        // render text up to emphasis
-                        int lineEnd = em.text.start - line.emphasisCount;
-                        if( lineEnd > line.lineStart )
-                        {
-                            line.lineEnd = lineEnd;
+                ++line.emphasisCount;
+                continue;
+              }
+                      else
+                      {
+                em.text.start = i;
+                em.state = Emphasis::MIDDLE;
+              }
+              break;
+            case Emphasis::MIDDLE:
+              if( em.sym == c )
+                      {
+                em.state = Emphasis::RIGHT;
+                em.text.stop = i;
+                        // pass through to case Emphasis::RIGHT
+              }
+                      else
+                      {
+                          break;
+                      }
+            case Emphasis::RIGHT:
+              if( em.sym == c )
+                      {
+                if( line.emphasisCount < 3 && ( i - em.text.stop + 1 == line.emphasisCount ) )
+                          {
+                            // render text up to emphasis
+                            int lineEnd = em.text.start - line.emphasisCount;
+                            if( lineEnd > line.lineStart )
+                            {
+                                line.lineEnd = lineEnd;
+                                RenderLine( markdown_, line, textRegion, mdConfig_ );
+                                ImGui::SameLine( 0.0f, 0.0f );
+                                line.isUnorderedListStart = false;
+                                line.leadSpaceCount = 0;
+                            }
+                            line.isEmphasis = true;
+                            line.lastRenderPosition = em.text.start - 1;
+                            line.lineStart = em.text.start;
+                            line.lineEnd = em.text.stop;
                             RenderLine( markdown_, line, textRegion, mdConfig_ );
                             ImGui::SameLine( 0.0f, 0.0f );
-                            line.isUnorderedListStart = false;
-                            line.leadSpaceCount = 0;
-                        }
-                        line.isEmphasis = true;
-                        line.lastRenderPosition = em.text.start - 1;
-                        line.lineStart = em.text.start;
-                        line.lineEnd = em.text.stop;
-                        RenderLine( markdown_, line, textRegion, mdConfig_ );
-                        ImGui::SameLine( 0.0f, 0.0f );
-                        line.isEmphasis = false;
-                        line.lastRenderPosition = i;
-                        em = Emphasis();
+                            line.isEmphasis = false;
+                            line.lastRenderPosition = i;
+                            em = Emphasis();
+                          }
+                          continue;
                       }
-                      continue;
-                  }
-                  else
-                  {
-                      em.state = Emphasis::NONE;
-                      // render text up to here
-                      int start = em.text.start - line.emphasisCount;
-                      if( start < line.lineStart )
+                      else
                       {
-                          line.lineEnd = line.lineStart;
-                          line.lineStart = start;
-                          line.lastRenderPosition = start - 1;
-                          RenderLine(markdown_, line, textRegion, mdConfig_);
-                          line.lineStart          = line.lineEnd;
-                          line.lastRenderPosition = line.lineStart - 1;
+                          em.state = Emphasis::NONE;
+                          // render text up to here
+                          int start = em.text.start - line.emphasisCount;
+                          if( start < line.lineStart )
+                          {
+                              line.lineEnd = line.lineStart;
+                              line.lineStart = start;
+                              line.lastRenderPosition = start - 1;
+                              RenderLine(markdown_, line, textRegion, mdConfig_);
+                              line.lineStart          = line.lineEnd;
+                              line.lastRenderPosition = line.lineStart - 1;
+                          }
                       }
-                  }
-          break;
-        }
-
-        switch( hm.state )
-        {
-          case HelpMark::NONE:
-            if( c == '~')
-            {
-                hm.state = HelpMark::LEFT_TILDE;
-                hm.text.start = i + 1;
+              break;
             }
-            break;
-          case HelpMark::LEFT_TILDE:
-            if( c == '~' ) {
-              hm.state = HelpMark::RIGHT_TILDE;
-              hm.text.stop = i;
-            }
-            break;
-
-          case HelpMark::RIGHT_TILDE:
-            line.lineEnd = hm.text.start - 1;
-            RenderLine( markdown_, line, textRegion, mdConfig_ );
-            textRegion.RenderHelpMarker( markdown_ + hm.text.start, markdown_ + hm.text.stop, mdConfig_ );
-            ImGui::SameLine( 0.0f, 0.0f );
-            hm = HelpMark();
-            line.lastRenderPosition = i;
-            break;
-        }
-
-        // handle end of line (render)
-        if( c == '\n' )
-        {
-            // first check if the line is a horizontal rule
-            line.lineEnd = i;
-            if( em.state == Emphasis::MIDDLE && line.emphasisCount >=3 &&
-                ( line.lineStart + line.emphasisCount ) == i )
+            // Test to see if we have a help marker
+            switch( hm.state )
             {
-                ImGui::Separator();
-            }
-            else
-            {
-                // render the line: multiline emphasis requires a complex implementation so not supporting
+              case HelpMark::NONE:
+                if( c == '~')
+                {
+                    hm.state = HelpMark::LEFT_TILDE;
+                    hm.text.start = i + 1;
+                }
+                break;
+              case HelpMark::LEFT_TILDE:
+                if( c == '~' ) {
+                  hm.state = HelpMark::RIGHT_TILDE;
+                  hm.text.stop = i;
+                }
+                break;
+
+              case HelpMark::RIGHT_TILDE:
+                line.lineEnd = hm.text.start - 1;
                 RenderLine( markdown_, line, textRegion, mdConfig_ );
+                line.leadSpaceCount = 0;
+                line.isUnorderedListStart = false;    // the following text shouldn't have bullets
+
+                ImGui::SameLine( 0.0f, 0.0f );
+                textRegion.RenderHelpMarker( markdown_ + hm.text.start, markdown_ + hm.text.stop, mdConfig_ );
+                ImGui::SameLine( 0.0f, 0.0f );
+                hm = HelpMark();
+                line.lastRenderPosition = i - 1;
+                break;
             }
+            // handle end of line (render)
+            if( c == '\n' )
+            {
+                // first check if the line is a horizontal rule
+                line.lineEnd = i;
+                if( em.state == Emphasis::MIDDLE && line.emphasisCount >=3 &&
+                    ( line.lineStart + line.emphasisCount ) == i )
+                {
+                    ImGui::Separator();
+                }
+                else
+                {
+                    // render the line: multiline emphasis requires a complex implementation so not supporting
+                    RenderLine( markdown_, line, textRegion, mdConfig_ );
+                }
 
-            // reset the line and emphasis state
-            line = Line();
-            em = Emphasis();
+                // reset the line and emphasis state
+                line = Line();
+                em = Emphasis();
 
-            line.lineStart = i + 1;
-            line.lastRenderPosition = i;
+                line.lineStart = i + 1;
+                line.lastRenderPosition = i;
 
-            textRegion.ResetIndent();
-            // reset the link
-            link = Link();
-          }
+                textRegion.ResetIndent();
+                // reset the link
+                link = Link();
+              }
         }
 
         if( em.state == Emphasis::LEFT && line.emphasisCount >= 3 )
@@ -746,7 +747,7 @@ namespace ImGui
         {
         case MarkdownFormatType::NORMAL_TEXT:
             break;
-		case MarkdownFormatType::EMPHASIS:
+		    case MarkdownFormatType::EMPHASIS:
         {
             MarkdownHeadingFormat fmt;
             // default styling for emphasis uses last headingFormats - for your own styling
@@ -853,7 +854,6 @@ namespace ImGui
         formatInfo.config = &mdConfig_;
         formatInfo.type = MarkdownFormatType::NORMAL_TEXT;
         mdConfig_.formatCallback( formatInfo, true );
-        ImGui::SameLine( 0.0f, 0.0f );
 
         ImGui::TextDisabled("(?)");
         if (ImGui::IsItemHovered())
