@@ -21,6 +21,11 @@ private:
   void LoadImages();
 
 public:
+
+  bool show_app_metrics = false;
+  bool show_app_style_editor = false;
+  bool show_app_about = false;
+
   Interface(bool show_demo_window);
   void Init(GLFWwindow *window, const char *glsl_version);
   void Show(GLFWwindow *window);

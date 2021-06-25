@@ -66,26 +66,23 @@ void Interface::Init(GLFWwindow *window, const char *glsl_version)
   ImGui::CreateContext();
   Globals::g_Io = &ImGui::GetIO();
   (void)Globals::g_Io;
-  //Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-  //Globals::g_Io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
-  //ImGui::StyleColorsClassic();
 
   // Setup Platform/Renderer bindings
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);
-
   // LoadFonts();
 }
 
 void Interface::Show(GLFWwindow *window)
 {
   Start();
-  if (m_show_demo_window)
-    ImGui::ShowDemoWindow(&m_show_demo_window);
-
+  if (m_show_demo_window)   { ImGui::ShowDemoWindow(&m_show_demo_window); };
+  if (show_app_metrics)     { ImGui::ShowMetricsWindow(&show_app_metrics); }
+  if (show_app_style_editor){ ImGui::Begin("Style Editor", &show_app_style_editor); ImGui::ShowStyleEditor(); ImGui::End(); }
+  if (show_app_about)       { ImGui::ShowAboutWindow(&show_app_about); }
 
   ImGui::SetNextWindowPos(ImVec2(680, 60), ImGuiCond_FirstUseEver);
   ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_FirstUseEver);
@@ -120,10 +117,25 @@ void Interface::Show(GLFWwindow *window)
     ImGui::End();
   }
 
+
   ImGuiWindowFlags window_flags = 0;
+  window_flags |= ImGuiWindowFlags_MenuBar;
   window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
   {
     ImGui::Begin("Settings", NULL, window_flags);
+
+    if (ImGui::BeginMenuBar())
+    {
+        if (ImGui::BeginMenu("Tools"))
+        {
+            ImGui::MenuItem("Metrics", NULL, &show_app_metrics);
+            ImGui::MenuItem("Style Editor", NULL, &show_app_style_editor);
+            ImGui::MenuItem("About Dear ImGui", NULL, &show_app_about);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+    };
+
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
@@ -289,6 +301,8 @@ void Interface::CameraSettings()
   ImGui::SliderFloat("Near Plane", &g_FrustumNearPlane, -100.0f, 100.0f);
   ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -100.0f, 100.0f);
   ImGui::Separator();
+
+  ImGui::SliderFloat("Far Plane", &g_FrustumFarPlane, -100.0f, 100.0f);
 }
 
 void Interface::DebugSettings()
