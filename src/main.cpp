@@ -142,29 +142,36 @@ int main(int, char **)
 
     switch (g_CurrentScene)
     {
-    case 1:
-      g_Scene1->Render();
-      break;
-    case 2:
-      g_Scene2->Render();
-      break;
-    case 3:
-      g_Scene3->Render();
-      break;
-    case 4:
-      g_Scene4->Render();
-      break;
-    case 5:
-      g_Scene5->Render();
-      break;
-    case 6:
-      g_Scene6->Render();
-      break;
-    case 7:
-      g_Scene7->Render();
-      break;
-    default:
-      cerr << "Scene was not found, idling." << endl;
+      case 1:
+        switch(g_Scene1->current_part) {
+          case 1:
+            g_Scene1_part1->Render();
+            break;
+          case 2:
+            g_Scene1->Render();
+            break;
+        }
+        break;
+      case 2:
+        g_Scene2->Render();
+        break;
+      case 3:
+        g_Scene3->Render();
+        break;
+      case 4:
+        g_Scene4->Render();
+        break;
+      case 5:
+        g_Scene5->Render();
+        break;
+      case 6:
+        g_Scene6->Render();
+        break;
+      case 7:
+        g_Scene7->Render();
+        break;
+      default:
+        cerr << "Scene was not found, idling." << endl;
     }
 
     g_Frames++;

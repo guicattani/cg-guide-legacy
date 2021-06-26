@@ -8,6 +8,12 @@
 #include "globals.h"
 #endif
 
+namespace ImGuiMarkdown {
+  void LinkCallback( ImGui::MarkdownLinkCallbackData data_ );
+  inline ImGui::MarkdownImageData ImageCallback( ImGui::MarkdownLinkCallbackData data_ );
+  void Markdown( const std::string& markdown_ );
+}
+
 class Interface
 {
 private:
@@ -35,6 +41,12 @@ public:
 class InterfaceScene1
 {
 public:
+  class Part1 {
+  public:
+    static void ShowControls();
+    static void ShowText();
+  };
+
   static void ShowControls();
   static void ShowText();
 };
@@ -81,9 +93,3 @@ public:
   static void ShowControls();
   static void ShowText();
 };
-
-namespace ImGuiMarkdown {
-  void LinkCallback( ImGui::MarkdownLinkCallbackData data_ );
-  inline ImGui::MarkdownImageData ImageCallback( ImGui::MarkdownLinkCallbackData data_ );
-  void Markdown( const std::string& markdown_ );
-}

@@ -8,6 +8,25 @@
 #include "interface.h"
 #endif
 
+void InterfaceScene1::Part1::ShowControls()
+{
+  ImGui::TextColored(ImVec4(1.0f,1.0f,1.0f,1.0f), "See details first!");
+}
+
+void InterfaceScene1::Part1::ShowText() {
+  ImGui::TextColored(ImVec4(0.0f,1.0f,1.0f,1.0f), "Drawing your first triangle");
+  const std::string markdownText  = u8R"(
+    Test
+    )";
+   ImGuiMarkdown::Markdown(markdownText);
+   ImGui::SameLine();
+
+  if (ImGui::Button(">>"))
+  {
+    g_Scene1->current_part = 2;
+  }
+}
+
 void InterfaceScene1::ShowControls()
 {
   ImGui::ColorEdit3("First vertex Color",  (float *)&g_Scene1->first_vertex_color);
@@ -38,5 +57,9 @@ void InterfaceScene1::ShowText() {
       * Lists can have [links like this one to Avoyd](https://www.avoyd.com/) and *emphasized text*
     )";
    ImGuiMarkdown::Markdown(markdownText);
-   ImGui::SameLine();
+
+  if (ImGui::Button("<<"))
+  {
+    g_Scene1->current_part = 1;
+  }
 }

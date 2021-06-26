@@ -21,7 +21,10 @@ EXE = main
 SOURCES = ./src/main.cpp
 SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
 SOURCES += ./src/model_loader.cpp
-SOURCES += ./src/scene_loader.cpp ./src/scenes/scene_1.cpp ./src/scenes/scene_1_interface.cpp \
+
+### TODO paths are wrong but it still works?
+SOURCES += ./src/scene_loader.cpp \
+																	./src/scenes/scene_1.cpp ./src/scenes/scene_1_interface.cpp \
 																	./src/scenes/scene_2.cpp ./src/scenes/scene_2_interface.cpp \
 																	./src/scenes/scene_3.cpp ./src/scenes/scene_3_interface.cpp \
 																	./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
@@ -105,21 +108,36 @@ $(BIN)/%.o:./src/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
 ### TODO find a way to improve this
+####################### Scenes
+### Scene 1
 $(BIN)/%.o:./src/scenes/scene_1/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 2
 $(BIN)/%.o:./src/scenes/scene_2/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 3
 $(BIN)/%.o:./src/scenes/scene_3/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 4
 $(BIN)/%.o:./src/scenes/scene_4/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 5
 $(BIN)/%.o:./src/scenes/scene_5/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 6
 $(BIN)/%.o:./src/scenes/scene_6/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 7
 $(BIN)/%.o:./src/scenes/scene_7/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
+####################### End Scenes
 $(BIN)/%.o:./libs/imgui/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 

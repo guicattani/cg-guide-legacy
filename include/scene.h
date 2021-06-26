@@ -31,9 +31,21 @@ class Scene1
 private:
   GLuint VAO_triangle_id;
 public:
-  vec3 first_vertex_color = vec3(1.0f,0.0f,0.0f);
+  class Part1 {
+  private:
+    GLuint VAO_triangle_id;
+  public:
+    Camera2D* camera;
+
+    GLuint BuildTriangle();
+    void Render();
+  };
+
+  unsigned int current_part = 1;
+  unsigned int total_parts = 2;
+  vec3 first_vertex_color  = vec3(1.0f,0.0f,0.0f);
   vec3 second_vertex_color = vec3(0.0f,1.0f,0.0f);
-  vec3 third_vertex_color = vec3(0.0f,0.0f,1.0f);
+  vec3 third_vertex_color  = vec3(0.0f,0.0f,1.0f);
   Camera2D* camera;
   Shader shader = Shader("../src/scenes/scene_1/shader_scene.vert",
                          "../src/scenes/scene_1/shader_scene.frag");

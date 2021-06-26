@@ -3,6 +3,28 @@
 #include "scene.h"
 #endif
 
+#pragma region Part 1
+GLuint Scene1::Part1::BuildTriangle()
+{
+  GLfloat triangle_vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f
+  };
+
+  return -1;
+}
+
+// Part 1
+void Scene1::Part1::Render()
+{
+  GLuint VBO_triangles_id;
+  glGenBuffers(1, &VBO_triangles_id);
+}
+#pragma endregion
+
+
+#pragma region Final part
 GLuint Scene1::BuildTriangle()
 {
   GLfloat triangle_vertices[] = {
@@ -12,12 +34,12 @@ GLuint Scene1::BuildTriangle()
   };
 
   GLuint VBO_triangles_id;
-  glGenVertexArrays(1, &VAO_triangle_id);
   glGenBuffers(1, &VBO_triangles_id);
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO_triangles_id);
   glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
+  glGenVertexArrays(1, &VAO_triangle_id);
   // position coefficients
   glBindVertexArray(VAO_triangle_id);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
@@ -44,3 +66,4 @@ void Scene1::Render()
 
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }
+#pragma endregion

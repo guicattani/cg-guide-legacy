@@ -8,6 +8,11 @@
 #include "model_loader.h"
 #endif
 
+#ifndef CLASS_HEADER_SCENE_GLOBALS
+#define CLASS_HEADER_SCENE_GLOBALS
+#include "globals_scenes.h"
+#endif
+
 namespace ImGuiMarkdown {
   void LinkCallback( ImGui::MarkdownLinkCallbackData data_ )
   {
@@ -93,7 +98,14 @@ void Interface::Show(GLFWwindow *window)
     switch (g_CurrentScene)
     {
     case 1:
-      InterfaceScene1::ShowText();
+      switch(g_Scene1->current_part) {
+        case 1:
+          InterfaceScene1::Part1::ShowText();
+          break;
+        case 2:
+          InterfaceScene1::ShowText();
+          break;
+      }
       break;
     case 2:
       InterfaceScene2::ShowText();
