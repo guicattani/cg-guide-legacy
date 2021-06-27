@@ -41,8 +41,6 @@ public:
     void Render();
   };
 
-  unsigned int current_part = 1;
-  unsigned int total_parts = 2;
   vec3 first_vertex_color  = vec3(1.0f,0.0f,0.0f);
   vec3 second_vertex_color = vec3(0.0f,1.0f,0.0f);
   vec3 third_vertex_color  = vec3(0.0f,0.0f,1.0f);
@@ -50,6 +48,7 @@ public:
   Shader shader = Shader("../src/scenes/scene_1/shader_scene.vert",
                          "../src/scenes/scene_1/shader_scene.frag");
 
+  unsigned int current_part = 1;
   GLuint BuildTriangle();
   void Render();
 };
@@ -73,6 +72,7 @@ public:
   Shader shader = Shader("../src/scenes/scene_2/shader_scene.vert",
                          "../src/scenes/scene_2/shader_scene.frag");
 
+  unsigned int current_part = 1;
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
 };
@@ -84,6 +84,7 @@ public:
   map<string, Shader> shaders;
   FreeCamera* camera;
 
+  unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
 
@@ -121,6 +122,7 @@ public:
   vec3 c = vec3(-1.0f, -2.0f, 0.0f);
   vec3 d = vec3(-1.0f, 1.0f, -1.0f);
 
+  unsigned int current_part = 1;
   void CreateBezierLine();
   void BuildTrianglesAndAddToVirtualScene(ObjModel *model);
   void Render();
@@ -144,6 +146,7 @@ public:
   float diffuseStrength = 1.0f;
   vec3 lightPos = vec3(0.5f, 0.0f, 1.6f);
 
+  unsigned int current_part = 1;
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
@@ -185,6 +188,7 @@ public:
   Material* material;
   Light* light;
 
+  unsigned int current_part = 1;
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
@@ -268,6 +272,7 @@ public:
   PointLight* point_light;
   SpotLight* spot_light;
 
+  unsigned int current_part = 1;
   void LoadShaderVariables();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
