@@ -82,7 +82,7 @@ endif
 
 ifeq ($(OS),Windows_NT)
 	ECHO_MESSAGE = "MinGW"
-	LIBS += -lglfw3 -lgdi32 -lopengl32 -limm32
+	LIBS += -lglfw3 -lzlib -lfreetype -lgdi32 -lopengl32 -limm32
 
 	CFLAGS = $(CXXFLAGS)
 endif

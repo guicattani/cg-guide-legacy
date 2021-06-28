@@ -74,7 +74,11 @@ double g_NowTime = 0;
 double g_DeltaTime = 0;
 double g_LastTime = 0;
 
-map<string, Image> g_Images;
+map<string, Image> g_Images;     //Texture images
+map<char, Character> Characters; // Freetype Characters
+
+FT_Library g_FreeType;
+FT_Face g_FtFace;
 
 // Variável que controla a cor do plano de clear.
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);

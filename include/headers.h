@@ -3,6 +3,8 @@
 #include "imgui_markdown.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 // About Desktop OpenGL function loaders:
 //  Modern desktop OpenGL doesn't have a standard portable header file to load OpenGL function pointers.
@@ -51,6 +53,13 @@ class Image {
 public:
   glm::vec2 size;
   GLuint texture_id;
+};
+
+struct Character {
+    unsigned int TextureID;  // ID handle of the glyph texture
+    glm::ivec2   Size;       // Size of glyph
+    glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
+    unsigned int Advance;    // Offset to advance to next glyph
 };
 
 // Estrutura que representa um modelo geométrico carregado a partir de um

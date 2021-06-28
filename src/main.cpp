@@ -117,6 +117,10 @@ int main(int, char **)
   glCullFace(GL_BACK);
   glFrontFace(GL_CCW);
 
+  //Necessary for Freetype 3D Text
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   //Inicializa a Interface (Imgui)
   Interface interface = Interface(false);
   interface.Init(window, glsl_version);

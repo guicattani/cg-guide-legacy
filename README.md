@@ -33,8 +33,14 @@ RoadMap:
 
 # Pre Requisites
 
-- Download GLFW3 pre-compiled binaries ([here](https://www.glfw.org/download.html)) for the **same** version as your MinGW/VS version and put it at /lib.
-- No specific IDE is necessary, you use either with makefile or Visual Studio / Code Blocks (projects solutions provided)
+- Download GLFW3 pre-compiled binaries ([here](https://www.glfw.org/download.html)) for the **same** version as your MinGW/VS version and put it in `/lib`.
+- Download FreeType ([here](https://github.com/freetype/freetype)) use CMake and skip all dependencies with
+```
+  mkdir build
+  cd build
+  cmake -G "MinGW Makefiles" -B build -D CMAKE_DISABLE_FIND_PACKAGE_ZLIB=TRUE -D CMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE  -D CMAKE_DISABLE_FIND_PACKAGE_PNG=TRUE -D CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz=TRUE -D CMAKE_DISABLE_FIND_PACKAGE_BrotliDec=TRUE ..
+```
+put the `libfreetype.a` file in the `/lib`
 
 ## Windows
 

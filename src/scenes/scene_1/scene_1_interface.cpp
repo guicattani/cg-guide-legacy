@@ -14,8 +14,11 @@ void InterfaceScene1::Part1::ShowControls()
 }
 
 void InterfaceScene1::Part1::ShowText() {
-  ImGui::TextColored(ImVec4(0.0f,1.0f,1.0f,1.0f), "Drawing your first triangle");
+  ImGui::TextColored(ImVec4(0.0f,1.0f,1.0f,1.0f), "How to use this program");
   const std::string markdownText  = u8R"(
+    Hello, and welcome to my OpenGL tutorials!
+
+    Here you can learn all the basic building blocks to make a Openg
     Test
     )";
    ImGuiMarkdown::Markdown(markdownText);

@@ -89,6 +89,17 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
   light_cube.vertex_array_object_id = VAO_light_cube_id;
   this->virtualScene["light_cube"] = light_cube;
   glEnableVertexAttribArray(0);
+
+  // text
+  glGenVertexArrays(1, &this->VAO_text);
+  glGenBuffers(1, &this->VBO_text);
+  glBindVertexArray(this->VAO_text);
+  glBindBuffer(GL_ARRAY_BUFFER, this->VBO_text);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
 }
 
 void Scene5::Render()
@@ -160,4 +171,8 @@ void Scene5::Render()
 
   glBindVertexArray(this->virtualScene["light_cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["light_cube"].rendering_mode, 0, this->virtualScene["light_cube"].num_indices);
+
+  // this->shaders["text_shader"].use();
+  // this->shaders["text_shader"].setMat4("projection", glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
+  // RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "This is sample text", 0.0f, 0.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 }

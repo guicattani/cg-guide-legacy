@@ -135,6 +135,8 @@ public:
 
 class Scene5
 {
+private:
+  GLuint VBO_text, VAO_text;
 public:
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
@@ -156,6 +158,8 @@ public:
                                      "../src/scenes/scene_5/shader_color.frag");
     shaders["light_shader"] = Shader("../src/scenes/scene_5/shader_light.vert",
                                      "../src/scenes/scene_5/shader_light.frag");
+    shaders["text_shader"] =  Shader("../src/scenes/scene_5/shader_text.vert",
+                                     "../src/scenes/scene_5/shader_text.frag");
   }
 };
 

@@ -24,6 +24,7 @@ private:
   void ModelSettings();
   void DebugSettings();
   void LoadFonts();
+  void Load3DFonts();
   void LoadImages();
 
 public:

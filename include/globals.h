@@ -70,6 +70,10 @@ extern int g_Updates;
 extern double g_NowTime, g_DeltaTime, g_LastTime;
 
 extern map<string, Image> g_Images;
+extern map<char, Character> Characters;
+
+extern FT_Library g_FreeType;
+extern FT_Face g_FtFace;
 
 class Globals
 {

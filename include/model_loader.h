@@ -15,7 +15,8 @@
 
 // Declaração de várias funções utilizadas em main().  Essas estão definidas
 // logo após a definição de main() neste arquivo.
+GLuint LoadTextureImage(const char* filename);   // Função que carrega uma imagem para ser utilizada como textura
+void RenderText(Shader &s, GLuint VAO, GLuint VBO, std::string text, float x, float y, float scale, glm::vec3 color);
 void ComputeNormals(ObjModel *model);            // Computa normais de um ObjModel, caso não existam.
 void DrawVirtualObject(SceneObject sceneObject); // Desenha um objeto armazenado em virtualScene
 void PrintObjModelInfo(ObjModel *);              // Função para debugging
-GLuint LoadTextureImage(const char* filename);   // Função que carrega uma imagem para ser utilizada como textura
