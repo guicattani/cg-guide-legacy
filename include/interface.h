@@ -33,6 +33,8 @@ public:
   bool show_app_style_editor = false;
   bool show_app_about = false;
 
+  glm::vec2 detail_window_constraints = glm::vec2(200.0f, 200.0f);
+
   Interface(bool show_demo_window);
   void Init(GLFWwindow *window, const char *glsl_version);
   void Show(GLFWwindow *window);
@@ -44,13 +46,17 @@ class InterfaceScene1
 public:
   class Part1 {
   public:
+    static const glm::vec2 window_constraints;
     static void ShowControls();
     static void ShowText();
   };
 
+  static const glm::vec2 window_constraints;
   static void ShowControls();
   static void ShowText();
 };
+
+
 class InterfaceScene2
 {
 public:

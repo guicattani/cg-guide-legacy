@@ -18,6 +18,9 @@
 #include "initialize_globals.h"
 #endif
 
+const glm::vec2 InterfaceScene1::Part1::window_constraints = glm::vec2(500.0f, 350.0f);
+const glm::vec2 InterfaceScene1::window_constraints        = glm::vec2(500.0f, 600.0f);
+
 namespace ImGuiMarkdown {
   void LinkCallback( ImGui::MarkdownLinkCallbackData data_ )
   {
@@ -95,20 +98,24 @@ void Interface::Show(GLFWwindow *window)
   if (show_app_style_editor){ ImGui::Begin("Style Editor", &show_app_style_editor); ImGui::ShowStyleEditor(); ImGui::End(); }
   if (show_app_about)       { ImGui::ShowAboutWindow(&show_app_about); }
 
-  ImGui::SetNextWindowPos(ImVec2(680, 60), ImGuiCond_FirstUseEver);
-  ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_FirstUseEver);
-
+  ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_Once);
+  ImGui::SetNextWindowSizeConstraints(ImVec2(this->detail_window_constraints.x, this->detail_window_constraints.y),
+                                      ImVec2(this->detail_window_constraints.x, this->detail_window_constraints.y));
+  ImGuiWindowFlags window_flags = 0;
+  window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
   {
-    ImGui::Begin("Details", NULL);
+    ImGui::Begin("Details", NULL, window_flags);
 
     switch (g_CurrentScene)
     {
     case 1:
       switch(g_Scene1->current_part) {
         case 1:
+          this->detail_window_constraints = InterfaceScene1::Part1::window_constraints;
           InterfaceScene1::Part1::ShowText();
           break;
         case 2:
+          this->detail_window_constraints = InterfaceScene1::window_constraints;
           InterfaceScene1::ShowText();
           break;
       }
@@ -135,10 +142,8 @@ void Interface::Show(GLFWwindow *window)
     ImGui::End();
   }
 
-
-  ImGuiWindowFlags window_flags = 0;
+  ImGui::SetNextWindowPos(ImVec2(60, 20), ImGuiCond_Once);
   window_flags |= ImGuiWindowFlags_MenuBar;
-  window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
   {
     ImGui::Begin("Settings", NULL, window_flags);
 
@@ -156,7 +161,7 @@ void Interface::Show(GLFWwindow *window)
 
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("SettingsTabBar", tab_bar_flags))
     {
       if (ImGui::BeginTabItem("Scene"))
       {
