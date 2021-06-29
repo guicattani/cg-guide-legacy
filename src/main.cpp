@@ -117,10 +117,6 @@ int main(int, char **)
   glCullFace(GL_BACK);
   glFrontFace(GL_CCW);
 
-  //Necessary for Freetype 3D Text
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
   //Inicializa a Interface (Imgui)
   Interface interface = Interface(false);
   interface.Init(window, glsl_version);
@@ -166,6 +162,10 @@ int main(int, char **)
         g_Scene4->Render();
         break;
       case 5:
+        //Necessary for Freetype 3D Text
+        // TODO: make it better
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         g_Scene5->Render();
         break;
       case 6:
@@ -177,6 +177,8 @@ int main(int, char **)
       default:
         cerr << "Scene was not found, idling." << endl;
     }
+
+    glDisable(GL_BLEND);
 
     g_Frames++;
     interface.Show(window);
