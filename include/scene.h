@@ -84,6 +84,12 @@ public:
   map<string, Shader> shaders;
   FreeCamera* camera;
 
+  mat4 inspectable_model;
+  vec3 translation = vec3(-2.0f,0.0f,0.0f);
+  float angleZ = 0.0f;
+  float angleY = 0.0f;
+  float angleX = 0.0f;
+
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
   void Render();

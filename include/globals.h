@@ -75,6 +75,8 @@ extern map<char, Character> Characters;
 extern FT_Library g_FreeType;
 extern FT_Face g_FtFace;
 
+extern GLFWwindow *g_Window;
+
 class Globals
 {
 public:

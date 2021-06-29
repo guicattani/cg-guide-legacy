@@ -75,12 +75,12 @@ int main(int, char **)
   InitializeOpenGL3();
 
   // Create window with graphics context
-  GLFWwindow *window = glfwCreateWindow(800, 800, "TCC - Guilherme", NULL, NULL);
-  if (window == NULL)
+  g_Window = glfwCreateWindow(800, 800, "TCC - Guilherme", NULL, NULL);
+  if (g_Window == NULL)
     return 1;
 
-  SetCallbacks(window);
-  glfwMakeContextCurrent(window);
+  SetCallbacks(g_Window);
+  glfwMakeContextCurrent(g_Window);
   glfwSwapInterval(1); // Enable vsync
 
   bool err = InitializeOpenGLLoader();
@@ -99,7 +99,7 @@ int main(int, char **)
   g_Scene6 = new Scene6();
   g_Scene7 = new Scene7();
 
-  g_CurrentScene = 1;
+  g_CurrentScene = 3;
 
   CreateScene(1);
   CreateScene(2);
@@ -119,13 +119,13 @@ int main(int, char **)
 
   //Inicializa a Interface (Imgui)
   Interface interface = Interface(false);
-  interface.Init(window, glsl_version);
+  interface.Init(g_Window, glsl_version);
 
 #pragma endregion MAIN
 
 #pragma region DRAW_LOOP
   // Main loop
-  while (!glfwWindowShouldClose(window))
+  while (!glfwWindowShouldClose(g_Window))
   {
     glClearColor(g_ClearColor.x, g_ClearColor.y, g_ClearColor.z, g_ClearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -181,12 +181,12 @@ int main(int, char **)
     glDisable(GL_BLEND);
 
     g_Frames++;
-    interface.Show(window);
-    glfwSwapBuffers(window);
+    interface.Show(g_Window);
+    glfwSwapBuffers(g_Window);
   }
 
   interface.CleanUp();
-  glfwDestroyWindow(window);
+  glfwDestroyWindow(g_Window);
   glfwTerminate();
   return 0;
 }

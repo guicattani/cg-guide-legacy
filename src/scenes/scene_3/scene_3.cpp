@@ -25,26 +25,26 @@ void Scene3::BuildTrianglesAndAddToVirtualScene()
   GLfloat model_coefficients[] = {
       // Vértices de um cubo
       //    X      Y     Z     W
-      -0.5f, 0.5f, 0.5f, 1.0f,   // posição do vértice 0
-      -0.5f, -0.5f, 0.5f, 1.0f,  // posição do vértice 1
-      0.5f, -0.5f, 0.5f, 1.0f,   // posição do vértice 2
-      0.5f, 0.5f, 0.5f, 1.0f,    // posição do vértice 3
-      -0.5f, 0.5f, -0.5f, 1.0f,  // posição do vértice 4
-      -0.5f, -0.5f, -0.5f, 1.0f, // posição do vértice 5
-      0.5f, -0.5f, -0.5f, 1.0f,  // posição do vértice 6
-      0.5f, 0.5f, -0.5f, 1.0f,   // posição do vértice 7
+      -0.5f,  0.5f,  0.5f, 1.0f,    // posição do vértice 0
+      -0.5f, -0.5f,  0.5f, 1.0f,    // posição do vértice 1
+       0.5f, -0.5f,  0.5f, 1.0f,    // posição do vértice 2
+       0.5f,  0.5f,  0.5f, 1.0f,    // posição do vértice 3
+      -0.5f,  0.5f, -0.5f, 1.0f,    // posição do vértice 4
+      -0.5f, -0.5f, -0.5f, 1.0f,    // posição do vértice 5
+      0.5f,  -0.5f, -0.5f, 1.0f,    // posição do vértice 6
+      0.5f,   0.5f, -0.5f, 1.0f,    // posição do vértice 7
                                  // Vértices para desenhar o eixo X
                                  //    X      Y     Z     W
-      0.0f, 0.0f, 0.0f, 1.0f,    // posição do vértice 8
-      1.0f, 0.0f, 0.0f, 1.0f,    // posição do vértice 9
+      0.0f,   0.0f,  0.0f, 1.0f,    // posição do vértice 8
+      1.0f,   0.0f,  0.0f, 1.0f,    // posição do vértice 9
                                  // Vértices para desenhar o eixo Y
                                  //    X      Y     Z     W
-      0.0f, 0.0f, 0.0f, 1.0f,    // posição do vértice 10
-      0.0f, 1.0f, 0.0f, 1.0f,    // posição do vértice 11
+      0.0f,   0.0f,  0.0f, 1.0f,    // posição do vértice 10
+      0.0f,   1.0f,  0.0f, 1.0f,    // posição do vértice 11
                                  // Vértices para desenhar o eixo Z
                                  //    X      Y     Z     W
-      0.0f, 0.0f, 0.0f, 1.0f,    // posição do vértice 12
-      0.0f, 0.0f, 1.0f, 1.0f,    // posição do vértice 13
+      0.0f,   0.0f,  0.0f, 1.0f,    // posição do vértice 12
+      0.0f,   0.0f,  1.0f, 1.0f,    // posição do vértice 13
   };
 
   // Criamos o identificador (ID) de um Vertex Buffer Object (VBO).  Um VBO é
@@ -305,10 +305,10 @@ void Scene3::Render()
       // ordem) seguindo o sistema de ângulos de Euler, e após uma
       // translação em X. Veja slide 62 do documento
       // "Aula_07_Transformacoes_Geometricas_3D.pdf".
-      model = Matrix_Translate(-2.0f, 0.0f, 0.0f) // QUARTO translação
-              * Matrix_Rotate_Z(g_AngleZ)         // TERCEIRO rotação Z de Euler
-              * Matrix_Rotate_Y(g_AngleY)         // SEGUNDO rotação Y de Euler
-              * Matrix_Rotate_X(g_AngleX);        // PRIMEIRO rotação X de Euler
+      this->inspectable_model = Matrix_Translate(this->translation.x, this->translation.y, this->translation.z) // QUARTO translação
+                                 * Matrix_Rotate_Z(this->angleZ)    // TERCEIRO rotação Z de Euler
+                                 * Matrix_Rotate_Y(this->angleY)    // SEGUNDO rotação Y de Euler
+                                 * Matrix_Rotate_X(this->angleX);   // PRIMEIRO rotação X de Euler
       // Armazenamos as matrizes model, view, e projection do terceiro cubo
       // para mostrar elas na tela através da função TextRendering_ShowModelViewProjection().
     }
@@ -316,7 +316,10 @@ void Scene3::Render()
     // Enviamos a matriz "model" para a placa de vídeo (GPU). Veja o
     // arquivo "shader_vertex.glsl", onde esta é efetivamente
     // aplicada em todos os pontos.
-    shaders["scene"].setMat4("model", model);
+    if(i != 3)
+      shaders["scene"].setMat4("model", model);
+    else
+      shaders["scene"].setMat4("model", this->inspectable_model);
     // Informamos para a placa de vídeo (GPU) que a variável booleana
     // "render_as_black" deve ser colocada como "false". Veja o arquivo
     // "shader_vertex.glsl".
