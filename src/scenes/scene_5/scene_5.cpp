@@ -171,6 +171,24 @@ void Scene5::Render()
   glDrawArrays(this->virtualScene["light_cube"].rendering_mode, 0, this->virtualScene["light_cube"].num_indices);
 
   this->shaders["text_shader"].use();
-  this->shaders["text_shader"].setMat4("projection", glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "This is sample text", 0.0f, 0.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+  this->camera->UpdateShaderUniforms(this->shaders["text_shader"]);
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(-1.5f, 0.4f, 2.2f));
+  this->shaders["text_shader"].setMat4("model", model);
+  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "Ambient", 0.0f, 0.0f, 0.005f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(-0.4f, 0.4f, 2.2f));
+  this->shaders["text_shader"].setMat4("model", model);
+  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "Diffuse", 0.0f, 0.0f, 0.005f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(0.55f, 0.4f, 2.2f));
+  this->shaders["text_shader"].setMat4("model", model);
+  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "Specular", 0.0f, 0.0f, 0.005f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(1.6f, 0.4f, 2.2f));
+  this->shaders["text_shader"].setMat4("model", model);
+  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "All combined", 0.0f, 0.0f, 0.004f, glm::vec3(1.0f, 1.0f, 1.0f));
 }
