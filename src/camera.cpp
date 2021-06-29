@@ -21,14 +21,18 @@ void FreeCamera::Enable()
   vec4 camera_view_vector = camera_lookat_l - position;                                                                     // Vetor "view", sentido para onde a câmera está virada
   vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);                                                                // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
   vec4 camera_right_vector = crossproduct(camera_view_vector, camera_up_vector);
+  float speed = 0.02f;
+  if(ShiftPressed)
+    speed = 0.04f;
+
   if (WPressed)
-    position += 0.01f * camera_view_vector;
+    position += speed * camera_view_vector;
   if (SPressed)
-    position -= 0.01f * camera_view_vector;
+    position -= speed * camera_view_vector;
   if (APressed)
-    position -= 0.01f * camera_right_vector;
+    position -= speed * camera_right_vector;
   if (DPressed)
-    position += 0.01f * camera_right_vector;
+    position += speed * camera_right_vector;
 
   // Computamos a matriz "View" utilizando os parâmetros da câmera para
   // definir o sistema de coordenadas da câmera.  Veja slide 169 do

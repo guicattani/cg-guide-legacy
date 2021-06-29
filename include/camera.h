@@ -47,6 +47,7 @@ public:
   mat4 projection;
   mat4 view;
 
+  // TODO: position will always be a point, no need for 1.0f
   FreeCamera(vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f), float theta = 0.0f, float phi = 0.0f) : Camera() {
     this->position = position;
     this->theta = theta;

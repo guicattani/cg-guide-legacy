@@ -5,6 +5,7 @@
 
 using namespace glm;
 
+// TODO: Use constructor for this
 void CreateScene(int scene)
 {
   switch (scene)
@@ -16,11 +17,11 @@ void CreateScene(int scene)
     g_Scene2->camera = new Camera2D();
     break;
   case 3:
-    g_Scene3->camera = new FreeCamera();
+    g_Scene3->camera = new FreeCamera(vec4(-3.0f,1.5f,3.0f,1.0f), 2.4f, 0.4f);
     g_Scene3->BuildTrianglesAndAddToVirtualScene();
     break;
   case 4:
-    g_Scene4->camera = new FreeCamera();
+    g_Scene4->camera = new FreeCamera(vec4(-1.5f,1.28f,4.0f,1.0f), -3.4f, 0.2f);
     g_Scene4->CreateBezierLine();
 
     g_Scene4->sceneModels["bunny_model"] = ObjModel("../data/bunny.obj");
@@ -32,7 +33,7 @@ void CreateScene(int scene)
     g_Scene4->BuildTrianglesAndAddToVirtualScene(&g_Scene4->sceneModels["plane"]);
     break;
   case 5:
-    g_Scene5->camera = new FreeCamera(vec4(-1.5f, 0.5f, -0.3f, 1.0f), 0.56f, 0.07f);
+    g_Scene5->camera = new FreeCamera(vec4(-1.0f, 1.3f, 5.5f, 1.0f), 2.72f, 0.34f);
     g_Scene5->BuildTrianglesAndAddToVirtualScene();
     break;
   case 6:

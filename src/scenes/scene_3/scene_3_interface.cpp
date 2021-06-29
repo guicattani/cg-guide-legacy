@@ -17,6 +17,16 @@ void InterfaceScene3::ShowControls()
   ImGui::SliderFloat("Euler Y Angle", (float *)&g_Scene3->angleY, -6.28f, 6.28f);
   ImGui::SliderFloat("Euler X Angle", (float *)&g_Scene3->angleX, -6.28f, 6.28f);
 
+  ImGui::Separator();
+  ImGui::Text("Camera");
+  ImGui::Text("Position: %f %f %f %f", (float) g_Scene3->camera->position[0],
+                                       (float) g_Scene3->camera->position[1],
+                                       (float) g_Scene3->camera->position[2],
+                                       (float) g_Scene3->camera->position[3]);
+  ImGui::Text("Theta: %f", (float) g_Scene3->camera->theta);
+  ImGui::Text("Phi: %f", (float) g_Scene3->camera->phi);
+  ImGui::Separator();
+
   glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
   glm::vec4 p_world  = g_Scene3->inspectable_model * p_model;
   glm::vec4 p_camera = g_Scene3->camera->view * p_world;
@@ -26,7 +36,6 @@ void InterfaceScene3::ShowControls()
   ImGuiInputTextFlags inputTextFlags = 0;
   inputTextFlags |= ImGuiInputTextFlags_ReadOnly;
   ImGui::Text("Matrix transformations");
-  ImGui::Separator();
 
   if (ImGui::CollapsingHeader("Model Matrix", ImGuiTreeNodeFlags_None))
   {

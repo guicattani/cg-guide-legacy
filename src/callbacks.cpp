@@ -176,6 +176,15 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
   }
 
   //Movimentação free camera
+  if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
+  {
+    ShiftPressed = true;
+  }
+  if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE)
+  {
+    ShiftPressed = false;
+  }
+
   if (key == GLFW_KEY_W && action == GLFW_PRESS)
   {
     WPressed = true;

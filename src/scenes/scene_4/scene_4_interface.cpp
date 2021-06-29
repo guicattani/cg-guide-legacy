@@ -34,7 +34,8 @@ void InterfaceScene4::ShowControls()
                                        (float) g_Scene4->camera->position[1],
                                        (float) g_Scene4->camera->position[2],
                                        (float) g_Scene4->camera->position[3]);
-
+  ImGui::Text("Theta: %f", (float) g_Scene4->camera->theta);
+  ImGui::Text("Phi: %f", (float) g_Scene4->camera->phi);
 }
 
 void InterfaceScene4::ShowText()

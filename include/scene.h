@@ -152,7 +152,7 @@ public:
   float gouradSpecularStrength = 0.0f;
   float phongSpecularStrength = 1.0f;
   float diffuseStrength = 1.0f;
-  vec3 lightPos = vec3(0.5f, 0.0f, 1.6f);
+  vec3 lightPos = vec3(0.0f, 0.0f, 3.33f);
 
   unsigned int current_part = 1;
   void LoadShaderVariables();

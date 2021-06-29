@@ -21,6 +21,7 @@ extern float g_MoveX;
 extern float g_MoveY;
 extern float g_MoveZ;
 
+extern bool ShiftPressed;
 extern bool WPressed;
 extern bool SPressed;
 extern bool APressed;

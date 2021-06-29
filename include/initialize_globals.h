@@ -21,6 +21,7 @@ float g_MoveZ = 0.0f;
 //glm::vec4 g_Camera_up_vector   ;
 //glm::vec4 g_Camera_right_vector;
 
+bool ShiftPressed = false;
 bool WPressed = false;
 bool SPressed = false;
 bool APressed = false;

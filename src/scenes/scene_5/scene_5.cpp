@@ -118,8 +118,7 @@ void Scene5::Render()
   this->shaders["color_shader"].setFloat("diffuseStrength", 0.0f);
   this->shaders["color_shader"].setFloat("ambientStrength", this->ambientStrength);
   glm::mat4 model = glm::mat4(1.0f);
-  model = glm::translate(model, glm::vec3(2.0f, 0.0f, 2.5f));
-
+  model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.5f));
   this->shaders["color_shader"].setMat4("model", model);
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
@@ -131,7 +130,7 @@ void Scene5::Render()
   this->shaders["color_shader"].setFloat("diffuseStrength", this->diffuseStrength);
   this->shaders["color_shader"].setFloat("ambientStrength", 0.0f);
   model = glm::mat4(1.0f);
-  model = glm::translate(model, glm::vec3(1.0f, 0.0f, 2.5f));
+  model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.5f));
   this->shaders["color_shader"].setMat4("model", model);
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
@@ -143,9 +142,8 @@ void Scene5::Render()
   this->shaders["color_shader"].setFloat("diffuseStrength", 0.0f);
   this->shaders["color_shader"].setFloat("ambientStrength", 0.0f);
   model = glm::mat4(1.0f);
-  model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.5f));
+  model = glm::translate(model, glm::vec3(1.0f, 0.0f, 2.5f));
   this->shaders["color_shader"].setMat4("model", model);
-
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
 
@@ -155,7 +153,7 @@ void Scene5::Render()
   this->shaders["color_shader"].setFloat("diffuseStrength", this->diffuseStrength);
   this->shaders["color_shader"].setFloat("ambientStrength", this->ambientStrength);
   model = glm::mat4(1.0f);
-  model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.5f));
+  model = glm::translate(model, glm::vec3(2.0f, 0.0f, 2.5f));
   this->shaders["color_shader"].setMat4("model", model);
 
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
@@ -172,7 +170,7 @@ void Scene5::Render()
   glBindVertexArray(this->virtualScene["light_cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["light_cube"].rendering_mode, 0, this->virtualScene["light_cube"].num_indices);
 
-  // this->shaders["text_shader"].use();
-  // this->shaders["text_shader"].setMat4("projection", glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-  // RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "This is sample text", 0.0f, 0.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+  this->shaders["text_shader"].use();
+  this->shaders["text_shader"].setMat4("projection", glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
+  RenderText(this->shaders["text_shader"], this->VAO_text, this->VBO_text, "This is sample text", 0.0f, 0.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 }
