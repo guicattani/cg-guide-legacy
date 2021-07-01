@@ -207,13 +207,6 @@ void Scene4::Render()
 #define PLANE 2
 #define BEZIER_LINE 3
 
-  // If you want to get the old animation use the following
-  // t = glfwGetTime() / 2;
-  // bool flip = (int)t % 2 == 1;
-  // t = t - floor(t); // \in [0,1]
-  // t = flip ? 1.0 - t : t;
-  // t = 0.5f * sin(3.14f * (t - 0.5f)) + 0.5f';
-
   if(!g_HoldTime) {
     t = (double) last_frame / 100;
     bool flip = (int)t % 2 == 1;
@@ -223,7 +216,7 @@ void Scene4::Render()
     last_frame++;
   }
 
-  auto p = bezier3(t, a, b, c, d);
+  vec3 p = bezier3(this->t, this->a, this->b, this->c, this->d);
 
   x = p.x;
   y = p.y;

@@ -115,18 +115,18 @@ public:
   FreeCamera* camera;
   static int bezier_samples;
 
-  float graphMinRange = -2.0f;
-  float graphMaxRange = 1.0f;
+  GraphMinMax graphMinMax = GraphMinMax();
 
   float t = 0;
   float x;
   float y;
   float z;
 
-  vec3 a = vec3(1.0f, 0.0f, 1.0f);
+  vec3 a = vec3(0.0f, 0.0f, 0.0f);
   vec3 b = vec3(1.0f, 3.0f, 0.0f);
-  vec3 c = vec3(-1.0f, -2.0f, 0.0f);
-  vec3 d = vec3(-1.0f, 1.0f, -1.0f);
+  vec3 c = vec3(2.0f, -2.0f, 0.0f);
+  vec3 d = vec3(3.0f, 1.0f, 0.0f);
+  vec3 aMonitor, bMonitor, cMonitor, dMonitor;
 
   unsigned int current_part = 1;
   void CreateBezierLine();

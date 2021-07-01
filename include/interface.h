@@ -76,6 +76,15 @@ class InterfaceScene4
   float minRange = -1.0f;
 
 public:
+  class GraphMaxMin {
+    float min;
+    float max;
+  };
+
+  GraphMaxMin x;
+  GraphMaxMin y;
+  GraphMaxMin z;
+
   static void ShowControls();
   static void ShowText();
 };

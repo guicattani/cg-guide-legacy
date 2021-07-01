@@ -8,6 +8,11 @@
 #include "interface.h"
 #endif
 
+#ifndef CLASS_HEADER_BEZIER
+#define CLASS_HEADER_BEZIER
+#include "bezier.h"
+#endif
+
 void InterfaceScene4::ShowControls()
 {
   ImGui::SliderFloat3("A", (float *)&g_Scene4->a, -3.0f, 3.0f);
@@ -19,13 +24,46 @@ void InterfaceScene4::ShowControls()
 
   ImGui::Checkbox("Hold time", &g_HoldTime);
 
-  ImGui::SliderFloat("Min Range of Graph", (float *)&g_Scene4->graphMinRange, -3.0f, 3.0f);
-  ImGui::SliderFloat("Max Range of Graph", (float *)&g_Scene4->graphMaxRange, -3.0f, 3.0f);
+  ImVec4 pink(1.00f, 0.00f, 0.75f, 1.0f), cyan(0.00f, 0.75f, 1.00f, 1.0f);
+  struct Funcs
+    {
+        static float Sin(void*, int i) { return -1.0f + 2.0f * sinf(i * 0.01f); }
+        static float BezierX(void*, int i) {
+          return bezier3(i * 0.01f, g_Scene4->a, g_Scene4->b, g_Scene4->c, g_Scene4->d).x;
+        }
+        static float BezierY(void*, int i) {
+          return bezier3(i * 0.01f, g_Scene4->a, g_Scene4->b, g_Scene4->c, g_Scene4->d).y;
+        }
+        static float BezierZ(void*, int i) {
+          return bezier3(i * 0.01f, g_Scene4->a, g_Scene4->b, g_Scene4->c, g_Scene4->d).z;
+        }
+    };
 
-  ImGui::PlotVar("Current T", g_Scene4->t, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
-  ImGui::PlotVar("Current X", g_Scene4->x, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
-  ImGui::PlotVar("Current Y", g_Scene4->y, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
-  ImGui::PlotVar("Current Z", g_Scene4->z, g_HoldTime, g_Scene4->graphMaxRange, g_Scene4->graphMinRange);
+  if (g_Scene4->a != g_Scene4->aMonitor ||
+      g_Scene4->b != g_Scene4->bMonitor ||
+      g_Scene4->c != g_Scene4->cMonitor ||
+      g_Scene4->d != g_Scene4->dMonitor ) {
+
+      g_Scene4->graphMinMax.x = MinMax{100.0f, -100.0f};
+      g_Scene4->graphMinMax.y = MinMax{100.0f, -100.0f};
+      g_Scene4->graphMinMax.z = MinMax{100.0f, -100.0f};
+      bezier3MinMax(&g_Scene4->graphMinMax, g_Scene4->a, g_Scene4->b, g_Scene4->c, g_Scene4->d);
+  }
+
+  g_Scene4->aMonitor = g_Scene4->a;
+  g_Scene4->bMonitor = g_Scene4->b;
+  g_Scene4->cMonitor = g_Scene4->c;
+  g_Scene4->dMonitor = g_Scene4->d;
+
+  ImGui::Text("Min Max X: %f %f", (float) g_Scene4->graphMinMax.x.min, (float) g_Scene4->graphMinMax.x.max);
+  ImGui::Text("Min Max Y: %f %f", (float) g_Scene4->graphMinMax.y.min, (float) g_Scene4->graphMinMax.y.max);
+  ImGui::Text("Min Max Z: %f %f", (float) g_Scene4->graphMinMax.z.min, (float) g_Scene4->graphMinMax.z.max);
+
+  ImGui::PlotLinesWithIndicator("t", Funcs::Sin, NULL, 157, 0, NULL, -1.0f, 1.0f, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotLinesWithIndicator("BezierX(t)", Funcs::BezierX, NULL, 100, 0, NULL, g_Scene4->graphMinMax.x.min, g_Scene4->graphMinMax.x.max, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotLinesWithIndicator("BezierY(t)", Funcs::BezierY, NULL, 100, 0, NULL, g_Scene4->graphMinMax.y.min, g_Scene4->graphMinMax.y.max, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotLinesWithIndicator("BezierZ(t)", Funcs::BezierZ, NULL, 100, 0, NULL, g_Scene4->graphMinMax.z.min, g_Scene4->graphMinMax.z.max, ImVec2(200,80), g_Scene4->t);
+
 
   ImGui::Separator();
 

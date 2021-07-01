@@ -62,6 +62,25 @@ struct Character {
     unsigned int Advance;    // Offset to advance to next glyph
 };
 
+struct MinMax {
+public:
+  float min;
+  float max;
+};
+
+class GraphMinMax {
+public:
+  MinMax x;
+  MinMax y;
+  MinMax z;
+
+  GraphMinMax() {
+    x = MinMax{100.0f, -100.0f};
+    y = MinMax{100.0f, -100.0f};
+    z = MinMax{100.0f, -100.0f};
+  }
+};
+
 // Estrutura que representa um modelo geométrico carregado a partir de um
 // arquivo ".obj". Veja https://en.wikipedia.org/wiki/Wavefront_.obj_file .
 struct ObjModel

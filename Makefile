@@ -19,7 +19,7 @@ BIN=./bin
 
 EXE = main
 SOURCES = ./src/main.cpp
-SOURCES += ./src/matrices.cpp ./src/callbacks.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
+SOURCES += ./src/matrices.cpp ./src/bezier.cpp ./src/callbacks.cpp ./src/interface.cpp ./src/camera.cpp ./src/opengl_loader.cpp
 SOURCES += ./src/model_loader.cpp
 
 ### TODO paths are wrong but it still works?
