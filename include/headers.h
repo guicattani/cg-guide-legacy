@@ -109,6 +109,10 @@ struct ObjModel
 };
 
 static ImGui::MarkdownConfig mdConfig;
-#include <Windows.h>
-#include "Shellapi.h"
+
+#ifdef _WIN32
+  #include <Windows.h>
+  #include "Shellapi.h"
+#endif
+
 #endif

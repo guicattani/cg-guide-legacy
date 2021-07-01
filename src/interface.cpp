@@ -24,11 +24,13 @@ const glm::vec2 InterfaceScene1::window_constraints        = glm::vec2(500.0f, 6
 namespace ImGuiMarkdown {
   void LinkCallback( ImGui::MarkdownLinkCallbackData data_ )
   {
-      std::string url( data_.link, data_.linkLength );
-      if( !data_.isImage )
-      {
-          ShellExecuteA( NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL );
-      }
+      #ifdef _WIN32
+        std::string url( data_.link, data_.linkLength );
+        if( !data_.isImage )
+        {
+            ShellExecuteA( NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL );
+        }
+      #endif
   }
 
   inline ImGui::MarkdownImageData ImageCallback( ImGui::MarkdownLinkCallbackData data_ )
