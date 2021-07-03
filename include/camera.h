@@ -53,7 +53,7 @@ public:
     this->theta = theta;
     this->phi = phi;
   };
-  void Enable();
+  void Enable(float screenRatio = g_ScreenRatio);
   void UpdateShaderUniforms(Shader shader);
 };
 
@@ -65,7 +65,7 @@ public:
   mat4 view;
 
   Camera2D() : Camera() {};
-  void Enable();
+  void Enable(float screenRatio = g_ScreenRatio);
   void UpdateShaderUniforms(Shader shader);
 };
 

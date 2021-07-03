@@ -104,6 +104,10 @@ void Scene5::BuildTrianglesAndAddToVirtualScene()
 
 void Scene5::Render()
 {
+  //Necessary for Freetype 3D Text
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   this->camera->Enable();
 
   this->shaders["color_shader"].use();

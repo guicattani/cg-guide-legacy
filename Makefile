@@ -30,7 +30,8 @@ SOURCES += ./src/scene_loader.cpp \
 																	./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
 																	./src/scenes/scene_5.cpp ./src/scenes/scene_5_interface.cpp \
 																	./src/scenes/scene_6.cpp ./src/scenes/scene_6_interface.cpp \
-																	./src/scenes/scene_7.cpp ./src/scenes/scene_7_interface.cpp
+																	./src/scenes/scene_7.cpp ./src/scenes/scene_7_interface.cpp \
+																	./src/scenes/scene_8.cpp ./src/scenes/scene_8_interface.cpp
 
 INCLUDE	:= ./include
 LIB		  := ./lib
@@ -135,6 +136,10 @@ $(BIN)/%.o:./src/scenes/scene_6/%.cpp
 
 ### Scene 7
 $(BIN)/%.o:./src/scenes/scene_7/%.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
+
+### Scene 8
+$(BIN)/%.o:./src/scenes/scene_8/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCLUDE) -c -o $@ $<
 
 ####################### End Scenes

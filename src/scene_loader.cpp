@@ -44,5 +44,8 @@ void CreateScene(int scene)
     g_Scene7->camera = new FreeCamera(vec4(-3.2f, 1.45f, -3.0f, 1.0f), 0.48f, 0.00f);
     g_Scene7->BuildTrianglesAndAddToVirtualScene();
     break;
+  case 8:
+    g_Scene8->camera = new Camera2D();
+    break;
   }
 }

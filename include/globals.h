@@ -3,9 +3,9 @@
 #include "headers.h"
 #endif
 
-#ifndef CLASS_HEADER_CAMERA
-#define CLASS_HEADER_CAMERA
-#include "camera.h"
+#ifndef CLASS_HEADER_SHADER
+#define CLASS_HEADER_SHADER
+#include "shader.h"
 #endif
 
 // Razão de proporção da janela (largura/altura). Veja função FramebufferSizeCallback().

@@ -6,7 +6,7 @@
 using namespace std;
 using namespace glm;
 
-void FreeCamera::Enable()
+void FreeCamera::Enable(float screenRatio)
 {
   // Computamos a posição da câmera utilizando coordenadas esféricas.  As
   // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
@@ -49,7 +49,7 @@ void FreeCamera::Enable()
     // Para definição do field of view (FOV), veja slide 234 do
     // documento "Aula_09_Projecoes.pdf".
     float field_of_view = 3.141592 / 3.0f;
-    projection = Matrix_Perspective(field_of_view, g_ScreenRatio, g_FrustumNearPlane, g_FrustumFarPlane);
+    projection = Matrix_Perspective(field_of_view, screenRatio, g_FrustumNearPlane, g_FrustumFarPlane);
   }
   else
   {
@@ -76,7 +76,7 @@ void FreeCamera::UpdateShaderUniforms(Shader shader) {
   shader.setMat4("projection", projection);
 }
 
-void Camera2D::Enable() {
+void Camera2D::Enable(float screenRatio) {
   vec4 camera_lookat_l = vec4(position.x, position.y, position.z - 1.0f, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
   vec4 camera_view_vector = camera_lookat_l - position;                  // Vetor "view", sentido para onde a câmera está virada
   vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);                  // Vetor "up" fixado para apontar para o "céu" (eixo Y global)
@@ -85,7 +85,7 @@ void Camera2D::Enable() {
 
   float t = 1.5f * g_CameraDistance / 2.5f;
   float b = -t;
-  float r = t * g_ScreenRatio;
+  float r = t * screenRatio;
   float l = -r;
   projection = Matrix_Orthographic(l, r, b, t, 0.0f, -10.0f);
 }

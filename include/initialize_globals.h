@@ -56,7 +56,6 @@ GLuint g_ProgramId;
 GLuint g_sceneVertexShader;
 GLuint g_sceneFragmentShader;
 
-Camera *g_MainCamera;
 glm::vec4 g_Camera_lookat_l;
 glm::vec4 g_Camera_view_vector;
 glm::vec4 g_Camera_up_vector;

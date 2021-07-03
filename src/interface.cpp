@@ -138,6 +138,9 @@ void Interface::Show(GLFWwindow *window)
     case 7:
       InterfaceScene7::ShowText();
       break;
+    case 8:
+      InterfaceScene8::ShowText();
+      break;
     }
     ImGui::End();
   }
@@ -189,7 +192,7 @@ void Interface::Show(GLFWwindow *window)
 
   int display_w, display_h;
   glfwGetFramebufferSize(window, &display_w, &display_h);
-  glViewport(0, 0, display_w, display_h);
+  // glViewport(0, 0, display_w, display_h);
 
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -246,7 +249,6 @@ void Interface::Load3DFonts() {
           texture,
           glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
           glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-          face->glyph->advance.x
       };
       Characters.insert(std::pair<char, Character>(c, character));
   }
@@ -335,6 +337,12 @@ void Interface::SceneLoader()
     g_CurrentScene = 7;
     g_SceneChanged = true;
   }
+  ImGui::SameLine();
+  if (ImGui::Button("Scene 8"))
+  {
+    g_CurrentScene = 8;
+    g_SceneChanged = true;
+  }
 
   ImGui::Separator();
 
@@ -360,6 +368,9 @@ void Interface::SceneLoader()
     break;
   case 7:
     InterfaceScene7::ShowControls();
+    break;
+  case 8:
+    InterfaceScene8::ShowControls();
     break;
   }
 }

@@ -98,8 +98,9 @@ int main(int, char **)
   g_Scene5 = new Scene5();
   g_Scene6 = new Scene6();
   g_Scene7 = new Scene7();
+  g_Scene8 = new Scene8();
 
-  g_CurrentScene = 1;
+  g_CurrentScene = 8;
 
   CreateScene(1);
   CreateScene(2);
@@ -108,6 +109,7 @@ int main(int, char **)
   CreateScene(5);
   CreateScene(6);
   CreateScene(7);
+  CreateScene(8);
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -140,6 +142,10 @@ int main(int, char **)
       g_BackfaceCullingMonitor = g_BackfaceCulling;
     }
 
+    int display_w, display_h;
+    glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+
     switch (g_CurrentScene)
     {
       case 1:
@@ -162,10 +168,6 @@ int main(int, char **)
         g_Scene4->Render();
         break;
       case 5:
-        //Necessary for Freetype 3D Text
-        // TODO: make it better
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         g_Scene5->Render();
         break;
       case 6:
@@ -173,6 +175,9 @@ int main(int, char **)
         break;
       case 7:
         g_Scene7->Render();
+        break;
+      case 8:
+        g_Scene8->Render();
         break;
       default:
         cerr << "Scene was not found, idling." << endl;

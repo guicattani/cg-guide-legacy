@@ -5966,7 +5966,7 @@ void ImGui::PlotExWithIndicator(const char* label, float (*values_getter)(void* 
             ImVec2 pos1 = ImLerp(inner_bb.Min, inner_bb.Max, tp1);
             window->DrawList->AddLine(pos0, pos1, v_hovered == v1_idx ? col_hovered : col_base);
 
-            if (fabs(time - t0) < 0.01f && !indicator_drawn) {
+            if (!indicator_drawn && fabs(time - t0) < 0.01f) {
               window->DrawList->AddCircleFilled(pos0, 4, ImColor(pink));
               indicator_drawn = true;
             }
