@@ -3,52 +3,121 @@
 #include "scene.h"
 #endif
 
-GLuint Scene8::BuildTriangle()
+
+void Scene8::BuildTrianglesAndAddToVirtualScene()
 {
-  GLfloat triangle_vertices[] = {
-    -0.5f, -0.5f, 0.0f, first_vertex_color.x,  first_vertex_color.y,  first_vertex_color.z,
-     0.5f, -0.5f, 0.0f, second_vertex_color.x, second_vertex_color.y, second_vertex_color.z,
-     0.0f,  0.5f, 0.0f, third_vertex_color.x,  third_vertex_color.y,  third_vertex_color.z
-  };
+  // This is not using EBO
+  GLfloat vertices[] = {
+      // positions        // normals          //texture coords
+      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Left Side // -X
+      -1.0f,-1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+      -1.0f,-1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+      -1.0f, 1.0f,-1.0f,	-1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Left Side
 
-  GLuint VBO_triangles_id;
-  glGenBuffers(1, &VBO_triangles_id);
+       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f, // Back Side // -Z
+      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  1.0f, 1.0f,
+       1.0f, 1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f,
+       1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  0.0f, 0.0f,
+      -1.0f,-1.0f,-1.0f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f, // Back Side
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_triangles_id);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
+       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f, // Bottom Side // -Y
+      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f,
+       1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,  1.0f, 0.0f,
+       1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f,
+      -1.0f,-1.0f, 1.0f,   0.0f,-1.0f, 0.0f,  0.0f, 1.0f,
+      -1.0f,-1.0f,-1.0f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f, // Bottom Side
 
-  glGenVertexArrays(1, &VAO_triangle_id);
-  // position coefficients
-  glBindVertexArray(VAO_triangle_id);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
+      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f, // Front Side // +Z
+      -1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+       1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
+      -1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+       1.0f,-1.0f, 1.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, // Front Side
+
+       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Right Side // +X
+       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+       1.0f, 1.0f,-1.0f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+       1.0f,-1.0f,-1.0f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+       1.0f, 1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+       1.0f,-1.0f, 1.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Right Side
+
+       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f, // Top Side // +Y
+       1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+       1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+      -1.0f, 1.0f,-1.0f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+      -1.0f, 1.0f, 1.0f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f // Top Side
+    };
+
+  GLuint VBO_vertices_id, VAO_cube_id, VAO_light_cube_id;
+  glGenVertexArrays(1, &VAO_cube_id);
+  glGenBuffers(1, &VBO_vertices_id);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_vertices_id);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glBindVertexArray(VAO_cube_id);
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  // normal attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  // texture coordinates attribute
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
+
+  SceneObject cube;
+  cube.name = "Cube";
+  cube.first_index = (void *)0;
+  cube.num_indices = 36;
+  cube.rendering_mode = GL_TRIANGLES;
+  cube.vertex_array_object_id = VAO_cube_id;
+  this->virtualScene["cube"] = cube;
   glEnableVertexAttribArray(0);
 
-  // color coefficients
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
-  return VAO_triangle_id;
 }
 
 
 void Scene8::Render()
 {
-  this->shader.use();
-  this->camera->UpdateShaderUniforms(this->shader);
-
-  GLuint vertex_array_object_id = BuildTriangle();
-  glBindVertexArray(vertex_array_object_id);
-
+  
   int display_w, display_h;
   glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
+  this->shaders["scene"].use();
+  glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
+
+  //first camera
   glViewport(0, 0, display_w/2, display_h);
   this->camera->Enable((float) (display_w/2)/display_h);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  this->camera->UpdateShaderUniforms(this->shaders["scene"]);
 
+  model = Matrix_Translate(1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
+
+  model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
+
+  //second camera
   glViewport(display_w/2, 0, display_w/2, display_h);
-  this->camera->Enable((float) (display_w/2)/display_h);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  this->second_camera->Enable((float) (display_w/2)/display_h);
+  this->second_camera->UpdateShaderUniforms(this->shaders["scene"]);
+
+  model = Matrix_Translate(1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
+
+  model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
 }

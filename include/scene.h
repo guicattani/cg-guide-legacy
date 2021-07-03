@@ -364,6 +364,7 @@ public:
 class Scene8
 {
 public:
+  map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
   FreeCamera* camera;
@@ -376,8 +377,12 @@ public:
   Scene8() {
     shaders["scene"] = Shader("../src/scenes/scene_8/shader_scene.vert",
                               "../src/scenes/scene_8/shader_scene.frag");
+
     camera = new FreeCamera(vec4(-3.2f, 1.45f, -3.0f, 1.0f), 0.48f, 0.00f);
     second_camera = new FreeCamera(vec4(3.2f, 1.45f, -3.0f, 1.0f), -0.48f, 0.00f);
-    BuildTrianglesAndAddToVirtualScene();
+
+    sceneModels["sphere"] = ObjModel("../data/sphere.obj");
+    ComputeNormals(&sceneModels["sphere"]);
+    AddModelToVirtualScene(&sceneModels["sphere"], virtualScene);
   }
 };
