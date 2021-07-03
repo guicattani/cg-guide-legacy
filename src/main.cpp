@@ -43,10 +43,6 @@
 #define CLASS_HEADER_INTERFACE
 #include "interface.h"
 #endif
-#ifndef CLASS_HEADER_SCENE_LOADER
-#define CLASS_HEADER_SCENE_LOADER
-#include "scene_loader.h"
-#endif
 
 #include "callbacks.h"
 #include "opengl_loader.h"
@@ -100,16 +96,7 @@ int main(int, char **)
   g_Scene7 = new Scene7();
   g_Scene8 = new Scene8();
 
-  g_CurrentScene = 8;
-
-  CreateScene(1);
-  CreateScene(2);
-  CreateScene(3);
-  CreateScene(4);
-  CreateScene(5);
-  CreateScene(6);
-  CreateScene(7);
-  CreateScene(8);
+  g_CurrentScene = 2;
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);

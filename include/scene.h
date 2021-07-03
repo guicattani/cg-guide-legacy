@@ -39,6 +39,10 @@ public:
 
     GLuint BuildTriangle();
     void Render();
+
+    Part1() {
+      camera = new Camera2D();
+    }
   };
 
   vec3 first_vertex_color  = vec3(1.0f,0.0f,0.0f);
@@ -51,6 +55,10 @@ public:
   unsigned int current_part = 1;
   GLuint BuildTriangle();
   void Render();
+
+  Scene1() {
+    camera = new Camera2D();
+  }
 };
 
 class Scene2
@@ -75,6 +83,10 @@ public:
   unsigned int current_part = 1;
   GLuint BuildTriangles(int seconds, bool isAOne, int digitLocation);
   void Render();
+
+  Scene2() {
+    camera = new Camera2D();
+  }
 };
 
 class Scene3
@@ -97,6 +109,8 @@ public:
   Scene3() {
     shaders["scene"] = Shader("../src/scenes/scene_3/shader_scene.vert",
                               "../src/scenes/scene_3/shader_scene.frag");
+    camera = new FreeCamera(vec4(-3.0f,1.5f,3.0f,1.0f), 2.4f, 0.4f);
+    BuildTrianglesAndAddToVirtualScene();
   }
 };
 
@@ -134,8 +148,19 @@ public:
   void Render();
 
   Scene4() {
+    sceneModels["bunny_model"] = ObjModel("../data/bunny.obj");
+    ComputeNormals(&sceneModels["bunny_model"]);
+    AddModelToVirtualScene(&sceneModels["bunny_model"], virtualScene);
+
+    sceneModels["plane"] = ObjModel("../data/plane.obj");
+    ComputeNormals(&sceneModels["plane"]);
+    AddModelToVirtualScene(&sceneModels["plane"], virtualScene);
+
     shaders["scene"] = Shader("../src/scenes/scene_4/shader_scene.vert",
                               "../src/scenes/scene_4/shader_scene.frag");
+
+    camera = new FreeCamera(vec4(-1.5f,1.28f,4.0f,1.0f), -3.4f, 0.2f);
+    CreateBezierLine();
   }
 };
 
@@ -166,6 +191,8 @@ public:
                                      "../src/scenes/scene_5/shader_light.frag");
     shaders["text_shader"] =  Shader("../src/scenes/scene_5/shader_text.vert",
                                      "../src/scenes/scene_5/shader_text.frag");
+    camera = new FreeCamera(vec4(-1.0f, 1.3f, 5.5f, 1.0f), 2.72f, 0.34f);
+    BuildTrianglesAndAddToVirtualScene();
   }
 };
 
@@ -220,6 +247,9 @@ public:
                                      "../src/scenes/scene_6/shader_color.frag");
     shaders["light_shader"] = Shader("../src/scenes/scene_6/shader_light.vert",
                                      "../src/scenes/scene_6/shader_light.frag");
+
+    camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
+    BuildTrianglesAndAddToVirtualScene();
   }
 };
 
@@ -325,23 +355,29 @@ public:
                                      "../src/scenes/scene_7/shader_light.frag");
     shaders["plane_shader"] = Shader("../src/scenes/scene_7/shader_plane.vert",
                                      "../src/scenes/scene_7/shader_plane.frag");
+
+    camera = new FreeCamera(vec4(-3.2f, 1.45f, -3.0f, 1.0f), 0.48f, 0.00f);
+    BuildTrianglesAndAddToVirtualScene();
   }
 };
 
 class Scene8
 {
-private:
-  GLuint VAO_triangle_id;
 public:
-
-  vec3 first_vertex_color  = vec3(1.0f,1.0f,0.0f);
-  vec3 second_vertex_color = vec3(0.0f,1.0f,1.0f);
-  vec3 third_vertex_color  = vec3(1.0f,0.0f,1.0f);
-  Camera2D* camera;
-  Shader shader = Shader("../src/scenes/scene_8/shader_scene.vert",
-                         "../src/scenes/scene_8/shader_scene.frag");
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  FreeCamera* camera;
+  FreeCamera* second_camera;
 
   unsigned int current_part = 1;
-  GLuint BuildTriangle();
+  void BuildTrianglesAndAddToVirtualScene();
   void Render();
+
+  Scene8() {
+    shaders["scene"] = Shader("../src/scenes/scene_8/shader_scene.vert",
+                              "../src/scenes/scene_8/shader_scene.frag");
+    camera = new FreeCamera(vec4(-3.2f, 1.45f, -3.0f, 1.0f), 0.48f, 0.00f);
+    second_camera = new FreeCamera(vec4(3.2f, 1.45f, -3.0f, 1.0f), -0.48f, 0.00f);
+    BuildTrianglesAndAddToVirtualScene();
+  }
 };

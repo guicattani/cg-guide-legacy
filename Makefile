@@ -23,15 +23,14 @@ SOURCES += ./src/matrices.cpp ./src/bezier.cpp ./src/callbacks.cpp ./src/interfa
 SOURCES += ./src/model_loader.cpp
 
 ### TODO paths are wrong but it still works?
-SOURCES += ./src/scene_loader.cpp \
-																	./src/scenes/scene_1.cpp ./src/scenes/scene_1_interface.cpp \
-																	./src/scenes/scene_2.cpp ./src/scenes/scene_2_interface.cpp \
-																	./src/scenes/scene_3.cpp ./src/scenes/scene_3_interface.cpp \
-																	./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
-																	./src/scenes/scene_5.cpp ./src/scenes/scene_5_interface.cpp \
-																	./src/scenes/scene_6.cpp ./src/scenes/scene_6_interface.cpp \
-																	./src/scenes/scene_7.cpp ./src/scenes/scene_7_interface.cpp \
-																	./src/scenes/scene_8.cpp ./src/scenes/scene_8_interface.cpp
+SOURCES += ./src/scenes/scene_1.cpp ./src/scenes/scene_1_interface.cpp \
+				   ./src/scenes/scene_2.cpp ./src/scenes/scene_2_interface.cpp \
+				   ./src/scenes/scene_3.cpp ./src/scenes/scene_3_interface.cpp \
+				   ./src/scenes/scene_4.cpp ./src/scenes/scene_4_interface.cpp \
+				   ./src/scenes/scene_5.cpp ./src/scenes/scene_5_interface.cpp \
+				   ./src/scenes/scene_6.cpp ./src/scenes/scene_6_interface.cpp \
+				   ./src/scenes/scene_7.cpp ./src/scenes/scene_7_interface.cpp \
+				   ./src/scenes/scene_8.cpp ./src/scenes/scene_8_interface.cpp
 
 INCLUDE	:= ./include
 LIB		  := ./lib
