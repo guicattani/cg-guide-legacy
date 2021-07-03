@@ -6,12 +6,6 @@
 #pragma region Part 1
 GLuint Scene1::Part1::BuildTriangle()
 {
-  GLfloat triangle_vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
-  };
-
   return -1;
 }
 
