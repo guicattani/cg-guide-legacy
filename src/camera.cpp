@@ -6,7 +6,7 @@
 using namespace std;
 using namespace glm;
 
-void FreeCamera::Enable(float screenRatio)
+void FreeCamera::Enable(float screenRatio, bool mouseOver)
 {
   // Computamos a posição da câmera utilizando coordenadas esféricas.  As
   // variáveis g_CameraDistance, g_CameraPhi, e g_CameraTheta são
@@ -25,14 +25,16 @@ void FreeCamera::Enable(float screenRatio)
   if(ShiftPressed)
     speed = 0.04f;
 
-  if (WPressed)
-    position += speed * camera_view_vector;
-  if (SPressed)
-    position -= speed * camera_view_vector;
-  if (APressed)
-    position -= speed * camera_right_vector;
-  if (DPressed)
-    position += speed * camera_right_vector;
+  if(mouseOver) {
+    if (WPressed)
+      position += speed * camera_view_vector;
+    if (SPressed)
+      position -= speed * camera_view_vector;
+    if (APressed)
+      position -= speed * camera_right_vector;
+    if (DPressed)
+      position += speed * camera_right_vector;
+  }
 
   // Computamos a matriz "View" utilizando os parâmetros da câmera para
   // definir o sistema de coordenadas da câmera.  Veja slide 169 do

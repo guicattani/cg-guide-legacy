@@ -78,46 +78,46 @@ void Scene8::BuildTrianglesAndAddToVirtualScene()
   cube.vertex_array_object_id = VAO_cube_id;
   this->virtualScene["cube"] = cube;
   glEnableVertexAttribArray(0);
+}
 
+void Scene8::DrawCommonModels() {
+  glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
+
+  model = Matrix_Translate(1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
+
+  model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 0);
+  DrawVirtualObject(this->virtualScene["sphere"]);
 }
 
 
 void Scene8::Render()
 {
-  
   int display_w, display_h;
   glfwGetFramebufferSize(g_Window, &display_w, &display_h);
-
   this->shaders["scene"].use();
-  glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
   //first camera
   glViewport(0, 0, display_w/2, display_h);
-  this->camera->Enable((float) (display_w/2)/display_h);
+  bool mouse_over_camera = false;
+  if(Globals::g_CurrentCursorPosX < display_w/2)
+    mouse_over_camera = true;
+
+  this->camera->Enable((float) (display_w/2)/display_h, mouse_over_camera);
   this->camera->UpdateShaderUniforms(this->shaders["scene"]);
-
-  model = Matrix_Translate(1.0f, 0.0f, 1.0f);
-  shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 0);
-  DrawVirtualObject(this->virtualScene["sphere"]);
-
-  model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
-  shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 0);
-  DrawVirtualObject(this->virtualScene["sphere"]);
+  DrawCommonModels();
 
   //second camera
   glViewport(display_w/2, 0, display_w/2, display_h);
-  this->second_camera->Enable((float) (display_w/2)/display_h);
+  bool mouse_over_second_camera = false;
+  if(Globals::g_CurrentCursorPosX > display_w/2)
+    mouse_over_second_camera = true;
+
+  this->second_camera->Enable((float) (display_w/2)/display_h, mouse_over_second_camera);
   this->second_camera->UpdateShaderUniforms(this->shaders["scene"]);
-
-  model = Matrix_Translate(1.0f, 0.0f, 1.0f);
-  shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 0);
-  DrawVirtualObject(this->virtualScene["sphere"]);
-
-  model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
-  shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 0);
-  DrawVirtualObject(this->virtualScene["sphere"]);
+  DrawCommonModels();
 }

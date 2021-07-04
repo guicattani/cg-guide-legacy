@@ -86,4 +86,5 @@ GLFWwindow *g_Window;
 ImVec4 g_ClearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 double Globals::g_LastCursorPosX, Globals::g_LastCursorPosY;
+double Globals::g_CurrentCursorPosX, Globals::g_CurrentCursorPosY;
 ImGuiIO *Globals::g_Io;

@@ -363,6 +363,9 @@ public:
 
 class Scene8
 {
+private:
+  void DrawCommonModels();
+
 public:
   map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;

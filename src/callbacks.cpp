@@ -56,16 +56,12 @@ void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
 // cima da janela OpenGL.
 void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
 {
-  // Abaixo executamos o seguinte: caso o botão esquerdo do mouse esteja
-  // pressionado, computamos quanto que o mouse se movimento desde o último
-  // instante de tempo, e usamos esta movimentação para atualizar os
-  // parâmetros que definem a posição da câmera dentro da cena virtual.
-  // Assim, temos que o usuário consegue controlar a câmera.
+  Globals::g_CurrentCursorPosX = xpos;
+  Globals::g_CurrentCursorPosY = ypos;
 
   if (!g_LeftMouseButtonPressed)
     return;
 
-  // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
   float dx = float(xpos - Globals::g_LastCursorPosX);
   float dy = float(ypos - Globals::g_LastCursorPosY);
 
@@ -125,6 +121,32 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene7->camera->phi = phimin;
     }
     break;
+  case 8:
+    int display_w, display_h;
+    glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+
+    if(Globals::g_CurrentCursorPosX < display_w/2)
+    {
+      g_Scene8->camera->theta -= 0.01f * dx;
+      g_Scene8->camera->phi += 0.01f * dy;
+
+      if (g_Scene8->camera->phi > phimax) {
+        g_Scene8->camera->phi = phimax;
+      } else if (g_Scene8->camera->phi < phimin) {
+        g_Scene8->camera->phi = phimin;
+      }
+    } else {
+      g_Scene8->second_camera->theta -= 0.01f * dx;
+      g_Scene8->second_camera->phi += 0.01f * dy;
+
+      if (g_Scene8->second_camera->phi > phimax) {
+        g_Scene8->second_camera->phi = phimax;
+      } else if (g_Scene8->second_camera->phi < phimin) {
+        g_Scene8->second_camera->phi = phimin;
+      }
+    }
+
+    break;
   }
   // Atualizamos as variáveis globais para armazenar a posição atual do
   // cursor como sendo a última posição conhecida do cursor.
@@ -150,30 +172,6 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
   // Se o usuário pressionar a tecla ESC, fechamos a janela.
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     glfwSetWindowShouldClose(window, GL_TRUE);
-
-  // O código abaixo implementa a seguinte lógica:
-  //   Se apertar tecla X       então g_AngleX += delta;
-  //   Se apertar tecla shift+X então g_AngleX -= delta;
-  //   Se apertar tecla Y       então g_AngleY += delta;
-  //   Se apertar tecla shift+Y então g_AngleY -= delta;
-  //   Se apertar tecla Z       então g_AngleZ += delta;
-  //   Se apertar tecla shift+Z então g_AngleZ -= delta;
-
-  float delta = float(3.141592 / 16); // 22.5 graus, em radianos.
-
-  if (key == GLFW_KEY_X && action == GLFW_PRESS)
-  {
-    g_AngleX += (mod & GLFW_MOD_SHIFT) ? -delta : delta;
-  }
-
-  if (key == GLFW_KEY_Y && action == GLFW_PRESS)
-  {
-    g_AngleY += (mod & GLFW_MOD_SHIFT) ? -delta : delta;
-  }
-  if (key == GLFW_KEY_Z && action == GLFW_PRESS)
-  {
-    g_AngleZ += (mod & GLFW_MOD_SHIFT) ? -delta : delta;
-  }
 
   //Movimentação free camera
   if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS)
@@ -219,26 +217,6 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
   if (key == GLFW_KEY_D && action == GLFW_RELEASE)
   {
     DPressed = false;
-  }
-
-  // Se o usuário apertar a tecla espaço, resetamos os ângulos de Euler para zero.
-  if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-  {
-    g_AngleX = 0.0f;
-    g_AngleY = 0.0f;
-    g_AngleZ = 0.0f;
-  }
-
-  // Se o usuário apertar a tecla P, utilizamos projeção perspectiva.
-  if (key == GLFW_KEY_P && action == GLFW_PRESS)
-  {
-    g_UsePerspectiveProjection = true;
-  }
-
-  // Se o usuário apertar a tecla O, utilizamos projeção ortográfica.
-  if (key == GLFW_KEY_O && action == GLFW_PRESS)
-  {
-    g_UsePerspectiveProjection = false;
   }
 }
 

@@ -53,7 +53,7 @@ public:
     this->theta = theta;
     this->phi = phi;
   };
-  void Enable(float screenRatio = g_ScreenRatio);
+  void Enable(float screenRatio = g_ScreenRatio, bool mouseOver = true);
   void UpdateShaderUniforms(Shader shader);
 };
 

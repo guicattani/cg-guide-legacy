@@ -85,6 +85,7 @@ public:
   // que possamos calcular quanto que o mouse se movimentou entre dois instantes
   // de tempo. Utilizadas no callback CursorPosCallback() abaixo.
   static double g_LastCursorPosX, g_LastCursorPosY;
+  static double g_CurrentCursorPosX, g_CurrentCursorPosY;
 
   // Variável que controla o ImGui.
   static ImGuiIO *g_Io;
