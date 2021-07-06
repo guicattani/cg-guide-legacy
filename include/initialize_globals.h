@@ -50,7 +50,7 @@ bool g_BackfaceCullingMonitor = true;
 float g_FrustumNearPlane = -0.1f;
 
 // Variável que controla o tamanho do far plane do frustum.
-float g_FrustumFarPlane = -50.0f;
+float g_FrustumFarPlane = 50.0f;
 
 GLuint g_ProgramId;
 GLuint g_sceneVertexShader;

@@ -48,6 +48,13 @@ void main()
         Ka = Kd / 2;
         q = 1.0;
     }
+    else // Objeto desconhecido = preto
+    {
+        Kd = vec3(0.0,0.0,0.0);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = vec3(0.0,0.0,0.0);
+        q = 1.0;
+    }
 
     // Espectro da fonte de iluminação
     vec3 I = vec3(1.0,1.0,1.0);

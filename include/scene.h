@@ -118,8 +118,6 @@ class Scene4
 {
 private:
   GLuint VBO_bezier_line;
-  GLfloat bezier_line_coefficients[12];
-
   int last_frame = -1;
 
 public:
@@ -364,6 +362,7 @@ public:
 class Scene8
 {
 private:
+  GLuint VBO_frustum_lines;
   void DrawCommonModels();
 
 public:
@@ -387,5 +386,7 @@ public:
     sceneModels["sphere"] = ObjModel("../data/sphere.obj");
     ComputeNormals(&sceneModels["sphere"]);
     AddModelToVirtualScene(&sceneModels["sphere"], virtualScene);
+
+    BuildTrianglesAndAddToVirtualScene();
   }
 };

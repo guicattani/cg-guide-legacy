@@ -245,7 +245,7 @@ void DrawVirtualObject(SceneObject sceneObject)
 
   // "Desligamos" o VAO, evitando assim que operações posteriores venham a
   // alterar o mesmo. Isso evita bugs.
-  // glBindVertexArray(0);
+  glBindVertexArray(0);
 }
 
 // Função que computa as normais de um ObjModel, caso elas não tenham sido
