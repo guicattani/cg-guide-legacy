@@ -51,7 +51,7 @@ void FreeCamera::Enable(float screenRatio, bool mouseOver)
     // Para definição do field of view (FOV), veja slide 234 do
     // documento "Aula_09_Projecoes.pdf".
     float field_of_view = 3.141592 / 3.0f;
-    projection = Matrix_Perspective(field_of_view, screenRatio, g_FrustumNearPlane, g_FrustumFarPlane);
+    projection = Matrix_Perspective(field_of_view, screenRatio, nearPlane, farPlane);
   }
   else
   {
@@ -64,7 +64,7 @@ void FreeCamera::Enable(float screenRatio, bool mouseOver)
     float b = -t;
     float r = t * g_ScreenRatio;
     float l = -r;
-    projection = Matrix_Orthographic(l, r, b, t, g_FrustumNearPlane, g_FrustumFarPlane);
+    projection = Matrix_Orthographic(l, r, b, t, nearPlane, farPlane);
   }
 
   // Enviamos as matrizes "view" e "projection" para a placa de vídeo

@@ -36,11 +36,13 @@ public:
 
 class FreeCamera : public Camera
 {
-private:
-  Quaternion quaternion;
 public:
+  Quaternion quaternion;
   float theta;
   float phi;
+
+  float nearPlane = -1.0f;
+  float farPlane = -55.0f;
 
   vec4 lookAt;
   vec4 position = vec4(0.0f, 0.0f, 0.0f, 1.0f);

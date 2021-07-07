@@ -184,7 +184,7 @@ void Scene8::Render()
   DrawCommonModels();
 
   glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
-  model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z);
+  model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z - 0.3f);
   shaders["scene"].setMat4("model", model);
 
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
@@ -194,31 +194,33 @@ void Scene8::Render()
   // frustum line
   float field_of_view = 3.141592 / 3.0f;
 
-  float frustumHeightNear = glm::tan(field_of_view * 0.5f);
+  float frustumHeightNear = camera->nearPlane * glm::tan(field_of_view * 0.5f);
   float frustumHeightNearB = -frustumHeightNear;
-  float frustumHeightNearR = frustumHeightNear * (display_w / (float) display_h);
+  float frustumHeightNearR = frustumHeightNear * ((display_w/2) / (float) display_h);
   float frustumHeightNearL = -frustumHeightNearR;
 
 
-  float frustumHeightFar = g_FrustumFarPlane * glm::tan(field_of_view * 0.5f);
+  float frustumHeightFar = camera->farPlane * glm::tan(field_of_view * 0.5f);
   float frustumHeightFarB = -frustumHeightFar;
-  float frustumHeightFarR = frustumHeightFar * (display_w / (float) display_h);
+  float frustumHeightFarR = frustumHeightFar * ((display_w/2) / (float) display_h);
   float frustumHeightFarL = -frustumHeightFarR;
 
+
   GLfloat frustum_line_coefficients[] = {
-      camera->position.x, camera->position.y, camera->position.z + 0.3f, 1.0f,
+    camera->position.x, camera->position.y, camera->position.z, 1.0f,
 
-      camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNear,  camera->position.z + -g_FrustumNearPlane, 1.0f,
-      camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNear,  camera->position.z + -g_FrustumNearPlane, 1.0f,
-      camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNearB, camera->position.z + -g_FrustumNearPlane, 1.0f,
-      camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNearB, camera->position.z + -g_FrustumNearPlane, 1.0f,
+    camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNear,  camera->position.z - camera->nearPlane, 1.0f,
+    camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNear,  camera->position.z - camera->nearPlane, 1.0f,
+    camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNearB, camera->position.z - camera->nearPlane, 1.0f,
+    camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNearB, camera->position.z - camera->nearPlane, 1.0f,
 
-      camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFar,  camera->position.z + g_FrustumFarPlane, 1.0f,
-      camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFar,  camera->position.z + g_FrustumFarPlane, 1.0f,
-      camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFarB, camera->position.z + g_FrustumFarPlane, 1.0f,
-      camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFarB, camera->position.z + g_FrustumFarPlane, 1.0f
+    camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFar,  camera->position.z - camera->farPlane, 1.0f,
+    camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFar,  camera->position.z - camera->farPlane, 1.0f,
+    camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFarB, camera->position.z - camera->farPlane, 1.0f,
+    camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFarB, camera->position.z - camera->farPlane, 1.0f
   };
-  // clang-format on
+
+  glLineWidth(4.0f);
 
   glBindVertexArray(this->virtualScene["frustum_lines"].vertex_array_object_id);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_frustum_lines);
