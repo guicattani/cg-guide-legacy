@@ -8,47 +8,47 @@ void Scene8::BuildTrianglesAndAddToVirtualScene()
   // This is not using EBO
   GLfloat vertices[] = {
       // positions        // normals          //texture coords
-      -0.3f,-0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Left Side // -X
-      -0.3f,-0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-      -0.3f, 0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-      -0.3f,-0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-      -0.3f, 0.3f, 0.3f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-      -0.3f, 0.3f,-0.3f,	-1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Left Side
+      -0.1f,-0.1f,-0.1f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Left Side // -X
+      -0.1f,-0.1f, 0.1f,	-1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+      -0.1f, 0.1f, 0.1f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+      -0.1f,-0.1f,-0.1f,	-1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+      -0.1f, 0.1f, 0.1f,	-1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+      -0.1f, 0.1f,-0.1f,	-1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Left Side
 
-       0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f, // Back Side // -Z
-      -0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f,
-      -0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  1.0f, 1.0f,
-       0.3f, 0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f,
-       0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  0.0f, 0.0f,
-      -0.3f,-0.3f,-0.3f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f, // Back Side
+       0.1f, 0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f, // Back Side // -Z
+      -0.1f,-0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f,
+      -0.1f, 0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  1.0f, 1.0f,
+       0.1f, 0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  0.0f, 1.0f,
+       0.1f,-0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  0.0f, 0.0f,
+      -0.1f,-0.1f,-0.1f,   0.0f, 0.0f,-1.0f,  1.0f, 0.0f, // Back Side
 
-       0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f, // Bottom Side // -Y
-      -0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f,
-       0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,  1.0f, 0.0f,
-       0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f,
-      -0.3f,-0.3f, 0.3f,   0.0f,-1.0f, 0.0f,  0.0f, 1.0f,
-      -0.3f,-0.3f,-0.3f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f, // Bottom Side
+       0.1f,-0.1f, 0.1f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f, // Bottom Side // -Y
+      -0.1f,-0.1f,-0.1f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f,
+       0.1f,-0.1f,-0.1f,   0.0f,-1.0f, 0.0f,  1.0f, 0.0f,
+       0.1f,-0.1f, 0.1f,   0.0f,-1.0f, 0.0f,  0.0f, 0.0f,
+      -0.1f,-0.1f, 0.1f,   0.0f,-1.0f, 0.0f,  0.0f, 1.0f,
+      -0.1f,-0.1f,-0.1f,   0.0f,-1.0f, 0.0f,  1.0f, 1.0f, // Bottom Side
 
-      -0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f, // Front Side // +Z
-      -0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-       0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-       0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
-      -0.3f, 0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-       0.3f,-0.3f, 0.3f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, // Front Side
+      -0.1f, 0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f, // Front Side // +Z
+      -0.1f,-0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+       0.1f,-0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+       0.1f, 0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
+      -0.1f, 0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+       0.1f,-0.1f, 0.1f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, // Front Side
 
-       0.3f, 0.3f, 0.3f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Right Side // +X
-       0.3f,-0.3f,-0.3f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-       0.3f, 0.3f,-0.3f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-       0.3f,-0.3f,-0.3f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-       0.3f, 0.3f, 0.3f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-       0.3f,-0.3f, 0.3f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Right Side
+       0.1f, 0.1f, 0.1f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f, // Right Side // +X
+       0.1f,-0.1f,-0.1f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+       0.1f, 0.1f,-0.1f,   1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+       0.1f,-0.1f,-0.1f,   1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+       0.1f, 0.1f, 0.1f,   1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+       0.1f,-0.1f, 0.1f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f, // Right Side
 
-       0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f, // Top Side // +Y
-       0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-      -0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-       0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-      -0.3f, 0.3f,-0.3f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-      -0.3f, 0.3f, 0.3f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f // Top Side
+       0.1f, 0.1f, 0.1f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f, // Top Side // +Y
+       0.1f, 0.1f,-0.1f,   0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+      -0.1f, 0.1f,-0.1f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+       0.1f, 0.1f, 0.1f,   0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+      -0.1f, 0.1f,-0.1f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+      -0.1f, 0.1f, 0.1f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f // Top Side
     };
 
   GLuint VBO_vertices_id, VAO_cube_id;
@@ -151,9 +151,16 @@ void Scene8::DrawCommonModels() {
   DrawVirtualObject(this->virtualScene["sphere"]);
 
   model = Matrix_Translate(-1.0f, 0.0f, 1.0f);
+  model = glm::scale(model, glm::vec3(0.5f));
   shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 0);
+  shaders["scene"].setInt("object_id", 1);
   DrawVirtualObject(this->virtualScene["sphere"]);
+
+  model = Matrix_Translate(0.0f, -1.0f, 1.0f);
+  model = glm::scale(model, glm::vec3(2.0f));
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 3);
+  DrawVirtualObject(this->virtualScene["plane"]);
 }
 
 
@@ -183,9 +190,11 @@ void Scene8::Render()
   this->second_camera->UpdateShaderUniforms(this->shaders["scene"]);
   DrawCommonModels();
 
-  glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
-  model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z - 0.3f);
+  glm::mat4 model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z)
+                    * Matrix_Rotate_Y(this->camera->theta)
+                    * Matrix_Rotate_X(this->camera->phi);
   shaders["scene"].setMat4("model", model);
+  shaders["scene"].setInt("object_id", 2);
 
   glBindVertexArray(this->virtualScene["cube"].vertex_array_object_id);
   glDrawArrays(this->virtualScene["cube"].rendering_mode, 0, this->virtualScene["cube"].num_indices);
@@ -207,17 +216,17 @@ void Scene8::Render()
 
 
   GLfloat frustum_line_coefficients[] = {
-    camera->position.x, camera->position.y, camera->position.z, 1.0f,
+    0.0f, 0.0f, 0.0f, 1.0f,
 
-    camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNear,  camera->position.z - camera->nearPlane, 1.0f,
-    camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNear,  camera->position.z - camera->nearPlane, 1.0f,
-    camera->position.x + frustumHeightNearL, camera->position.y + frustumHeightNearB, camera->position.z - camera->nearPlane, 1.0f,
-    camera->position.x + frustumHeightNearR, camera->position.y + frustumHeightNearB, camera->position.z - camera->nearPlane, 1.0f,
+    frustumHeightNearR, frustumHeightNear,  -camera->nearPlane, 1.0f,
+    frustumHeightNearL, frustumHeightNear,  -camera->nearPlane, 1.0f,
+    frustumHeightNearL, frustumHeightNearB, -camera->nearPlane, 1.0f,
+    frustumHeightNearR, frustumHeightNearB, -camera->nearPlane, 1.0f,
 
-    camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFar,  camera->position.z - camera->farPlane, 1.0f,
-    camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFar,  camera->position.z - camera->farPlane, 1.0f,
-    camera->position.x + frustumHeightFarL, camera->position.y + frustumHeightFarB, camera->position.z - camera->farPlane, 1.0f,
-    camera->position.x + frustumHeightFarR, camera->position.y + frustumHeightFarB, camera->position.z - camera->farPlane, 1.0f
+    frustumHeightFarR, frustumHeightFar,  -camera->farPlane, 1.0f,
+    frustumHeightFarL, frustumHeightFar,  -camera->farPlane, 1.0f,
+    frustumHeightFarL, frustumHeightFarB, -camera->farPlane, 1.0f,
+    frustumHeightFarR, frustumHeightFarB, -camera->farPlane, 1.0f
   };
 
   glLineWidth(4.0f);
@@ -227,7 +236,10 @@ void Scene8::Render()
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(frustum_line_coefficients), frustum_line_coefficients);
 
   model = Matrix_Identity(); // Reseta matriz de modelagem
+  model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z)
+        * Matrix_Rotate_Y(this->camera->theta)
+        * Matrix_Rotate_X(this->camera->phi);
   shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 1);
+  shaders["scene"].setInt("object_id", 4);
   DrawVirtualObject(this->virtualScene["frustum_lines"]);
 }

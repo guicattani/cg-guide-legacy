@@ -380,12 +380,17 @@ public:
     shaders["scene"] = Shader("../src/scenes/scene_8/shader_scene.vert",
                               "../src/scenes/scene_8/shader_scene.frag");
 
-    camera = new FreeCamera(vec4(-3.2f, 1.45f, -3.0f, 1.0f), 0.48f, 0.00f);
-    second_camera = new FreeCamera(vec4(3.2f, 1.45f, -3.0f, 1.0f), -0.48f, 0.00f);
+    camera = new FreeCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
+    camera->farPlane = -8.0f;
+    second_camera = new FreeCamera(vec4(0.0f, 3.0f, -7.6f, 1.0f), 0.15f, 0.0f);
 
     sceneModels["sphere"] = ObjModel("../data/sphere.obj");
     ComputeNormals(&sceneModels["sphere"]);
     AddModelToVirtualScene(&sceneModels["sphere"], virtualScene);
+
+    sceneModels["plane"] = ObjModel("../data/plane.obj");
+    ComputeNormals(&sceneModels["plane"]);
+    AddModelToVirtualScene(&sceneModels["plane"], virtualScene);
 
     BuildTrianglesAndAddToVirtualScene();
   }
