@@ -61,6 +61,7 @@ class HybridCamera : public Camera
 {
 public:
   bool isFreeCamera = true;
+  bool usePerspectiveProjection = true;
 
   Quaternion quaternion;
   float theta;

@@ -217,17 +217,28 @@ void Scene8::Render()
   glBindVertexArray(0);
 
   // frustum line
-  float frustumHeightNear = camera->nearPlane * glm::tan(camera->fieldOfView * 0.5f);
+  float frustumHeightNear, frustumHeightFar, frustumHeightNearR, frustumHeightFarR;
+  if (camera->usePerspectiveProjection) {
+    frustumHeightNear = camera->nearPlane * glm::tan(camera->fieldOfView * 0.5f);
+    frustumHeightNearR = frustumHeightNear * ((display_w/2) / (float) display_h);
+  }
+  else {
+    frustumHeightNear = camera->nearPlane * 1.5f * camera->cameraDistanceFromOrigin / 2.5f;
+    frustumHeightNearR = frustumHeightNear * camera->screenRatio;
+  }
   float frustumHeightNearB = -frustumHeightNear;
-  float frustumHeightNearR = frustumHeightNear * ((display_w/2) / (float) display_h);
   float frustumHeightNearL = -frustumHeightNearR;
 
-
-  float frustumHeightFar = camera->farPlane * glm::tan(camera->fieldOfView * 0.5f);
+  if (camera->usePerspectiveProjection) {
+    frustumHeightFar = camera->farPlane * glm::tan(camera->fieldOfView * 0.5f);
+    frustumHeightFarR = frustumHeightFar * ((display_w/2) / (float) display_h);
+  }
+  else {
+    frustumHeightFar = frustumHeightNear;
+    frustumHeightFarR = frustumHeightNearR;
+  }
   float frustumHeightFarB = -frustumHeightFar;
-  float frustumHeightFarR = frustumHeightFar * ((display_w/2) / (float) display_h);
   float frustumHeightFarL = -frustumHeightFarR;
-
 
   GLfloat frustum_line_coefficients[] = {
     0.0f, 0.0f, 0.0f, 1.0f,

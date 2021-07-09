@@ -16,14 +16,25 @@ void InterfaceScene8::ShowControls()
     ImGui::Checkbox("Look at Camera Toggle", &g_Scene8->camera->isFreeCamera);
   }
 
-    if(!g_Scene8->camera->isFreeCamera)
+  if(!g_Scene8->camera->isFreeCamera)
   {
     ImGui::SliderFloat3("Look At", (float *)&g_Scene8->camera->lookAt, -3.0f, 3.0f);
     ImGui::SliderFloat3("Camera Position", (float *)&g_Scene8->camera->position, -10.0f, 10.0f);
   }
+
+  ImGui::Checkbox("Perspective Projection", &g_Scene8->camera->usePerspectiveProjection);
+  if(!g_Scene8->camera->usePerspectiveProjection)
+  {
+  }
+
   ImGui::SliderFloat("Camera Near Plane", &g_Scene8->camera->nearPlane, -10.0f, 10.0f);
   ImGui::SliderFloat("Camera Far Plane", &g_Scene8->camera->farPlane, -10.0f, 10.0f);
-  ImGui::SliderFloat("Field Of View", &g_Scene8->camera->fieldOfView, 0.0f, 3.14f);
+
+  if (g_Scene8->camera->usePerspectiveProjection) {
+    ImGui::SliderFloat("Field Of View", &g_Scene8->camera->fieldOfView, 0.0f, 3.14f);
+  } else {
+    ImGui::SliderFloat("Field Of View(Distance from Origin)", (float *)&g_Scene8->camera->cameraDistanceFromOrigin, -15.0f, 15.0f);
+  }
 
   ImGui::Text("Camera Pos: %f %f %f", g_Scene8->camera->position.x,
                                       g_Scene8->camera->position.y,

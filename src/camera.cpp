@@ -112,7 +112,7 @@ void HybridCamera::Enable(float screenRatio, bool mouseOver)
 
   view = Matrix_Camera_View(position, cameraViewVector, camera_up_vector);
 
-  if (g_UsePerspectiveProjection)
+  if (usePerspectiveProjection)
   {
     projection = Matrix_Perspective(fieldOfView, screenRatio, nearPlane, farPlane);
   }
