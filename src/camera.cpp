@@ -78,6 +78,61 @@ void FreeCamera::UpdateShaderUniforms(Shader shader) {
   shader.setMat4("projection", projection);
 }
 
+void HybridCamera::Enable(float screenRatio, bool mouseOver)
+{
+  quaternion.x = 2.0f * cos(phi) * sin(theta);
+  quaternion.y = 2.0f * sin(phi);
+  quaternion.z = 2.0f * cos(phi) * cos(theta);
+
+  vec4 camera_lookat_l;
+  if(isFreeCamera)
+    camera_lookat_l = vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f);
+  else
+    camera_lookat_l = lookAt;
+
+  // TODO fix all ugly different casings
+  cameraViewVector = camera_lookat_l - position;
+  vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+  vec4 camera_right_vector = crossproduct(cameraViewVector, camera_up_vector);
+
+  float speed = 0.02f;
+  if(ShiftPressed)
+    speed = 0.04f;
+
+  if(mouseOver) {
+    if (WPressed)
+      position += speed * cameraViewVector;
+    if (SPressed)
+      position -= speed * cameraViewVector;
+    if (APressed)
+      position -= speed * camera_right_vector;
+    if (DPressed)
+      position += speed * camera_right_vector;
+  }
+
+  view = Matrix_Camera_View(position, cameraViewVector, camera_up_vector);
+
+  if (g_UsePerspectiveProjection)
+  {
+    projection = Matrix_Perspective(fieldOfView, screenRatio, nearPlane, farPlane);
+  }
+  else
+  {
+    float t = 1.5f * cameraDistanceFromOrigin / 2.5f;
+    float b = -t;
+    float r = t * screenRatio;
+    float l = -r;
+    projection = Matrix_Orthographic(l, r, b, t, nearPlane, farPlane);
+  }
+
+}
+
+void HybridCamera::UpdateShaderUniforms(Shader shader) {
+  shader.setMat4("view", view);
+  shader.setVec3("viewPos", position);
+  shader.setMat4("projection", projection);
+}
+
 void Camera2D::Enable(float screenRatio) {
   vec4 camera_lookat_l = vec4(position.x, position.y, position.z - 1.0f, 1.0f); // Ponto "l", para onde a câmera (look-at) estará sempre olhando
   vec4 camera_view_vector = camera_lookat_l - position;                  // Vetor "view", sentido para onde a câmera está virada

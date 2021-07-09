@@ -190,9 +190,25 @@ void Scene8::Render()
   this->second_camera->UpdateShaderUniforms(this->shaders["scene"]);
   DrawCommonModels();
 
+  float y_angle = this->camera->theta;
+  float x_angle = this->camera->phi;
+
+  if(!this->camera->isFreeCamera) {
+    vec4 forward_vector = vec4(0.0f, 0.0f, 1.0f, 0.0f);
+    vec4 look_at_vector =  this->camera->lookAt - this->camera->position;
+    float dot_product = dotproduct(look_at_vector, forward_vector);
+    y_angle = atan2(look_at_vector.x, dot_product);
+
+    // TODO: get some help to understand why we need to rotate look at vector here and not in Y
+    vec4 up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+    look_at_vector = look_at_vector * Matrix_Rotate_Y(y_angle);
+    dot_product = dotproduct(look_at_vector, up_vector);
+    x_angle = atan2(look_at_vector.z, dot_product) - 3.14f / 2;
+  }
+
   glm::mat4 model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z)
-                    * Matrix_Rotate_Y(this->camera->theta)
-                    * Matrix_Rotate_X(this->camera->phi);
+                    * Matrix_Rotate_Y(y_angle)
+                    * Matrix_Rotate_X(x_angle);
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setInt("object_id", 2);
 
@@ -201,15 +217,13 @@ void Scene8::Render()
   glBindVertexArray(0);
 
   // frustum line
-  float field_of_view = 3.141592 / 3.0f;
-
-  float frustumHeightNear = camera->nearPlane * glm::tan(field_of_view * 0.5f);
+  float frustumHeightNear = camera->nearPlane * glm::tan(camera->fieldOfView * 0.5f);
   float frustumHeightNearB = -frustumHeightNear;
   float frustumHeightNearR = frustumHeightNear * ((display_w/2) / (float) display_h);
   float frustumHeightNearL = -frustumHeightNearR;
 
 
-  float frustumHeightFar = camera->farPlane * glm::tan(field_of_view * 0.5f);
+  float frustumHeightFar = camera->farPlane * glm::tan(camera->fieldOfView * 0.5f);
   float frustumHeightFarB = -frustumHeightFar;
   float frustumHeightFarR = frustumHeightFar * ((display_w/2) / (float) display_h);
   float frustumHeightFarL = -frustumHeightFarR;
@@ -235,11 +249,18 @@ void Scene8::Render()
   glBindBuffer(GL_ARRAY_BUFFER, VBO_frustum_lines);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(frustum_line_coefficients), frustum_line_coefficients);
 
-  model = Matrix_Identity(); // Reseta matriz de modelagem
   model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z)
-        * Matrix_Rotate_Y(this->camera->theta)
-        * Matrix_Rotate_X(this->camera->phi);
+        * Matrix_Rotate_Y(y_angle)
+        * Matrix_Rotate_X(x_angle);
   shaders["scene"].setMat4("model", model);
-  shaders["scene"].setInt("object_id", 4);
+  shaders["scene"].setInt("object_id", 5);
   DrawVirtualObject(this->virtualScene["frustum_lines"]);
+
+  if(!this->camera->isFreeCamera) {
+    model = Matrix_Translate(this->camera->lookAt.x, this->camera->lookAt.y, this->camera->lookAt.z);
+    model = glm::scale(model, glm::vec3(0.2f));
+    shaders["scene"].setMat4("model", model);
+    shaders["scene"].setInt("object_id", 4);
+    DrawVirtualObject(this->virtualScene["sphere"]);
+  }
 }

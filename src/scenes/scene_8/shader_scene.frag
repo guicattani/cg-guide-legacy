@@ -11,6 +11,7 @@ uniform mat4 projection;
 #define SPHERE_2 1
 #define CAMERA 2
 #define PLANE 3
+#define SPHERE_LOOK_AT 4
 uniform int object_id;
 
 out vec3 color;
@@ -55,6 +56,14 @@ void main()
     {
         // Propriedades espectrais da esfera
         Kd = vec3(0.0,0.0,0.8);
+        Ks = vec3(0.0,0.0,0.0);
+        Ka = Kd / 2;
+        q = 1.0;
+    }
+    else if ( object_id == SPHERE_LOOK_AT )
+    {
+        // Propriedades espectrais da esfera
+        Kd = vec3(1.0,0.0,0.0);
         Ks = vec3(0.0,0.0,0.0);
         Ka = Kd / 2;
         q = 1.0;

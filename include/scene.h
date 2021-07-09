@@ -369,7 +369,7 @@ public:
   map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
-  FreeCamera* camera;
+  HybridCamera* camera;
   FreeCamera* second_camera;
 
   unsigned int current_part = 1;
@@ -380,7 +380,7 @@ public:
     shaders["scene"] = Shader("../src/scenes/scene_8/shader_scene.vert",
                               "../src/scenes/scene_8/shader_scene.frag");
 
-    camera = new FreeCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
+    camera = new HybridCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
     camera->farPlane = -8.0f;
     second_camera = new FreeCamera(vec4(0.0f, 3.0f, -7.6f, 1.0f), 0.15f, 0.0f);
 
