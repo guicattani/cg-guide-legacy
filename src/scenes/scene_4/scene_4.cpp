@@ -110,9 +110,6 @@ void Scene4::Render()
   DrawVirtualObject(this->virtualScene["plane"]);
   glBindVertexArray(0);
 
-  // int samples = 8;
-  // GLfloat *bezier_line_coefficients = new GLfloat[samples * 4];
-  // sampledBezierPoints(bezier_line_coefficients, samples, a, b, c, d);
   // Desenha polígono de controle da curva de Bézier
   // clang-format off
   GLfloat bezier_line_coefficients[] = {
@@ -130,8 +127,6 @@ void Scene4::Render()
   // Utilizamos BufferSubData para alterar os valores sem realocar memória (glBufferData faz realocação).
   // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * samples * 4, bezier_line_coefficients);
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(bezier_line_coefficients), bezier_line_coefficients);
-
-  // delete[] bezier_line_coefficients;
 
   model = Matrix_Identity(); // Reseta matriz de modelagem
   shaders["scene"].setMat4("model", model);

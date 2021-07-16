@@ -116,3 +116,10 @@ public:
   static void ShowControls();
   static void ShowText();
 };
+
+class InterfaceScene9
+{
+public:
+  static void ShowControls();
+  static void ShowText();
+};

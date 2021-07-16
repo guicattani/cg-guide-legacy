@@ -95,8 +95,9 @@ int main(int, char **)
   g_Scene6 = new Scene6();
   g_Scene7 = new Scene7();
   g_Scene8 = new Scene8();
+  g_Scene9 = new Scene9();
 
-  g_CurrentScene = 2;
+  g_CurrentScene = 9;
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -165,6 +166,9 @@ int main(int, char **)
         break;
       case 8:
         g_Scene8->Render();
+        break;
+      case 9:
+        g_Scene9->Render();
         break;
       default:
         cerr << "Scene was not found, idling." << endl;

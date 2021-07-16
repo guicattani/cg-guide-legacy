@@ -375,6 +375,9 @@ void Interface::SceneLoader()
   case 8:
     InterfaceScene8::ShowControls();
     break;
+  case 9:
+    InterfaceScene9::ShowControls();
+    break;
   }
 }
 

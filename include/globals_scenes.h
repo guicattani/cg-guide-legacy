@@ -21,3 +21,4 @@ extern Scene5 *g_Scene5;
 extern Scene6 *g_Scene6;
 extern Scene7 *g_Scene7;
 extern Scene8 *g_Scene8;
+extern Scene9 *g_Scene9;

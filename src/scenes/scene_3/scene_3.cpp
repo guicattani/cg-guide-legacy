@@ -384,10 +384,4 @@ void Scene3::Render()
 #pragma endregion
 
   glBindVertexArray(0);
-
-  // Pegamos um vértice com coordenadas de modelo (0.5, 0.5, 0.5, 1) e o
-  // passamos por todos os sistemas de coordenadas armazenados nas
-  // matrizes the_model, the_view, e the_projection; e escrevemos na tela
-  // as matrizes e pontos resultantes dessas transformações.
-  // glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f); # TODO
 }

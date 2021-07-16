@@ -371,6 +371,7 @@ public:
   map<string, Shader> shaders;
   HybridCamera* camera;
   FreeCamera* second_camera;
+  bool simulate_perspective = false;
 
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
@@ -382,7 +383,7 @@ public:
 
     camera = new HybridCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
     camera->farPlane = -8.0f;
-    second_camera = new FreeCamera(vec4(0.0f, 3.0f, -7.6f, 1.0f), 0.15f, 0.0f);
+    second_camera = new FreeCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
 
     sceneModels["sphere"] = ObjModel("../data/sphere.obj");
     ComputeNormals(&sceneModels["sphere"]);
@@ -391,6 +392,41 @@ public:
     sceneModels["plane"] = ObjModel("../data/plane.obj");
     ComputeNormals(&sceneModels["plane"]);
     AddModelToVirtualScene(&sceneModels["plane"], virtualScene);
+
+    BuildTrianglesAndAddToVirtualScene();
+  }
+};
+
+class Scene9
+{
+private:
+  GLuint VBO_frustum_lines;
+  void DrawCommonModels(bool perspective_transform = false);
+
+public:
+  map<string, ObjModel> sceneModels;
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  HybridCamera* camera;
+  HybridCamera* second_camera;
+  bool simulate_perspective = false;
+  bool follow_camera = false;
+
+  unsigned int current_part = 1;
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+
+  Scene9() {
+    shaders["scene"] = Shader("../src/scenes/scene_9/shader_scene.vert",
+                              "../src/scenes/scene_9/shader_scene.frag");
+
+    // TODO: change this to free and make field of view settable?
+    camera = new HybridCamera(vec4(0.0f, 0.0f, -3.5f, 1.0f));
+    camera->farPlane = -8.0f;
+    camera->nearPlane = -2.0f;
+    second_camera = new HybridCamera(vec4(0.0f, 0.0f, -3.5f, 1.0f));
+    second_camera->farPlane = -8.0f;
+    second_camera->nearPlane = -2.0f;
 
     BuildTrianglesAndAddToVirtualScene();
   }

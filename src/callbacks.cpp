@@ -68,6 +68,8 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
   float phimax = 3.141592f / 2;
   float phimin = -phimax;
 
+  int display_w, display_h;
+
   //TODO fix this, this is very ugly
   switch (g_CurrentScene)
   {
@@ -122,7 +124,6 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
     }
     break;
   case 8:
-    int display_w, display_h;
     glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
     if(Globals::g_CurrentCursorPosX < display_w/2)
@@ -143,6 +144,29 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
         g_Scene8->second_camera->phi = phimax;
       } else if (g_Scene8->second_camera->phi < phimin) {
         g_Scene8->second_camera->phi = phimin;
+      }
+    }
+  case 9:
+    glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+
+    if(Globals::g_CurrentCursorPosX < display_w/2)
+    {
+      g_Scene9->camera->theta -= 0.01f * dx;
+      g_Scene9->camera->phi += 0.01f * dy;
+
+      if (g_Scene9->camera->phi > phimax) {
+        g_Scene9->camera->phi = phimax;
+      } else if (g_Scene9->camera->phi < phimin) {
+        g_Scene9->camera->phi = phimin;
+      }
+    } else {
+      g_Scene9->second_camera->theta -= 0.01f * dx;
+      g_Scene9->second_camera->phi += 0.01f * dy;
+
+      if (g_Scene9->second_camera->phi > phimax) {
+        g_Scene9->second_camera->phi = phimax;
+      } else if (g_Scene9->second_camera->phi < phimin) {
+        g_Scene9->second_camera->phi = phimin;
       }
     }
 
