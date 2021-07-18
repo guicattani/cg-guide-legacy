@@ -171,8 +171,9 @@ void Scene9::Render()
 {
   if(this->follow_camera) {
     second_camera->position = camera->position;
-    second_camera->phi = camera->phi;
-    second_camera->theta = camera->theta;
+    second_camera->phi = camera->phi/3;
+    second_camera->theta = camera->theta/3;
+    second_camera->fieldOfView = camera->fieldOfView/2;
   }
 
   int display_w, display_h;

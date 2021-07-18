@@ -421,11 +421,11 @@ public:
                               "../src/scenes/scene_9/shader_scene.frag");
 
     // TODO: change this to free and make field of view settable?
-    camera = new HybridCamera(vec4(0.0f, 0.0f, -3.5f, 1.0f));
+    camera = new HybridCamera(vec4(0.0f, 0.0f, -3.7f, 1.0f));
     camera->farPlane = -8.0f;
     camera->nearPlane = -2.0f;
-    second_camera = new HybridCamera(vec4(0.0f, 0.0f, -3.5f, 1.0f));
-    second_camera->farPlane = -8.0f;
+    second_camera = new HybridCamera(vec4(0.0f, 0.0f, -3.7f, 1.0f));
+    second_camera->farPlane = -50.0f;
     second_camera->nearPlane = -2.0f;
 
     BuildTrianglesAndAddToVirtualScene();
