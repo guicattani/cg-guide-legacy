@@ -431,3 +431,33 @@ public:
     BuildTrianglesAndAddToVirtualScene();
   }
 };
+
+class Scene10
+{
+public:
+  bool useTexture = false;
+  GLuint diffuseTextureId;
+
+  map<string, ObjModel> sceneModels;
+  map<string, SceneObject> virtualScene;
+  map<string, Shader> shaders;
+  FreeCamera* camera;
+  FreeCamera* second_camera;
+
+  unsigned int current_part = 1;
+  void BuildTrianglesAndAddToVirtualScene();
+  void Render();
+
+  Scene10() {
+    sceneModels["cylinder"] = ObjModel("../data/cylinder.obj");
+    ComputeNormals(&sceneModels["cylinder"]);
+    AddModelToVirtualScene(&sceneModels["cylinder"], virtualScene);
+
+    shaders["scene"] = Shader("../src/scenes/scene_10/shader_scene.vert",
+                              "../src/scenes/scene_10/shader_scene.frag");
+
+    camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
+    second_camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
+    BuildTrianglesAndAddToVirtualScene();
+  }
+};

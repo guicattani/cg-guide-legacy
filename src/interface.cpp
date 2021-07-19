@@ -346,6 +346,18 @@ void Interface::SceneLoader()
     g_CurrentScene = 8;
     g_SceneChanged = true;
   }
+  ImGui::SameLine();
+  if (ImGui::Button("Scene 9"))
+  {
+    g_CurrentScene = 9;
+    g_SceneChanged = true;
+  }
+  ImGui::SameLine();
+  if (ImGui::Button("Scene 10"))
+  {
+    g_CurrentScene = 10;
+    g_SceneChanged = true;
+  }
 
   ImGui::Separator();
 
@@ -377,6 +389,9 @@ void Interface::SceneLoader()
     break;
   case 9:
     InterfaceScene9::ShowControls();
+    break;
+  case 10:
+    InterfaceScene10::ShowControls();
     break;
   }
 }

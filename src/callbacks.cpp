@@ -169,6 +169,29 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
         g_Scene9->second_camera->phi = phimin;
       }
     }
+  case 10:
+    glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+
+    if(Globals::g_CurrentCursorPosX < display_w/2)
+    {
+      g_Scene10->camera->theta -= 0.01f * dx;
+      g_Scene10->camera->phi += 0.01f * dy;
+
+      if (g_Scene10->camera->phi > phimax) {
+        g_Scene10->camera->phi = phimax;
+      } else if (g_Scene10->camera->phi < phimin) {
+        g_Scene10->camera->phi = phimin;
+      }
+    } else {
+      g_Scene10->second_camera->theta -= 0.01f * dx;
+      g_Scene10->second_camera->phi += 0.01f * dy;
+
+      if (g_Scene10->second_camera->phi > phimax) {
+        g_Scene10->second_camera->phi = phimax;
+      } else if (g_Scene10->second_camera->phi < phimin) {
+        g_Scene10->second_camera->phi = phimin;
+      }
+    }
 
     break;
   }

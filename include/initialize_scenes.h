@@ -14,3 +14,4 @@ Scene6 *g_Scene6;
 Scene7 *g_Scene7;
 Scene8 *g_Scene8;
 Scene9 *g_Scene9;
+Scene10 *g_Scene10;

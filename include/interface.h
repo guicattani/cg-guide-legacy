@@ -123,3 +123,10 @@ public:
   static void ShowControls();
   static void ShowText();
 };
+
+class InterfaceScene10
+{
+public:
+  static void ShowControls();
+  static void ShowText();
+};
