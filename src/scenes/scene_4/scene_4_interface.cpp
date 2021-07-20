@@ -59,10 +59,12 @@ void InterfaceScene4::ShowControls()
   ImGui::Text("Min Max Y: %f %f", (float) g_Scene4->graphMinMax.y.min, (float) g_Scene4->graphMinMax.y.max);
   ImGui::Text("Min Max Z: %f %f", (float) g_Scene4->graphMinMax.z.min, (float) g_Scene4->graphMinMax.z.max);
 
-  ImGui::PlotLinesWithIndicator("t", Funcs::Sin, NULL, 157, 0, NULL, -1.0f, 1.0f, ImVec2(200,80), g_Scene4->t);
-  ImGui::PlotLinesWithIndicator("BezierX(t)", Funcs::BezierX, NULL, 100, 0, NULL, g_Scene4->graphMinMax.x.min, g_Scene4->graphMinMax.x.max, ImVec2(200,80), g_Scene4->t);
-  ImGui::PlotLinesWithIndicator("BezierY(t)", Funcs::BezierY, NULL, 100, 0, NULL, g_Scene4->graphMinMax.y.min, g_Scene4->graphMinMax.y.max, ImVec2(200,80), g_Scene4->t);
-  ImGui::PlotLinesWithIndicator("BezierZ(t)", Funcs::BezierZ, NULL, 100, 0, NULL, g_Scene4->graphMinMax.z.min, g_Scene4->graphMinMax.z.max, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotVar("s = f(t)", g_Scene4->t, g_HoldTime, 0.0f, 1.0f);
+  ImGui::SameLine();
+  ImGui::HelpMarker("f(t) = 0.5 * sin(3.14 * (t - 0.5)) + 0.5");
+  ImGui::PlotLinesWithIndicator("BezierX(s)", Funcs::BezierX, NULL, 100, 0, NULL, g_Scene4->graphMinMax.x.min, g_Scene4->graphMinMax.x.max, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotLinesWithIndicator("BezierY(s)", Funcs::BezierY, NULL, 100, 0, NULL, g_Scene4->graphMinMax.y.min, g_Scene4->graphMinMax.y.max, ImVec2(200,80), g_Scene4->t);
+  ImGui::PlotLinesWithIndicator("BezierZ(s)", Funcs::BezierZ, NULL, 100, 0, NULL, g_Scene4->graphMinMax.z.min, g_Scene4->graphMinMax.z.max, ImVec2(200,80), g_Scene4->t);
 
 
   ImGui::Separator();

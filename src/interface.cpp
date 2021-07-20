@@ -299,61 +299,58 @@ void Interface::Start()
 
 void Interface::SceneLoader()
 {
-  if (ImGui::Button("Scene 1"))
+  if (ImGui::Button("1. Simple Triangle"))
   {
     g_CurrentScene = 1;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 2"))
+  if (ImGui::Button("2. 2D drawing Binary Clock"))
   {
     g_CurrentScene = 2;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 3"))
+  if (ImGui::Button("3. Matrix Transformations"))
   {
     g_CurrentScene = 3;
     g_SceneChanged = true;
   }
-  ImGui::SameLine();
-  if (ImGui::Button("Scene 4"))
+  if (ImGui::Button("4. Bezier Lines and Movement"))
   {
     g_CurrentScene = 4;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 5"))
+  if (ImGui::Button("5. Shading and Lighting Basics"))
   {
     g_CurrentScene = 5;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 6"))
+  if (ImGui::Button("6. Texture Mapping and Lighting"))
   {
     g_CurrentScene = 6;
     g_SceneChanged = true;
   }
-  ImGui::SameLine();
-  if (ImGui::Button("Scene 7"))
+  if (ImGui::Button("7. Multiple Lights"))
   {
     g_CurrentScene = 7;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 8"))
+  if (ImGui::Button("8. Frustum"))
   {
     g_CurrentScene = 8;
     g_SceneChanged = true;
   }
   ImGui::SameLine();
-  if (ImGui::Button("Scene 9"))
+  if (ImGui::Button("9. Projection Matrix Deformation"))
   {
     g_CurrentScene = 9;
     g_SceneChanged = true;
   }
-  ImGui::SameLine();
-  if (ImGui::Button("Scene 10"))
+  if (ImGui::Button("10. Texture Mapping"))
   {
     g_CurrentScene = 10;
     g_SceneChanged = true;

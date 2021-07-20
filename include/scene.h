@@ -383,7 +383,7 @@ public:
 
     camera = new HybridCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
     camera->farPlane = -8.0f;
-    second_camera = new FreeCamera(vec4(0.0f, 1.53f, -4.0f, 1.0f));
+    second_camera = new FreeCamera(vec4(-3.7f, 2.5f, -7.4f, 1.0f), 0.42f);
 
     sceneModels["sphere"] = ObjModel("../data/sphere.obj");
     ComputeNormals(&sceneModels["sphere"]);

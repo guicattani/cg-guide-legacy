@@ -44,6 +44,8 @@ void InterfaceScene8::ShowControls()
   ImGui::Text("Second Camera Pos: %f %f %f", g_Scene8->second_camera->position.x,
                                              g_Scene8->second_camera->position.y,
                                              g_Scene8->second_camera->position.z);
+  ImGui::Text("Theta: %f", (float) g_Scene8->second_camera->theta);
+  ImGui::Text("Phi: %f", (float) g_Scene8->second_camera->phi);
   ImGui::SliderFloat("Second Camera Near Plane", &g_Scene8->second_camera->nearPlane, -100.0f, 100.0f);
   ImGui::SliderFloat("Second Camera Far Plane", &g_Scene8->second_camera->farPlane, -100.0f, 100.0f);
 }
