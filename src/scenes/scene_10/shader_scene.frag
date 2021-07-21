@@ -2,18 +2,27 @@
 
 in vec4 position_world;
 in vec4 normal;
-in vec2 tex_coords;
+in vec4 position_model;
+in vec2 texcoords;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform sampler2D diffuseTexture;
 
-#define SPHERE 0
-uniform int object_id;
+uniform vec4 bbox_min;
+uniform vec4 bbox_max;
+
+uniform int texture_projection;
+#define SPHERICAL_PROJECTION 0
+#define CYLINDRICAL_PROJECTION 1
+#define AA_BOUNDING_BOX_PROJECTION 2
+#define PLANAR_PROJECTION 3
 
 out vec3 color;
 
+#define M_PI   3.14159265358979323846
+#define M_PI_2 1.57079632679489661923
 void main()
 {
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
@@ -21,38 +30,71 @@ void main()
 
     vec4 p = position_world;
     vec4 n = normalize(normal);
-    vec4 l = normalize(vec4(1.0,1.0,0.5,0.0));
+    vec4 l = normalize(vec4(1.0,1.0,0.0,0.0));
     vec4 v = normalize(camera_position - p);
-    vec4 r = -l + 2 * n * dot(n,l);
 
-    // Parâmetros que definem as propriedades espectrais da superfície
-    vec3 Kd; // Refletância difusa
-    vec3 Ks; // Refletância especular
-    vec3 Ka; // Refletância ambiente
-    float q; // Expoente especular para o modelo de iluminação de Phong
+    float U = 0.0;
+    float V = 0.0;
 
-    if ( object_id == SPHERE )
+    if ( texture_projection == SPHERICAL_PROJECTION )
     {
-        // Propriedades espectrais da esfera
-        Kd = vec3(0.8,0.4,0.08);
-        Ks = vec3(0.0,0.0,0.0);
-        Ka = Kd / 2;
-        q = 1.0;
+        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        float radius = length(position_model - bbox_center);
+
+        vec4 dashP = bbox_center + radius*normalize(position_model - bbox_center);
+
+        float angleRo = sqrt(pow(dashP.x, 2) + pow(dashP.y, 2) + pow(dashP.z, 2));
+        float angleTheta = atan(dashP.x, dashP.z);
+        float anglePhi = asin(dashP.y / angleRo);
+
+        U = (angleTheta + M_PI)/(2 * M_PI);
+        V = (anglePhi + M_PI_2)/M_PI;
+
     }
-    else // Objeto desconhecido = preto
+    else if ( texture_projection == CYLINDRICAL_PROJECTION )
     {
-        Kd = vec3(0.1,0.1,0.1);
-        Ks = vec3(0.0,0.0,0.0);
-        Ka = vec3(0.0,0.0,0.0);
-        q = 1.0;
+        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        float radius = length(position_model - bbox_center);
+
+        vec4 dashP = bbox_center + radius*normalize(position_model - bbox_center);
+        float angleTheta = atan(dashP.x, dashP.z);
+
+        float miny = bbox_min.y;
+        float maxy = bbox_max.y;
+
+        U = (angleTheta + M_PI)/(2 * M_PI);
+        V = (position_model.y)/(maxy  - miny);
+    }
+    else if ( texture_projection == AA_BOUNDING_BOX_PROJECTION )
+    {
+        float minx = bbox_min.x;
+        float maxx = bbox_max.x;
+
+        float miny = bbox_min.y;
+        float maxy = bbox_max.y;
+
+        float minz = bbox_min.z;
+        float maxz = bbox_max.z;
+
+        U = (position_model.x - minx)/(maxx - minx);
+        V = (position_model.y - miny)/(maxy - miny);
+    }
+    else if ( texture_projection == PLANAR_PROJECTION )
+    {
+        // Coordenadas de textura do plano, obtidas do arquivo OBJ.
+        U = texcoords.x;
+        V = texcoords.y;
     }
 
-    vec3 I = vec3(1.0,1.0,1.0);
-    vec3 Ia = vec3(0.2,0.2,0.2);
-    vec3 lambert_diffuse_term = Kd * I * max(0,dot(n,l));
-    vec3 ambient_term = Ka * Ia; // PREENCHA AQUI o termo ambiente
-    vec3 phong_specular_term  = Ks * I * pow(max(0,dot(r,v)), q);
+    // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
+    vec3 Kd0 = texture(diffuseTexture, vec2(U,V)).rgb;
 
-    color = (lambert_diffuse_term + ambient_term + phong_specular_term) * texture(diffuseTexture, tex_coords).rgb;
-    color = pow(color, vec3(1.0,1.0,1.0)/2.2);
+    // Equação de Iluminação
+    float lambert = max(0,dot(n,l));
+
+    color = Kd0 * (lambert + 0.1);
+
+    // Cor final com correção gamma, considerando monitor sRGB.
+    // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
+    color = pow(color, vec3(1.0,1.0,1.0) / 2.2);
 }

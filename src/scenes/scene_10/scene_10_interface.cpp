@@ -10,7 +10,10 @@
 
 void InterfaceScene10::ShowControls()
 {
-  ImGui::Separator();
+  ImGui::Combo("Texture Projection", &g_Scene10->texture_projection, "Spherical\0 \
+Cylindrical\0 \
+Axis Aligned Bounding Box\0 \
+Planar\0", 4);
 }
 
 void InterfaceScene10::ShowText()

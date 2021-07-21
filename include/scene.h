@@ -444,6 +444,8 @@ public:
   FreeCamera* camera;
   FreeCamera* second_camera;
 
+  int texture_projection = 0;
+
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
