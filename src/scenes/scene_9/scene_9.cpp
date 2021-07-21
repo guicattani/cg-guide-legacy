@@ -139,20 +139,13 @@ void Scene9::DrawCommonModels(bool perspective_transform) {
       model = Matrix_Translate( (float) i, 0.0f, (float) j);
 
       if(perspective_transform) {
-        int display_w, display_h;
-        glfwGetFramebufferSize(g_Window, &display_w, &display_h);
-
-        model = Matrix_Perspective(camera->fieldOfView,
-                                   camera->screenRatio,
-                                   camera->nearPlane,
-                                   camera->farPlane )
+        model = camera->projection
                 * camera->view
                 * model;
         glm::mat4 invert_x = Matrix_Identity();
         invert_x[0][0] = -1;
         model = invert_x * model;
         shaders["scene"].setBool("second_camera", true);
-        shaders["scene"].setMat4("second_view", camera->view);
       }
 
       shaders["scene"].setMat4("model", model);
@@ -247,8 +240,19 @@ void Scene9::Render()
   model = Matrix_Translate(this->camera->position.x, this->camera->position.y, this->camera->position.z)
         * Matrix_Rotate_Y(y_angle)
         * Matrix_Rotate_X(x_angle);
+
+  if(this->simulate_perspective) {
+      model = camera->projection
+              * camera->view
+              * model;
+      glm::mat4 invert_x = Matrix_Identity();
+      invert_x[0][0] = -1;
+      model = invert_x * model;
+      shaders["scene"].setBool("second_camera", true);
+    }
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setInt("object_id", 2);
   DrawVirtualObject(this->virtualScene["frustum_lines"]);
-  glBindVertexArray(0);
+
+  shaders["scene"].setBool("second_camera", false);
 }

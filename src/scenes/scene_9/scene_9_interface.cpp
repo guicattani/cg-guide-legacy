@@ -26,6 +26,7 @@ void InterfaceScene9::ShowControls()
   ImGui::Separator();
   ImGui::Checkbox("Simulate Perspective", &g_Scene9->simulate_perspective);
   ImGui::Checkbox("Follow perspective camera", &g_Scene9->follow_camera);
+  ImGui::Checkbox("Use perspective projection", &g_Scene9->second_camera->usePerspectiveProjection);
 
   ImGui::Text("Second Camera Pos: %f %f %f", g_Scene9->second_camera->position.x,
                                              g_Scene9->second_camera->position.y,
