@@ -299,95 +299,49 @@ void Interface::Start()
 
 void Interface::SceneLoader()
 {
-  if (ImGui::Button("1. Simple Triangle"))
-  {
-    g_CurrentScene = 1;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("2. 2D drawing Binary Clock"))
-  {
-    g_CurrentScene = 2;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("3. Matrix Transformations"))
-  {
-    g_CurrentScene = 3;
-    g_SceneChanged = true;
-  }
-  if (ImGui::Button("4. Bezier Lines and Movement"))
-  {
-    g_CurrentScene = 4;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("5. Shading and Lighting Basics"))
-  {
-    g_CurrentScene = 5;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("6. Texture Mapping and Lighting"))
-  {
-    g_CurrentScene = 6;
-    g_SceneChanged = true;
-  }
-  if (ImGui::Button("7. Multiple Lights"))
-  {
-    g_CurrentScene = 7;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("8. Frustum"))
-  {
-    g_CurrentScene = 8;
-    g_SceneChanged = true;
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("9. Projection Matrix Deformation"))
-  {
-    g_CurrentScene = 9;
-    g_SceneChanged = true;
-  }
-  if (ImGui::Button("10. Texture Mapping"))
-  {
-    g_CurrentScene = 10;
-    g_SceneChanged = true;
-  }
+  ImGui::Combo("", &g_CurrentScene, "1. Simple Triangle\0 \
+2. 2D drawing Binary Clock\0 \
+3. Matrix Transformations\0 \
+4. Bezier Lines and Movement\0 \
+5. Shading and Lighting Basics\0 \
+6. Texture Mapping and Lighting\0 \
+7. Multiple Lights\0 \
+8. Frustum\0 \
+9. Projection Matrix Deformation\0 \
+10. Texture Mapping\0", 6);
 
   ImGui::Separator();
 
   switch (g_CurrentScene)
   {
-  case 1:
+  case 0:
     InterfaceScene1::ShowControls();
     break;
-  case 2:
+  case 1:
     InterfaceScene2::ShowControls();
     break;
-  case 3:
+  case 2:
     InterfaceScene3::ShowControls();
     break;
-  case 4:
+  case 3:
     InterfaceScene4::ShowControls();
     break;
-  case 5:
+  case 4:
     InterfaceScene5::ShowControls();
     break;
-  case 6:
+  case 5:
     InterfaceScene6::ShowControls();
     break;
-  case 7:
+  case 6:
     InterfaceScene7::ShowControls();
     break;
-  case 8:
+  case 7:
     InterfaceScene8::ShowControls();
     break;
-  case 9:
+  case 8:
     InterfaceScene9::ShowControls();
     break;
-  case 10:
+  case 9:
     InterfaceScene10::ShowControls();
     break;
   }

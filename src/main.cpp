@@ -98,7 +98,7 @@ int main(int, char **)
   g_Scene9 = new Scene9();
   g_Scene10 = new Scene10();
 
-  g_CurrentScene = 10;
+  g_CurrentScene = 9;
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);
@@ -137,7 +137,7 @@ int main(int, char **)
 
     switch (g_CurrentScene)
     {
-      case 1:
+      case 0:
         switch(g_Scene1->current_part) {
           case 1:
             g_Scene1_part1->Render();
@@ -147,35 +147,35 @@ int main(int, char **)
             break;
         }
         break;
-      case 2:
+      case 1:
         g_Scene2->Render();
         break;
-      case 3:
+      case 2:
         g_Scene3->Render();
         break;
-      case 4:
+      case 3:
         g_Scene4->Render();
         break;
-      case 5:
+      case 4:
         g_Scene5->Render();
         break;
-      case 6:
+      case 5:
         g_Scene6->Render();
         break;
-      case 7:
+      case 6:
         g_Scene7->Render();
         break;
-      case 8:
+      case 7:
         g_Scene8->Render();
         break;
-      case 9:
+      case 8:
         g_Scene9->Render();
         break;
-      case 10:
+      case 9:
         g_Scene10->Render();
         break;
       default:
-        cerr << "Scene was not found, idling." << endl;
+        cerr << "Scene was not found, idling. Scene:" << g_CurrentScene << endl;
     }
 
     glDisable(GL_BLEND);
