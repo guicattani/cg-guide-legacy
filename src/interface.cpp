@@ -299,7 +299,7 @@ void Interface::Start()
 
 void Interface::SceneLoader()
 {
-  ImGui::Combo("", &g_CurrentScene, "1. Simple Triangle\0 \
+  ImGui::Combo("Change Scene", &g_CurrentScene, "1. Simple Triangle\0 \
 2. 2D drawing Binary Clock\0 \
 3. Matrix Transformations\0 \
 4. Bezier Lines and Movement\0 \

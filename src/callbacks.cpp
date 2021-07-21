@@ -73,7 +73,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
   //TODO fix this, this is very ugly
   switch (g_CurrentScene)
   {
-  case 3:
+  case 2:
     g_Scene3->camera->theta -= 0.01f * dx;
     g_Scene3->camera->phi += 0.01f * dy;
 
@@ -83,7 +83,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene3->camera->phi = phimin;
     }
     break;
-  case 4:
+  case 3:
     g_Scene4->camera->theta -= 0.01f * dx;
     g_Scene4->camera->phi += 0.01f * dy;
 
@@ -93,7 +93,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene4->camera->phi = phimin;
     }
     break;
-  case 5:
+  case 4:
     g_Scene5->camera->theta -= 0.01f * dx;
     g_Scene5->camera->phi += 0.01f * dy;
 
@@ -103,7 +103,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene5->camera->phi = phimin;
     }
     break;
-  case 6:
+  case 5:
     g_Scene6->camera->theta -= 0.01f * dx;
     g_Scene6->camera->phi += 0.01f * dy;
 
@@ -113,7 +113,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene6->camera->phi = phimin;
     }
     break;
-  case 7:
+  case 6:
     g_Scene7->camera->theta -= 0.01f * dx;
     g_Scene7->camera->phi += 0.01f * dy;
 
@@ -123,7 +123,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
       g_Scene7->camera->phi = phimin;
     }
     break;
-  case 8:
+  case 7:
     glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
     if(Globals::g_CurrentCursorPosX < display_w/2)
@@ -146,7 +146,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
         g_Scene8->second_camera->phi = phimin;
       }
     }
-  case 9:
+  case 8:
     glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
     if(Globals::g_CurrentCursorPosX < display_w/2)
@@ -169,7 +169,7 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
         g_Scene9->second_camera->phi = phimin;
       }
     }
-  case 10:
+  case 9:
     glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
     if(Globals::g_CurrentCursorPosX < display_w/2)
