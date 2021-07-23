@@ -163,10 +163,18 @@ void Scene9::DrawCommonModels(bool perspective_transform) {
 void Scene9::Render()
 {
   if(this->follow_camera) {
-    second_camera->position = camera->position;
-    second_camera->phi = camera->phi/3;
-    second_camera->theta = camera->theta/3;
-    second_camera->fieldOfView = camera->fieldOfView/2;
+    if(this->simulate_perspective) {
+      second_camera->position = vec4(0.0f, 0.0f, -3.7f, 1.0f);
+      second_camera->theta = 0.0f;
+      second_camera->phi = 0.0f;
+      second_camera->usePerspectiveProjection = false;
+    }
+    else {
+      second_camera->position = camera->position;
+      second_camera->theta = camera->theta;
+      second_camera->phi = camera->phi;
+    }
+
   }
 
   int display_w, display_h;
@@ -200,6 +208,15 @@ void Scene9::Render()
                     * Matrix_Rotate_Y(y_angle)
                     * Matrix_Rotate_X(x_angle);
   model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+  if(this->simulate_perspective) {
+      model = camera->projection
+              * camera->view
+              * model;
+      glm::mat4 invert_x = Matrix_Identity();
+      invert_x[0][0] = -1;
+      model = invert_x * model;
+      shaders["scene"].setBool("second_camera", true);
+    }
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setInt("object_id", 1);
 

@@ -35,7 +35,7 @@ void InterfaceScene9::ShowControls()
   ImGui::Text("Second Camera Phi: %f", g_Scene9->second_camera->phi);
 
   ImGui::SliderFloat("Second Camera Near Plane", &g_Scene9->second_camera->nearPlane, -15.0f, 15.0f);
-  ImGui::SliderFloat("Second Camera Far Plane", &g_Scene9->second_camera->farPlane, -50.0f, 50.0f);
+  ImGui::SliderFloat("Second Camera Far Plane", &g_Scene9->second_camera->farPlane, -100.0f, 100.0f);
   ImGui::SliderFloat("Second Camera Field Of View", &g_Scene9->second_camera->fieldOfView, 0.0f, 3.14f);
 }
 

@@ -425,7 +425,7 @@ public:
     camera->farPlane = -8.0f;
     camera->nearPlane = -2.0f;
     second_camera = new HybridCamera(vec4(0.0f, 0.0f, -3.7f, 1.0f));
-    second_camera->farPlane = -50.0f;
+    second_camera->farPlane = -100.0f;
     second_camera->nearPlane = -2.0f;
 
     BuildTrianglesAndAddToVirtualScene();
