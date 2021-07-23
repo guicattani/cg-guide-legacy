@@ -411,6 +411,8 @@ public:
   HybridCamera* second_camera;
   bool simulate_perspective = false;
   bool follow_camera = false;
+  bool freeze_camera_in_origin = false;
+  float simulate_perspective_slider = 0.0f;
 
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
