@@ -450,6 +450,11 @@ public:
   int texture_projection = 0;
   int chosen_model = 0;
   int chosen_texture = 0;
+  bool use_world_coordinates = false;
+
+  float cylinder_height = 1.0f;
+
+  vec3 model_position = vec3(0.0f, 0.0f, 0.0f);
 
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
@@ -494,9 +499,9 @@ public:
     shaders["axes"] = Shader("../src/scenes/scene_10/shader_axes.vert",
                               "../src/scenes/scene_10/shader_axes.frag");
 
-    camera = new HybridCamera(vec4(0.0f, 1.7f, -4.0f, 1.0f));
+    camera = new HybridCamera(vec4(0.0f, 2.5f, -4.0f, 1.0f));
     camera->isFreeCamera = false;
-    camera->lookAt = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    camera->lookAt = vec4(0.0f, 1.0f, 0.0f, 1.0f);
     second_camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
     BuildTrianglesAndAddToVirtualScene();
   }

@@ -19,7 +19,8 @@ Octahedron\0 \
 Dodecahedron\0 \
 Icosahedron\0", 4);
   ImGui::Separator();
-  ImGui::Combo("Texture", &g_Scene10->chosen_texture, "Container\0 \
+  ImGui::Combo("Texture", &g_Scene10->chosen_texture, "UV Checker\0 \
+Container\0 \
 World\0", 2);
   ImGui::Separator();
   ImGui::Combo("Texture Projection", &g_Scene10->texture_projection, "Spherical\0 \
@@ -34,12 +35,9 @@ Texture Coordinates (.obj must have texcoords)\0", 4);
   ImGui::Text("Left Camera Theta: %f", g_Scene10->camera->theta);
   ImGui::Text("Left Camera Phi: %f", g_Scene10->camera->phi);
 
-
-  ImGui::Text("cylinder # of texcoords : %d\n", (int)(g_Scene10->sceneModels["cylinder"].attrib.texcoords.size() / 2));
-  ImGui::Text("bunny # of texcoords : %d\n", (int)(g_Scene10->sceneModels["bunny"].attrib.texcoords.size() / 2));
-  ImGui::Text("teapot # of texcoords : %d\n", (int)(g_Scene10->sceneModels["teapot"].attrib.texcoords.size() / 2));
-  ImGui::Text("sphere # of texcoords : %d\n", (int)(g_Scene10->sceneModels["sphere"].attrib.texcoords.size() / 2));
-  ImGui::Text("octahedron # of texcoords : %d\n", (int)(g_Scene10->sceneModels["octahedron"].attrib.texcoords.size() / 2));
+  ImGui::Checkbox("Use World Coordinates", &g_Scene10->use_world_coordinates);
+  ImGui::SliderFloat3("Model Position", (float*) &g_Scene10->model_position, -1.0f, 1.0f);
+  ImGui::SliderFloat("Cylinder Height", &g_Scene10->cylinder_height, 0.0f, 5.0f);
 }
 
 void InterfaceScene10::ShowText()

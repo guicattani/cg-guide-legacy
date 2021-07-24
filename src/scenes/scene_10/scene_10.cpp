@@ -55,6 +55,7 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   glBindVertexArray(0);
 
   //textures
+  this->sceneTextures["uv_checker"] = LoadTextureImage("../data/uv_checker.jpg");
   this->sceneTextures["container"] = LoadTextureImage("../data/container2.png");
   this->sceneTextures["world"] = LoadTextureImage("../data/tc-earth_daymap_surface.jpg");
   shaders["scene"].setInt("diffuseTexture", 0);
@@ -80,9 +81,12 @@ void Scene10::Render()
   glActiveTexture(GL_TEXTURE0);
   switch(chosen_texture) {
   case 0:
-    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["container"]);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["uv_checker"]);
     break;
   case 1:
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["container"]);
+    break;
+  case 2:
     glBindTexture(GL_TEXTURE_2D, this->sceneTextures["world"]);
     break;
   }
@@ -98,8 +102,7 @@ void Scene10::Render()
       break;
     case 2:
       chosen_model_name = "teapot";
-      model = scale(model, glm::vec3(0.4f));
-      model = model * Matrix_Translate(0.0f, -1.0f, 0.0f);
+      model = scale(model, glm::vec3(0.5f));
       break;
     case 3:
       chosen_model_name = "cube";
@@ -118,11 +121,15 @@ void Scene10::Render()
       break;
   }
 
+  model = model * Matrix_Translate(model_position.x, model_position.y, model_position.z);
+
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setInt("object_id", 0);
   shaders["scene"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
   shaders["scene"].setVec4("bbox_max", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_max, 1.0f));
   shaders["scene"].setInt("texture_projection", this->texture_projection);
+  shaders["scene"].setFloat("cylinder_height", this->cylinder_height);
+  shaders["scene"].setBool("use_world_coordinates", this->use_world_coordinates);
 
   DrawVirtualObject(this->virtualScene[chosen_model_name.c_str()]);
 }
