@@ -13,12 +13,15 @@ void InterfaceScene10::ShowControls()
   ImGui::Combo("Model", &g_Scene10->chosen_model, "Cylinder\0 \
 Bunny\0 \
 Teapot\0 \
+Cube\0 \
 Sphere\0 \
 Octahedron\0 \
 Dodecahedron\0 \
 Icosahedron\0", 4);
+  ImGui::Separator();
   ImGui::Combo("Texture", &g_Scene10->chosen_texture, "Container\0 \
 World\0", 2);
+  ImGui::Separator();
   ImGui::Combo("Texture Projection", &g_Scene10->texture_projection, "Spherical\0 \
 Cylindrical\0 \
 Axis Aligned Bounding Box\0 \

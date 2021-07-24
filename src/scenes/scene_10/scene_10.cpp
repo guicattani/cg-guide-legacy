@@ -102,15 +102,18 @@ void Scene10::Render()
       model = model * Matrix_Translate(0.0f, -1.0f, 0.0f);
       break;
     case 3:
-      chosen_model_name = "sphere";
+      chosen_model_name = "cube";
       break;
     case 4:
-      chosen_model_name = "octahedron";
+      chosen_model_name = "sphere";
       break;
     case 5:
-      chosen_model_name = "dodecahedron";
+      chosen_model_name = "octahedron";
       break;
     case 6:
+      chosen_model_name = "dodecahedron";
+      break;
+    case 7:
       chosen_model_name = "icosahedron";
       break;
   }

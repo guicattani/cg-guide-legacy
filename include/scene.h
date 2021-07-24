@@ -468,6 +468,10 @@ public:
     ComputeNormals(&sceneModels["teapot"]);
     AddModelToVirtualScene(&sceneModels["teapot"], virtualScene);
 
+    sceneModels["cube"] = ObjModel("../data/cube.obj");
+    ComputeNormals(&sceneModels["cube"]);
+    AddModelToVirtualScene(&sceneModels["cube"], virtualScene);
+
     sceneModels["sphere"] = ObjModel("../data/sphere.obj");
     ComputeNormals(&sceneModels["sphere"]);
     AddModelToVirtualScene(&sceneModels["sphere"], virtualScene);

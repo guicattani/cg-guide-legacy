@@ -41,7 +41,7 @@ void main()
         vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
         float radius = length(position_model - bbox_center);
 
-        vec4 dashP = bbox_center + radius*normalize(position_model - bbox_center);
+        vec4 dashP = bbox_center + radius * normalize(position_model - bbox_center);
 
         float angleRo = sqrt(pow(dashP.x, 2) + pow(dashP.y, 2) + pow(dashP.z, 2));
         float angleTheta = atan(dashP.x, dashP.z);
@@ -49,7 +49,6 @@ void main()
 
         U = (angleTheta + M_PI)/(2 * M_PI);
         V = (anglePhi + M_PI_2)/M_PI;
-
     }
     else if ( texture_projection == CYLINDRICAL_PROJECTION )
     {
