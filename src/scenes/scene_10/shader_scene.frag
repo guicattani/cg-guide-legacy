@@ -17,7 +17,7 @@ uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
 #define CYLINDRICAL_PROJECTION 1
 #define AA_BOUNDING_BOX_PROJECTION 2
-#define PLANAR_PROJECTION 3
+#define TEXTURE_COORDINATES 3
 
 out vec3 color;
 
@@ -63,7 +63,7 @@ void main()
         float maxy = bbox_max.y;
 
         U = (angleTheta + M_PI)/(2 * M_PI);
-        V = (position_model.y)/(maxy  - miny);
+        V = (position_model.y)/(maxy - miny);
     }
     else if ( texture_projection == AA_BOUNDING_BOX_PROJECTION )
     {
@@ -79,7 +79,7 @@ void main()
         U = (position_model.x - minx)/(maxx - minx);
         V = (position_model.y - miny)/(maxy - miny);
     }
-    else if ( texture_projection == PLANAR_PROJECTION )
+    else if ( texture_projection == TEXTURE_COORDINATES )
     {
         // Coordenadas de textura do plano, obtidas do arquivo OBJ.
         U = texcoords.x;

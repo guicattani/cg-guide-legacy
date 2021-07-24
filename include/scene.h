@@ -440,13 +440,16 @@ public:
   bool useTexture = false;
   GLuint diffuseTextureId;
 
+  map<string, GLuint> sceneTextures;
   map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
-  FreeCamera* camera;
+  HybridCamera* camera;
   FreeCamera* second_camera;
 
   int texture_projection = 0;
+  int chosen_model = 0;
+  int chosen_texture = 0;
 
   unsigned int current_part = 1;
   void BuildTrianglesAndAddToVirtualScene();
@@ -457,10 +460,39 @@ public:
     ComputeNormals(&sceneModels["cylinder"]);
     AddModelToVirtualScene(&sceneModels["cylinder"], virtualScene);
 
+    sceneModels["bunny"] = ObjModel("../data/bunny.obj");
+    ComputeNormals(&sceneModels["bunny"]);
+    AddModelToVirtualScene(&sceneModels["bunny"], virtualScene);
+
+    sceneModels["teapot"] = ObjModel("../data/teapot.obj");
+    ComputeNormals(&sceneModels["teapot"]);
+    AddModelToVirtualScene(&sceneModels["teapot"], virtualScene);
+
+    sceneModels["sphere"] = ObjModel("../data/sphere.obj");
+    ComputeNormals(&sceneModels["sphere"]);
+    AddModelToVirtualScene(&sceneModels["sphere"], virtualScene);
+
+    sceneModels["octahedron"] = ObjModel("../data/octahedron.obj");
+    ComputeNormals(&sceneModels["octahedron"]);
+    AddModelToVirtualScene(&sceneModels["octahedron"], virtualScene);
+
+    sceneModels["dodecahedron"] = ObjModel("../data/dodecahedron.obj");
+    ComputeNormals(&sceneModels["dodecahedron"]);
+    AddModelToVirtualScene(&sceneModels["dodecahedron"], virtualScene);
+
+    sceneModels["icosahedron"] = ObjModel("../data/icosahedron.obj");
+    ComputeNormals(&sceneModels["icosahedron"]);
+    AddModelToVirtualScene(&sceneModels["icosahedron"], virtualScene);
+
     shaders["scene"] = Shader("../src/scenes/scene_10/shader_scene.vert",
                               "../src/scenes/scene_10/shader_scene.frag");
 
-    camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
+    shaders["axes"] = Shader("../src/scenes/scene_10/shader_axes.vert",
+                              "../src/scenes/scene_10/shader_axes.frag");
+
+    camera = new HybridCamera(vec4(0.0f, 1.7f, -4.0f, 1.0f));
+    camera->isFreeCamera = false;
+    camera->lookAt = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     second_camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
     BuildTrianglesAndAddToVirtualScene();
   }
