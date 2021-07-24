@@ -48,7 +48,6 @@ GLuint LoadTextureImage(const char* filename)
         stbi_image_free(data);
     }
 
-
     g_NumLoadedTextures += 1;
     return textureID;
 }

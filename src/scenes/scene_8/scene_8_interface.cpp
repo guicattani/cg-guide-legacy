@@ -23,10 +23,6 @@ void InterfaceScene8::ShowControls()
   }
 
   ImGui::Checkbox("Perspective Projection", &g_Scene8->camera->usePerspectiveProjection);
-  if(!g_Scene8->camera->usePerspectiveProjection)
-  {
-  }
-
   ImGui::SliderFloat("Camera Near Plane", &g_Scene8->camera->nearPlane, -10.0f, 10.0f);
   ImGui::SliderFloat("Camera Far Plane", &g_Scene8->camera->farPlane, -10.0f, 10.0f);
 
