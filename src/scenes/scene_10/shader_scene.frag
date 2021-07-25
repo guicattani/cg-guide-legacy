@@ -11,6 +11,14 @@ uniform mat4 projection;
 uniform sampler2D diffuseTexture;
 uniform bool use_world_coordinates;
 
+uniform sampler2D cubemapTopTexture;
+uniform sampler2D cubemapBottomTexture;
+uniform sampler2D cubemapLeftTexture;
+uniform sampler2D cubemapRightTexture;
+uniform sampler2D cubemapFrontTexture;
+uniform sampler2D cubemapBackTexture;
+uniform sampler2D cube_map_texture;
+
 uniform vec4 bbox_min;
 uniform vec4 bbox_max;
 
@@ -20,7 +28,8 @@ uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
 #define CYLINDRICAL_PROJECTION 1
 #define AA_BOUNDING_BOX_PROJECTION 2
-#define TEXTURE_COORDINATES 3
+#define CUBE_MAP 3
+#define TEXTURE_COORDINATES 4
 
 out vec3 color;
 
@@ -37,9 +46,12 @@ void main()
     else
       position = position_model;
 
+    vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+
+    int cube_map_index;
+
     if ( texture_projection == SPHERICAL_PROJECTION )
     {
-        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
         vec4 dashP = bbox_center + normalize(position - bbox_center);
 
         float angleRo = sqrt(pow(dashP.x, 2) + pow(dashP.y, 2) + pow(dashP.z, 2));
@@ -51,7 +63,6 @@ void main()
     }
     else if ( texture_projection == CYLINDRICAL_PROJECTION )
     {
-        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
         vec4 dashP = bbox_center + normalize(position - bbox_center);
 
         float angleTheta = atan(dashP.x / dashP.z);
@@ -73,6 +84,79 @@ void main()
         U = (position.x - minx)/(maxx - minx);
         V = (position.y - miny)/(maxy - miny);
     }
+    else if ( texture_projection == CUBE_MAP )
+    {
+      vec4 dashP = bbox_center + normalize(position - bbox_center);
+
+      float absX = abs(dashP.x);
+      float absY = abs(dashP.y);
+      float absZ = abs(dashP.z);
+
+      bool isXPositive = dashP.x > 0 ? true : false;
+      bool isYPositive = dashP.y > 0 ? true : false;
+      bool isZPositive = dashP.z > 0 ? true : false;
+
+      float maxAxis, uc, vc;
+
+      // POSITIVE X
+      if (isXPositive && absX >= absY && absX >= absZ) {
+        // u (0 to 1) goes from +z to -z
+        // v (0 to 1) goes from -y to +y
+        maxAxis = absX;
+        uc = -dashP.z;
+        vc = dashP.y;
+        cube_map_index = 0;
+      }
+      // NEGATIVE X
+      if (!isXPositive && absX >= absY && absX >= absZ) {
+        // u (0 to 1) goes from -z to +z
+        // v (0 to 1) goes from -y to +y
+        maxAxis = absX;
+        uc = dashP.z;
+        vc = dashP.y;
+        cube_map_index = 1;
+      }
+      // POSITIVE Y
+      if (isYPositive && absY >= absX && absY >= absZ) {
+        // u (0 to 1) goes from -x to +x
+        // v (0 to 1) goes from +z to -z
+        maxAxis = absY;
+        uc = dashP.x;
+        vc = -dashP.z;
+        cube_map_index = 2;
+      }
+      // NEGATIVE Y
+      if (!isYPositive && absY >= absX && absY >= absZ) {
+        // u (0 to 1) goes from -x to +x
+        // v (0 to 1) goes from -z to +z
+        maxAxis = absY;
+        uc = dashP.x;
+        vc = dashP.z;
+        cube_map_index = 3;
+      }
+      // POSITIVE Z
+      if (isZPositive && absZ >= absX && absZ >= absY) {
+        // u (0 to 1) goes from -x to +x
+        // v (0 to 1) goes from -y to +y
+        maxAxis = absZ;
+        uc = dashP.x;
+        vc = dashP.y;
+        cube_map_index = 4;
+      }
+      // NEGATIVE Z
+      if (!isZPositive && absZ >= absX && absZ >= absY) {
+        // u (0 to 1) goes from +x to -x
+        // v (0 to 1) goes from -y to +y
+        maxAxis = absZ;
+        uc = -dashP.x;
+        vc = dashP.y;
+        cube_map_index = 5;
+      }
+
+      // Convert range from -1 to 1 to 0 to 1
+      U = 0.5f * (uc / maxAxis + 1.0f);
+      V = 0.5f * (vc / maxAxis + 1.0f);
+    }
     else if ( texture_projection == TEXTURE_COORDINATES )
     {
         // Coordenadas de textura do plano, obtidas do arquivo OBJ.
@@ -89,7 +173,21 @@ void main()
     vec4 v = normalize(camera_position - p);
 
     // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
-    vec3 Kd0 = texture(diffuseTexture, vec2(U,V)).rgb;
+    vec3 Kd0;
+    if(texture_projection != CUBE_MAP)
+      Kd0 = texture(diffuseTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 0)
+      Kd0 = texture(cubemapTopTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 1)
+      Kd0 = texture(cubemapBottomTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 2)
+      Kd0 = texture(cubemapLeftTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 3)
+      Kd0 = texture(cubemapRightTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 4)
+      Kd0 = texture(cubemapFrontTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 5)
+      Kd0 = texture(cubemapBackTexture, vec2(U,V)).rgb;
 
     // Equação de Iluminação
     float lambert = max(0,dot(n,l));

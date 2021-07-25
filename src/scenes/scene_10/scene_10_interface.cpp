@@ -26,6 +26,7 @@ World\0", 2);
   ImGui::Combo("Texture Projection", &g_Scene10->texture_projection, "Spherical\0 \
 Cylindrical\0 \
 Axis Aligned Bounding Box\0 \
+Cubemap\0 \
 Texture Coordinates (.obj must have texcoords)\0", 4);
 
   ImGui::Separator();

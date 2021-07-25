@@ -58,7 +58,22 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   this->sceneTextures["uv_checker"] = LoadTextureImage("../data/uv_checker.jpg");
   this->sceneTextures["container"] = LoadTextureImage("../data/container2.png");
   this->sceneTextures["world"] = LoadTextureImage("../data/tc-earth_daymap_surface.jpg");
+  //cubemap
+  this->sceneTextures["cubemap_top"] = LoadTextureImage("../data/cubemap_top.jpg");
+  this->sceneTextures["cubemap_bottom"] = LoadTextureImage("../data/cubemap_bottom.jpg");
+  this->sceneTextures["cubemap_left"] = LoadTextureImage("../data/cubemap_left.jpg");
+  this->sceneTextures["cubemap_right"] = LoadTextureImage("../data/cubemap_right.jpg");
+  this->sceneTextures["cubemap_front"] = LoadTextureImage("../data/cubemap_front.jpg");
+  this->sceneTextures["cubemap_back"] = LoadTextureImage("../data/cubemap_back.jpg");
+
   shaders["scene"].setInt("diffuseTexture", 0);
+
+  shaders["scene"].setInt("cubemapTopTexture", 1);
+  shaders["scene"].setInt("cubemapBottomTexture", 2);
+  shaders["scene"].setInt("cubemapLeftTexture", 3);
+  shaders["scene"].setInt("cubemapRightTexture", 4);
+  shaders["scene"].setInt("cubemapFrontTexture", 5);
+  shaders["scene"].setInt("cubemapBackTexture", 6);
 }
 
 void Scene10::Render()
@@ -78,18 +93,40 @@ void Scene10::Render()
   this->shaders["scene"].use();
   model = Matrix_Identity();
   // bind diffuse map
-  glActiveTexture(GL_TEXTURE0);
-  switch(chosen_texture) {
-  case 0:
-    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["uv_checker"]);
-    break;
-  case 1:
-    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["container"]);
-    break;
-  case 2:
-    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["world"]);
-    break;
+
+  if (this->texture_projection == 3) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_top"]);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_bottom"]);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_left"]);
+
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_right"]);
+
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_front"]);
+
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_back"]);
+  } else {
+    glActiveTexture(GL_TEXTURE0);
+    switch(chosen_texture) {
+    case 0:
+      glBindTexture(GL_TEXTURE_2D, this->sceneTextures["uv_checker"]);
+      break;
+    case 1:
+      glBindTexture(GL_TEXTURE_2D, this->sceneTextures["container"]);
+      break;
+    case 2:
+      glBindTexture(GL_TEXTURE_2D, this->sceneTextures["world"]);
+      break;
+    }
   }
+
 
   string chosen_model_name;
   // TODO we can use enum for this, can"t we
