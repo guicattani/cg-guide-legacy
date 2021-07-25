@@ -17,7 +17,6 @@ uniform sampler2D cubemapLeftTexture;
 uniform sampler2D cubemapRightTexture;
 uniform sampler2D cubemapFrontTexture;
 uniform sampler2D cubemapBackTexture;
-uniform sampler2D cube_map_texture;
 
 uniform vec4 bbox_min;
 uniform vec4 bbox_max;
@@ -86,7 +85,7 @@ void main()
     }
     else if ( texture_projection == CUBE_MAP )
     {
-      vec4 dashP = bbox_center + normalize(position - bbox_center);
+      vec4 dashP = position - bbox_center;
 
       float absX = abs(dashP.x);
       float absY = abs(dashP.y);
@@ -177,16 +176,16 @@ void main()
     if(texture_projection != CUBE_MAP)
       Kd0 = texture(diffuseTexture, vec2(U,V)).rgb;
     else if (cube_map_index == 0)
-      Kd0 = texture(cubemapTopTexture, vec2(U,V)).rgb;
-    else if (cube_map_index == 1)
-      Kd0 = texture(cubemapBottomTexture, vec2(U,V)).rgb;
-    else if (cube_map_index == 2)
       Kd0 = texture(cubemapLeftTexture, vec2(U,V)).rgb;
-    else if (cube_map_index == 3)
+    else if (cube_map_index == 1)
       Kd0 = texture(cubemapRightTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 2)
+      Kd0 = texture(cubemapTopTexture, vec2(U,V)).rgb;
+    else if (cube_map_index == 3)
+      Kd0 = texture(cubemapBottomTexture, vec2(U,V)).rgb;
     else if (cube_map_index == 4)
       Kd0 = texture(cubemapFrontTexture, vec2(U,V)).rgb;
-    else if (cube_map_index == 5)
+    else
       Kd0 = texture(cubemapBackTexture, vec2(U,V)).rgb;
 
     // Equação de Iluminação
