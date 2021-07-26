@@ -93,11 +93,37 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_back"]);
   // Not entirely sure, but I think since GL_TEXTURE0 won't be used anymore, OGL does a roundrobin?
   shaders["scene"].setInt("cubemapBackTexture", 0);
+
+  //textures
+  this->shaders["texture"].use();
+  shaders["texture"].setInt("diffuseTexture", 0);
+  //cubemap
+  shaders["texture"].setInt("cubemapTopTexture", 1);
+  shaders["texture"].setInt("cubemapBottomTexture", 2);
+  shaders["texture"].setInt("cubemapLeftTexture", 3);
+  shaders["texture"].setInt("cubemapRightTexture", 4);
+  shaders["texture"].setInt("cubemapFrontTexture", 5);
+  // Not entirely sure, but I think since GL_TEXTURE0 won't be used anymore, OGL does a roundrobin?
+  shaders["texture"].setInt("cubemapBackTexture", 0);
 }
+
+// void Scene10::DrawArrow()
+// {
+//   arrow_look_at
+// }
 
 void Scene10::Render()
 {
-  this->camera->Enable();
+  int display_w, display_h;
+  glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+
+  shaders["scene"].use();
+  glViewport(0, 0, display_w/2, display_h);
+  bool mouse_over_camera = false;
+  if(Globals::g_CurrentCursorPosX < display_w/2)
+    mouse_over_camera = true;
+
+  this->camera->Enable((float) (display_w/2)/display_h, mouse_over_camera);
   this->camera->UpdateShaderUniforms(this->shaders["scene"]);
   this->camera->UpdateShaderUniforms(this->shaders["axes"]);
 
@@ -168,4 +194,48 @@ void Scene10::Render()
   shaders["scene"].setBool("use_world_coordinates", this->use_world_coordinates);
 
   DrawVirtualObject(this->virtualScene[chosen_model_name.c_str()]);
+
+  //second camera
+  shaders["texture"].use();
+  glViewport(display_w/2, 0, display_w/2, display_h);
+  bool mouse_over_second_camera = false;
+  if(Globals::g_CurrentCursorPosX > display_w/2)
+    mouse_over_second_camera = true;
+
+  this->second_camera->Enable((float) (display_w/2)/display_h, mouse_over_second_camera);
+  this->second_camera->UpdateShaderUniforms(this->shaders["texture"]);
+
+  model = Matrix_Identity();
+  model = model * Matrix_Translate(model_position.x, model_position.y, model_position.z);
+
+  shaders["texture"].setMat4("model", model);
+  shaders["texture"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
+  shaders["texture"].setVec4("bbox_max", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_max, 1.0f));
+  shaders["texture"].setInt("texture_projection", this->texture_projection);
+  shaders["texture"].setFloat("cylinder_height", this->cylinder_height);
+  shaders["texture"].setBool("use_world_coordinates", this->use_world_coordinates);
+  shaders["texture"].setBool("isObject", true);
+  shaders["texture"].setFloat("texture_projection_transparency", this-> texture_projection_transparency);
+  DrawVirtualObject(this->virtualScene[chosen_model_name.c_str()]);
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  shaders["texture"].setBool("isObject", false);
+
+  model = Matrix_Identity();
+  model = scale(model, glm::vec3(1.2f));
+  shaders["texture"].setMat4("model", model);
+
+  if(this->texture_projection == 0) {
+    DrawVirtualObject(this->virtualScene["sphere"]);
+  } else if(this->texture_projection == 1) {
+    DrawVirtualObject(this->virtualScene["cylinder"]);
+  } else if(this->texture_projection == 2) {
+    DrawVirtualObject(this->virtualScene["cube"]);
+  } else if(this->texture_projection == 3) {
+    DrawVirtualObject(this->virtualScene["cube"]);
+  }
+
+  glDisable(GL_BLEND);
 }

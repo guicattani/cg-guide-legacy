@@ -39,6 +39,14 @@ Texture Coordinates (.obj must have texcoords)\0", 4);
   ImGui::Checkbox("Use World Coordinates", &g_Scene10->use_world_coordinates);
   ImGui::SliderFloat3("Model Position", (float*) &g_Scene10->model_position, -1.0f, 1.0f);
   ImGui::SliderFloat("Cylinder Height", &g_Scene10->cylinder_height, 0.0f, 5.0f);
+  ImGui::SliderFloat("Texture Projection Transparency", &g_Scene10->texture_projection_transparency, 0.0f, 1.0f);
+
+  ImGui::Separator();
+  ImGui::Text("Right Camera Pos: %f %f %f", g_Scene10->second_camera->position.x,
+                                           g_Scene10->second_camera->position.y,
+                                           g_Scene10->second_camera->position.z);
+  ImGui::Text("Right Camera Theta: %f", g_Scene10->second_camera->theta);
+  ImGui::Text("Right Camera Phi: %f", g_Scene10->second_camera->phi);
 }
 
 void InterfaceScene10::ShowText()

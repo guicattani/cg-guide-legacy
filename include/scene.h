@@ -447,16 +447,21 @@ public:
   HybridCamera* camera;
   FreeCamera* second_camera;
 
-  int texture_projection = 0;
+  int texture_projection = 3;
   int chosen_model = 0;
   int chosen_texture = 0;
   bool use_world_coordinates = false;
 
   float cylinder_height = 1.0f;
+  float texture_projection_transparency = 0.5f;
 
   vec3 model_position = vec3(0.0f, 0.0f, 0.0f);
 
+  vec3 arrow_look_at = vec3(0.0f, 1.0f, 0.0f);
+  float arrow_distance = 1.5f;
+
   unsigned int current_part = 1;
+  void DrawArrow();
   void BuildTrianglesAndAddToVirtualScene();
   void Render();
 
@@ -493,16 +498,23 @@ public:
     ComputeNormals(&sceneModels["icosahedron"]);
     AddModelToVirtualScene(&sceneModels["icosahedron"], virtualScene);
 
+    sceneModels["arrow"] = ObjModel("../data/arrow.obj");
+    ComputeNormals(&sceneModels["arrow"]);
+    AddModelToVirtualScene(&sceneModels["arrow"], virtualScene);
+
     shaders["scene"] = Shader("../src/scenes/scene_10/shader_scene.vert",
                               "../src/scenes/scene_10/shader_scene.frag");
 
     shaders["axes"] = Shader("../src/scenes/scene_10/shader_axes.vert",
                               "../src/scenes/scene_10/shader_axes.frag");
 
-    camera = new HybridCamera(vec4(0.0f, 2.5f, -4.0f, 1.0f));
+    shaders["texture"] = Shader("../src/scenes/scene_10/shader_texture.vert",
+                                "../src/scenes/scene_10/shader_texture.frag");
+
+    camera = new HybridCamera(vec4(-0.77f, 2.5f, 4.2f, 1.0f));
     camera->isFreeCamera = false;
     camera->lookAt = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-    second_camera = new FreeCamera(vec4(2.2f, 0.45f, -2.27f, 1.0f), -0.6f, 0.06f);
+    second_camera = new FreeCamera(vec4(-1.68f, 2.58f, 4.0f, 1.0f), 2.7f, 0.31f);
     BuildTrianglesAndAddToVirtualScene();
   }
 };
