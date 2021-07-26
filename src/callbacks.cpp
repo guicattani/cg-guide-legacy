@@ -202,14 +202,32 @@ void CursorPosCallback(GLFWwindow *window, double xpos, double ypos)
 }
 
 // função callback chamada sempre que o usuário movimenta a "rodinha" do mouse.
-void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+void ScrollCallback(GLFWwindow *window, double _xoffset, double yoffset)
 {
   // Atualizamos a distância da câmera para a origem utilizando a
   // movimentação da "rodinha", simulando um ZOOM.
-  g_CameraDistance -= 0.1f * float(yoffset);
 
-  if (g_CameraDistance < 0.0f)
-    g_CameraDistance = 0.0f;
+  switch (g_CurrentScene)
+  {
+  case 7:
+    g_Scene8->camera->cameraDistanceFromOrigin -= 0.1f * float(yoffset);
+
+    if (g_Scene8->camera->cameraDistanceFromOrigin < 0.0f)
+      g_Scene8->camera->cameraDistanceFromOrigin = 0.0f;
+    break;
+  case 8:
+    g_Scene9->camera->cameraDistanceFromOrigin -= 0.1f * float(yoffset);
+
+    if (g_Scene9->camera->cameraDistanceFromOrigin < 0.0f)
+      g_Scene9->camera->cameraDistanceFromOrigin = 0.0f;
+    break;
+  case 9:
+    g_Scene10->camera->cameraDistanceFromOrigin -= 0.1f * float(yoffset);
+
+    if (g_Scene10->camera->cameraDistanceFromOrigin < 0.0f)
+      g_Scene10->camera->cameraDistanceFromOrigin = 0.0f;
+    break;
+  }
 }
 
 // definição da função que será chamada sempre que o usuário pressionar alguma

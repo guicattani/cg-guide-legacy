@@ -87,19 +87,22 @@ void HybridCamera::Enable(float screenRatio, bool mouseOver)
   vec4 camera_lookat_l;
   if(isFreeCamera)
     camera_lookat_l = vec4(quaternion.x + position.x, -quaternion.y + position.y, quaternion.z + position.z, 1.0f);
-  else
+  else {
     camera_lookat_l = lookAt;
+    position.x = cameraDistanceFromOrigin * quaternion.x;
+    position.y = cameraDistanceFromOrigin * quaternion.y;
+    position.z = cameraDistanceFromOrigin * quaternion.z;
+  }
 
   // TODO fix all ugly different casings
   cameraViewVector = camera_lookat_l - position;
   vec4 camera_up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);
   vec4 camera_right_vector = crossproduct(cameraViewVector, camera_up_vector);
 
-  float speed = 0.02f;
-  if(ShiftPressed)
-    speed = 0.04f;
-
-  if(mouseOver) {
+  if(mouseOver && isFreeCamera) {
+    float speed = 0.02f;
+    if(ShiftPressed)
+      speed = 0.04f;
     if (WPressed)
       position += speed * cameraViewVector;
     if (SPressed)
