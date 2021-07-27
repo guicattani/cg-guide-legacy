@@ -107,10 +107,38 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   shaders["texture"].setInt("cubemapBackTexture", 0);
 }
 
-// void Scene10::DrawArrow()
-// {
-//   arrow_look_at
-// }
+void Scene10::DrawArrow()
+{
+  arrow->position.x = 2.0f * cos(arrow->phi) * sin(arrow->theta);
+  arrow->position.y = 2.0f * sin(arrow->phi);
+  arrow->position.z = 2.0f * cos(arrow->phi) * cos(arrow->theta);
+
+  vec4 forward_vector = vec4(0.0f, 0.0f, 1.0f, 0.0f);
+  vec4 look_at_vector =  arrow->lookAt - arrow->position;
+  arrow->position -= normalize(look_at_vector) * arrow->distance;
+
+  float dot_product = dotproduct(look_at_vector, forward_vector);
+  float y_angle = atan2(look_at_vector.x, dot_product);
+
+  vec4 up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+  look_at_vector = look_at_vector * Matrix_Rotate_Y(y_angle);
+  dot_product = dotproduct(look_at_vector, up_vector);
+  float x_angle = atan2(look_at_vector.z, dot_product) - 3.14f / 2;
+
+  mat4 model = Matrix_Translate(arrow->position.x, arrow->position.y, arrow->position.z)
+               * Matrix_Rotate_Y(y_angle)
+               * Matrix_Rotate_X(x_angle);
+
+  shaders["scene"].use();
+  shaders["scene"].setMat4("model", model);
+  shaders["scene"].setVec4("arrow_position", arrow->position);
+  DrawVirtualObject(this->virtualScene["arrow"]);
+
+  // model = Matrix_Translate(arrow->lookAt.x, arrow->lookAt.y, arrow->lookAt.z);
+  // model = scale(model, vec3(0.3f));
+  // shaders["scene"].setMat4("model", model);
+  // DrawVirtualObject(this->virtualScene["cube"]);
+}
 
 void Scene10::Render()
 {
@@ -195,8 +223,10 @@ void Scene10::Render()
 
   DrawVirtualObject(this->virtualScene[chosen_model_name.c_str()]);
 
+  DrawArrow();
   //second camera
   shaders["texture"].use();
+  shaders["texture"].setVec4("arrow_position", arrow->position);
   glViewport(display_w/2, 0, display_w/2, display_h);
   bool mouse_over_second_camera = false;
   if(Globals::g_CurrentCursorPosX > display_w/2)

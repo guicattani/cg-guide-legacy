@@ -25,6 +25,7 @@ uniform bool isObject;
 
 uniform float cylinder_height;
 uniform float texture_projection_transparency;
+uniform vec4 arrow_position;
 
 uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
@@ -40,14 +41,13 @@ out vec4 color;
 void main()
 {
     vec4 Kd0;
+    vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
 
     if(!isObject) {
       float U = 0.0;
       float V = 0.0;
 
       vec4 position = position_model;
-
-      vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
 
       int cube_map_index;
 
@@ -181,10 +181,26 @@ void main()
       else
         Kd0 = vec4(texture(cubemapBackTexture, vec2(U,V)).rgb, texture_projection_transparency);
 
+
+      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
+        Kd0 = vec4(0.0, 0.0, 0.0, texture_projection_transparency);
+      }
+      if(distance(bbox_center - arrow_position, bbox_center - position) < 0.2) {
+        Kd0 = vec4(0.0, 1.0, 0.0, texture_projection_transparency);
+      }
+
       color = Kd0;
     }
     else {
       Kd0 = vec4(0.6,0.6,0.6,1.0);
+
+
+      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
+        Kd0 = vec4(0.0, 0.0, 0.0, 1.0);
+      }
+      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.2) {
+        Kd0 = vec4(0.0, 1.0, 0.0, 1.0);
+      }
 
       vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
       vec4 camera_position = inverse(view) * origin;

@@ -23,6 +23,8 @@ uniform vec4 bbox_max;
 
 uniform float cylinder_height;
 
+uniform vec4 arrow_position;
+
 uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
 #define CYLINDRICAL_PROJECTION 1
@@ -187,6 +189,13 @@ void main()
       Kd0 = texture(cubemapFrontTexture, vec2(U,V)).rgb;
     else
       Kd0 = texture(cubemapBackTexture, vec2(U,V)).rgb;
+
+    if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
+      Kd0 = vec3(0.0, 0.0, 0.0);
+    }
+    if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.2) {
+      Kd0 = vec3(0.0, 1.0, 0.0);
+    }
 
     // Equação de Iluminação
     float lambert = max(0,dot(n,l));

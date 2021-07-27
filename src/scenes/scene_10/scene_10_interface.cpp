@@ -29,6 +29,11 @@ Axis Aligned Bounding Box\0 \
 Cubemap\0 \
 Texture Coordinates (.obj must have texcoords)\0", 4);
 
+
+  ImGui::SliderFloat("Arrow Theta", &g_Scene10->arrow->theta, 0.0f, 6.28f);
+  ImGui::SliderFloat("Arrow Phi", &g_Scene10->arrow->phi, 0.0f, 6.28f);
+  ImGui::SliderFloat("Arrow Distance", &g_Scene10->arrow->distance, -1.0f, 2.0f);
+
   ImGui::Separator();
   ImGui::Text("Left Camera Pos: %f %f %f", g_Scene10->camera->position.x,
                                            g_Scene10->camera->position.y,

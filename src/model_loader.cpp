@@ -177,12 +177,17 @@ void AddModelToVirtualScene(ObjModel *model, map<string, SceneObject> &virtualSc
 
     size_t last_index = indices.size() - 1;
 
+    vec3 bbox_center = glm::vec3((bbox_min.x + bbox_max.x) / 2,
+                                 (bbox_min.y + bbox_max.y) / 2,
+                                 (bbox_min.z + bbox_max.z) / 2);
+
     SceneObject theobject;
     theobject.name = model->shapes[shape].name;
     theobject.first_index = (void *)first_index;          // Primeiro índice
     theobject.num_indices = last_index - first_index + 1; // Número de indices
     theobject.rendering_mode = GL_TRIANGLES;              // Índices correspondem ao tipo de rasterização GL_TRIANGLES.
     theobject.bbox_min = bbox_min;
+    theobject.bbox_center = bbox_center;
     theobject.bbox_max = bbox_max;
     theobject.vertex_array_object_id = vertex_array_object_id;
 

@@ -437,6 +437,22 @@ public:
 class Scene10
 {
 public:
+  struct Arrow {
+    vec4 position;
+    vec4 lookAt;
+    float distance;
+    float phi;
+    float theta;
+
+    Arrow() {
+      position = vec4(0.0f,0.0f,0.0f,1.0f);
+      lookAt = vec4(0.0f,1.0f,0.0f,1.0f);
+      distance = 0.6f;
+      phi = 2.0f;
+      theta = 3.5f;
+    }
+  };
+
   bool useTexture = false;
   GLuint diffuseTextureId;
 
@@ -446,6 +462,7 @@ public:
   map<string, Shader> shaders;
   HybridCamera* camera;
   FreeCamera* second_camera;
+  Arrow* arrow;
 
   int texture_projection = 3;
   int chosen_model = 0;
@@ -459,6 +476,8 @@ public:
 
   vec3 arrow_look_at = vec3(0.0f, 1.0f, 0.0f);
   float arrow_distance = 1.5f;
+  float arrow_phi = 1.5f;
+  float arrow_theta = 1.5f;
 
   unsigned int current_part = 1;
   void DrawArrow();
@@ -511,7 +530,9 @@ public:
     shaders["texture"] = Shader("../src/scenes/scene_10/shader_texture.vert",
                                 "../src/scenes/scene_10/shader_texture.frag");
 
-    camera = new HybridCamera(vec4(-0.77f, 2.5f, 4.2f, 1.0f));
+    arrow = new Arrow();
+
+    camera = new HybridCamera(vec4(-1.77f, 3.0f, 4.3f, 1.0f), -0.38f, 0.58f);
     camera->isFreeCamera = false;
     camera->lookAt = vec4(0.0f, 1.0f, 0.0f, 1.0f);
     second_camera = new FreeCamera(vec4(-1.68f, 2.58f, 4.0f, 1.0f), 2.7f, 0.31f);
