@@ -6,54 +6,6 @@
 
 void Scene10::BuildTrianglesAndAddToVirtualScene()
 {
-   GLfloat model_color_coefficients[] = {
-      0.0f,   0.0f,  0.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-      1.0f,   0.0f,  0.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-
-      0.0f,   0.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-      0.0f,   1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, 1.0f,
-
-      0.0f,   0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, 1.0f,
-      0.0f,   0.0f,  1.0f,  1.0f,  0.0f, 0.0f, 1.0f, 1.0f
-  };
-
-  GLuint VBO_model_color_coefficients_id, vertex_array_object_id;
-  glGenBuffers(1, &VBO_model_color_coefficients_id);
-  glGenVertexArrays(1, &vertex_array_object_id);
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_model_color_coefficients_id);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(model_color_coefficients), model_color_coefficients, GL_STATIC_DRAW);
-
-  glBindVertexArray(vertex_array_object_id);
-  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
-
-  glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(4 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  GLuint indices[] = {
-      0, 1,
-      2, 3,
-      4, 5
-  };
-
-  SceneObject axes;
-  axes.name = "Eixos XYZ";
-  axes.first_index = (void *)0;
-  axes.num_indices = 6;
-  axes.rendering_mode = GL_LINES;
-  axes.vertex_array_object_id = vertex_array_object_id;
-  this->virtualScene["axes"] = axes;
-
-  GLuint indices_id;
-  glGenBuffers(1, &indices_id);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), NULL, GL_STATIC_DRAW);
-  glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(indices), indices);
-
-  glBindVertexArray(0);
-
   this->shaders["scene"].use();
   //textures
   this->sceneTextures["uv_checker"] = LoadTextureImage("../data/uv_checker.jpg");
@@ -109,13 +61,33 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
 
 void Scene10::DrawArrow()
 {
-  arrow->position.x = 2.0f * cos(arrow->phi) * sin(arrow->theta);
-  arrow->position.y = 2.0f * sin(arrow->phi);
-  arrow->position.z = 2.0f * cos(arrow->phi) * cos(arrow->theta);
+  // if(this->texture_projection != 2) {
+    arrow->position.x = 2.0f * cos(arrow->phi) * sin(arrow->theta);
+    arrow->position.y = 2.0f * sin(arrow->phi);
+    arrow->position.z = 2.0f * cos(arrow->phi) * cos(arrow->theta);
+  // } else {
+  //   arrow->phi = 0.0f;
+  //   arrow->theta = 0.0f;
+  //   arrow->position.x = arrow->axisAlignedCenter.x + arrow->axisAlignedPosition.x;
+  //   arrow->position.y = arrow->axisAlignedCenter.y + arrow->axisAlignedPosition.y;
+  //   arrow->position.z = 2.0f * arrow->distance;
+  //   arrow->lookAt = arrow->position - vec4(0.0f, 0.0f, 1.0f, 0.0f);
+  // }
 
   vec4 forward_vector = vec4(0.0f, 0.0f, 1.0f, 0.0f);
   vec4 look_at_vector =  arrow->lookAt - arrow->position;
   arrow->position -= normalize(look_at_vector) * arrow->distance;
+
+  vec4 arrow_look_at_vec = normalize(look_at_vector);
+  float arrow_point_in_plane_distance = (1 - arrow->position.z) / arrow_look_at_vec.z;
+  vec4 arrow_point_in_plane = arrow->position + arrow_look_at_vec * arrow_point_in_plane_distance;
+
+  shaders["texture"].use();
+  shaders["texture"].setVec4("arrow_point_in_plane", arrow_point_in_plane);
+
+  shaders["scene"].use();
+  shaders["scene"].setVec4("arrow_position", arrow->position);
+  shaders["scene"].setVec4("arrow_look_at", arrow->lookAt);
 
   float dot_product = dotproduct(look_at_vector, forward_vector);
   float y_angle = atan2(look_at_vector.x, dot_product);
@@ -129,15 +101,9 @@ void Scene10::DrawArrow()
                * Matrix_Rotate_Y(y_angle)
                * Matrix_Rotate_X(x_angle);
 
-  shaders["scene"].use();
-  shaders["scene"].setMat4("model", model);
-  shaders["scene"].setVec4("arrow_position", arrow->position);
+  shaders["arrow"].use();
+  shaders["arrow"].setMat4("model", model);
   DrawVirtualObject(this->virtualScene["arrow"]);
-
-  // model = Matrix_Translate(arrow->lookAt.x, arrow->lookAt.y, arrow->lookAt.z);
-  // model = scale(model, vec3(0.3f));
-  // shaders["scene"].setMat4("model", model);
-  // DrawVirtualObject(this->virtualScene["cube"]);
 }
 
 void Scene10::Render()
@@ -145,7 +111,6 @@ void Scene10::Render()
   int display_w, display_h;
   glfwGetFramebufferSize(g_Window, &display_w, &display_h);
 
-  shaders["scene"].use();
   glViewport(0, 0, display_w/2, display_h);
   bool mouse_over_camera = false;
   if(Globals::g_CurrentCursorPosX < display_w/2)
@@ -153,18 +118,12 @@ void Scene10::Render()
 
   this->camera->Enable((float) (display_w/2)/display_h, mouse_over_camera);
   this->camera->UpdateShaderUniforms(this->shaders["scene"]);
-  this->camera->UpdateShaderUniforms(this->shaders["axes"]);
+  this->camera->UpdateShaderUniforms(this->shaders["arrow"]);
 
   glLineWidth(1.0f);
 
-  this->shaders["axes"].use();
-  glm::mat4 model = Matrix_Identity();
-  model = model * Matrix_Translate(5.0f, 0.0f, 0.0f);
-  shaders["axes"].setMat4("model", model);
-  DrawVirtualObject(this->virtualScene["axes"]);
-
   this->shaders["scene"].use();
-  model = Matrix_Identity();
+  glm::mat4 model = Matrix_Identity();
 
   // bind diffuse map
   if(this->texture_projection != 3) {
@@ -213,6 +172,7 @@ void Scene10::Render()
   }
 
   model = model * Matrix_Translate(model_position.x, model_position.y, model_position.z);
+  arrow->axisAlignedCenter = this->virtualScene[chosen_model_name.c_str()].bbox_center;
 
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
@@ -235,9 +195,6 @@ void Scene10::Render()
   this->second_camera->Enable((float) (display_w/2)/display_h, mouse_over_second_camera);
   this->second_camera->UpdateShaderUniforms(this->shaders["texture"]);
 
-  model = Matrix_Identity();
-  model = model * Matrix_Translate(model_position.x, model_position.y, model_position.z);
-
   shaders["texture"].setMat4("model", model);
   shaders["texture"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
   shaders["texture"].setVec4("bbox_max", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_max, 1.0f));
@@ -254,18 +211,42 @@ void Scene10::Render()
   shaders["texture"].setBool("isObject", false);
 
   model = Matrix_Identity();
-  model = scale(model, glm::vec3(1.2f));
-  shaders["texture"].setMat4("model", model);
+  string chosen_projection_name;
 
-  if(this->texture_projection == 0) {
-    DrawVirtualObject(this->virtualScene["sphere"]);
-  } else if(this->texture_projection == 1) {
-    DrawVirtualObject(this->virtualScene["cylinder"]);
-  } else if(this->texture_projection == 2) {
-    DrawVirtualObject(this->virtualScene["cube"]);
-  } else if(this->texture_projection == 3) {
-    DrawVirtualObject(this->virtualScene["cube"]);
+  if(this->texture_projection == 0)
+  {
+    float radius = 1.7f;
+    model = scale(model, vec3(radius));
+    model = model * Matrix_Translate(0.0f, -0.5f, 0.0f);
+    chosen_projection_name = "sphere";
+  } else if(this->texture_projection == 1)
+  {
+    model = scale(model, vec3(1.05f));
+    chosen_projection_name = "cylinder";
+  } else if(this->texture_projection == 2)
+  {
+    SceneObject virtual_model = this->virtualScene[chosen_model_name.c_str()];
+    model = scale(model, vec3(
+                          abs(virtual_model.bbox_max.x - virtual_model.bbox_min.x) / 2,
+                          abs(virtual_model.bbox_max.y - virtual_model.bbox_min.y) / 2,
+                          abs(virtual_model.bbox_max.z - virtual_model.bbox_min.z) / 2
+                          ));
+    model = scale(model, vec3(1.05f));
+    chosen_projection_name = "cube";
+  }
+  else if(this->texture_projection == 3)
+  {
+    SceneObject virtual_model = this->virtualScene[chosen_model_name.c_str()];
+    model = scale(model, vec3(
+                          abs(virtual_model.bbox_max.x - virtual_model.bbox_min.x) / 2,
+                          abs(virtual_model.bbox_max.y - virtual_model.bbox_min.y) / 2,
+                          abs(virtual_model.bbox_max.z - virtual_model.bbox_min.z) / 2
+                          ));
+    model = scale(model, vec3(1.05f));
+    chosen_projection_name = "cube";
   }
 
+  shaders["texture"].setMat4("model", model);
+  DrawVirtualObject(this->virtualScene[chosen_projection_name.c_str()]);
   glDisable(GL_BLEND);
 }

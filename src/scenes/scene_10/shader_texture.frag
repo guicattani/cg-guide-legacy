@@ -26,13 +26,14 @@ uniform bool isObject;
 uniform float cylinder_height;
 uniform float texture_projection_transparency;
 uniform vec4 arrow_position;
+uniform vec4 arrow_look_at;
+uniform vec4 arrow_point_in_plane;
 
 uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
 #define CYLINDRICAL_PROJECTION 1
 #define AA_BOUNDING_BOX_PROJECTION 2
 #define CUBE_MAP 3
-#define TEXTURE_COORDINATES 4
 
 out vec4 color;
 
@@ -158,12 +159,6 @@ void main()
         U = 0.5f * (uc / maxAxis + 1.0f);
         V = 0.5f * (vc / maxAxis + 1.0f);
       }
-      else if ( texture_projection == TEXTURE_COORDINATES )
-      {
-          // Coordenadas de textura do plano, obtidas do arquivo OBJ.
-          U = texcoords.x;
-          V = texcoords.y;
-      }
 
       // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
       if(texture_projection != CUBE_MAP)
@@ -181,26 +176,30 @@ void main()
       else
         Kd0 = vec4(texture(cubemapBackTexture, vec2(U,V)).rgb, texture_projection_transparency);
 
-
-      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
-        Kd0 = vec4(0.0, 0.0, 0.0, texture_projection_transparency);
+      if ( texture_projection == AA_BOUNDING_BOX_PROJECTION )
+      {
+        float distance_point = distance(arrow_point_in_plane, vec4(position.x, position.y, 1.0, 1.0));
+        if(distance_point < 0.07) {
+          float weight = (0.07 - distance_point) / 0.07;
+          Kd0 = Kd0 * (1 - weight) + vec4(0.0, 1.0, 0.0, 1.0) * weight;
+        }
       }
-      if(distance(bbox_center - arrow_position, bbox_center - position) < 0.2) {
-        Kd0 = vec4(0.0, 1.0, 0.0, texture_projection_transparency);
+      else
+      {
+        float angle_between_arrow_and_position = acos(dot(normalize(bbox_center - arrow_position), normalize(bbox_center - position)));
+
+        if(angle_between_arrow_and_position < 0.07) {
+          Kd0 = vec4(0.0, 0.0, 0.0, texture_projection_transparency);
+        }
+        if(angle_between_arrow_and_position < 0.06) {
+          Kd0 = vec4(0.0, 1.0, 0.0, texture_projection_transparency);
+        }
       }
 
       color = Kd0;
     }
     else {
       Kd0 = vec4(0.6,0.6,0.6,1.0);
-
-
-      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
-        Kd0 = vec4(0.0, 0.0, 0.0, 1.0);
-      }
-      if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.2) {
-        Kd0 = vec4(0.0, 1.0, 0.0, 1.0);
-      }
 
       vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
       vec4 camera_position = inverse(view) * origin;

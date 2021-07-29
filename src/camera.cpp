@@ -131,6 +131,7 @@ void HybridCamera::Enable(float screenRatio, bool mouseOver)
 }
 
 void HybridCamera::UpdateShaderUniforms(Shader shader) {
+  shader.use();
   shader.setMat4("view", view);
   shader.setVec3("viewPos", position);
   shader.setMat4("projection", projection);

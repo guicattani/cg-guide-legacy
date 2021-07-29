@@ -440,6 +440,8 @@ public:
   struct Arrow {
     vec4 position;
     vec4 lookAt;
+    vec2 axisAlignedPosition;
+    vec2 axisAlignedCenter;
     float distance;
     float phi;
     float theta;
@@ -447,6 +449,8 @@ public:
     Arrow() {
       position = vec4(0.0f,0.0f,0.0f,1.0f);
       lookAt = vec4(0.0f,1.0f,0.0f,1.0f);
+      axisAlignedPosition = vec2(0.0f,0.0f);
+      axisAlignedCenter = vec2(0.0f,0.0f);
       distance = 0.6f;
       phi = 2.0f;
       theta = 3.5f;
@@ -464,7 +468,7 @@ public:
   FreeCamera* second_camera;
   Arrow* arrow;
 
-  int texture_projection = 3;
+  int texture_projection = 2;
   int chosen_model = 0;
   int chosen_texture = 0;
   bool use_world_coordinates = false;
@@ -473,11 +477,6 @@ public:
   float texture_projection_transparency = 0.5f;
 
   vec3 model_position = vec3(0.0f, 0.0f, 0.0f);
-
-  vec3 arrow_look_at = vec3(0.0f, 1.0f, 0.0f);
-  float arrow_distance = 1.5f;
-  float arrow_phi = 1.5f;
-  float arrow_theta = 1.5f;
 
   unsigned int current_part = 1;
   void DrawArrow();
@@ -524,8 +523,8 @@ public:
     shaders["scene"] = Shader("../src/scenes/scene_10/shader_scene.vert",
                               "../src/scenes/scene_10/shader_scene.frag");
 
-    shaders["axes"] = Shader("../src/scenes/scene_10/shader_axes.vert",
-                              "../src/scenes/scene_10/shader_axes.frag");
+    shaders["arrow"] = Shader("../src/scenes/scene_10/shader_arrow.vert",
+                              "../src/scenes/scene_10/shader_arrow.frag");
 
     shaders["texture"] = Shader("../src/scenes/scene_10/shader_texture.vert",
                                 "../src/scenes/scene_10/shader_texture.frag");

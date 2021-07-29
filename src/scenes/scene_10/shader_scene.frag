@@ -190,10 +190,13 @@ void main()
     else
       Kd0 = texture(cubemapBackTexture, vec2(U,V)).rgb;
 
-    if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.25) {
+
+    float angle_between_arrow_and_position = acos(dot(normalize(bbox_center - arrow_position), normalize(bbox_center - position)));
+
+    if(angle_between_arrow_and_position < 0.07) {
       Kd0 = vec3(0.0, 0.0, 0.0);
     }
-    if(distance(bbox_center - arrow_position, bbox_center - position_model) < 0.2) {
+    if(angle_between_arrow_and_position < 0.06) {
       Kd0 = vec3(0.0, 1.0, 0.0);
     }
 

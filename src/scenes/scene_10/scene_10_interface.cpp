@@ -18,21 +18,40 @@ Sphere\0 \
 Octahedron\0 \
 Dodecahedron\0 \
 Icosahedron\0", 4);
-  ImGui::Separator();
-  ImGui::Combo("Texture", &g_Scene10->chosen_texture, "UV Checker\0 \
-Container\0 \
-World\0", 2);
+
   ImGui::Separator();
   ImGui::Combo("Texture Projection", &g_Scene10->texture_projection, "Spherical\0 \
 Cylindrical\0 \
 Axis Aligned Bounding Box\0 \
-Cubemap\0 \
-Texture Coordinates (.obj must have texcoords)\0", 4);
+Cubemap\0", 4);
 
+  ImGui::Separator();
+  if(g_Scene10->texture_projection != 3) {
+    ImGui::Combo("Texture", &g_Scene10->chosen_texture, "UV Checker\0 \
+Container\0 \
+World\0", 3);
+  }
 
-  ImGui::SliderFloat("Arrow Theta", &g_Scene10->arrow->theta, 0.0f, 6.28f);
-  ImGui::SliderFloat("Arrow Phi", &g_Scene10->arrow->phi, 0.0f, 6.28f);
+  ImGui::Separator();
   ImGui::SliderFloat("Arrow Distance", &g_Scene10->arrow->distance, -1.0f, 2.0f);
+
+  // if(g_Scene10->texture_projection == 2) {
+  //   ImGui::SliderFloat("Arrow X", &g_Scene10->arrow->axisAlignedPosition.x, -3.0f, 3.0f);
+  //   ImGui::SliderFloat("Arrow Y", &g_Scene10->arrow->axisAlignedPosition.y, -3.0f, 3.0f);
+  // }
+  // else {
+    ImGui::SliderFloat("Arrow Theta", &g_Scene10->arrow->theta, 0.0f, 6.28f);
+    ImGui::SliderFloat("Arrow Phi", &g_Scene10->arrow->phi, 0.0f, 6.28f);
+  // }
+
+  ImGui::Text("Arrow Pos: %f %f %f", g_Scene10->arrow->position.x,
+                                          g_Scene10->arrow->position.y,
+                                          g_Scene10->arrow->position.z);
+
+  vec4 arrow_view = normalize(g_Scene10->arrow->lookAt - g_Scene10->arrow->position);
+  ImGui::Text("Arrow View: %f %f %f", arrow_view.x,
+                                      arrow_view.y,
+                                      arrow_view.z);
 
   ImGui::Separator();
   ImGui::Text("Left Camera Pos: %f %f %f", g_Scene10->camera->position.x,
