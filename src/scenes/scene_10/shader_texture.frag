@@ -20,6 +20,7 @@ uniform sampler2D cubemapBackTexture;
 
 uniform vec4 bbox_min;
 uniform vec4 bbox_max;
+uniform vec4 bbox_center;
 
 uniform bool isObject;
 
@@ -42,7 +43,6 @@ out vec4 color;
 void main()
 {
     vec4 Kd0;
-    vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
 
     if(!isObject) {
       float U = 0.0;
@@ -180,8 +180,10 @@ void main()
       {
         float distance_point = distance(arrow_point_in_plane, vec4(position.x, position.y, 1.0, 1.0));
         if(distance_point < 0.07) {
-          float weight = (0.07 - distance_point) / 0.07;
-          Kd0 = Kd0 * (1 - weight) + vec4(0.0, 1.0, 0.0, 1.0) * weight;
+          Kd0 = vec4(0.0, 0.0, 0.0, texture_projection_transparency);
+        }
+        if(distance_point < 0.06) {
+          Kd0 = vec4(0.0, 1.0, 0.0, texture_projection_transparency);
         }
       }
       else

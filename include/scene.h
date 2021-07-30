@@ -442,6 +442,8 @@ public:
     vec4 lookAt;
     vec2 axisAlignedPosition;
     vec2 axisAlignedCenter;
+    float lookAtHeightCylinder;
+    float lookAtMaxHeightCylinder;
     float distance;
     float phi;
     float theta;
@@ -451,6 +453,7 @@ public:
       lookAt = vec4(0.0f,1.0f,0.0f,1.0f);
       axisAlignedPosition = vec2(0.0f,0.0f);
       axisAlignedCenter = vec2(0.0f,0.0f);
+      lookAtHeightCylinder = 0.5f;
       distance = 0.6f;
       phi = 2.0f;
       theta = 3.5f;
@@ -468,7 +471,7 @@ public:
   FreeCamera* second_camera;
   Arrow* arrow;
 
-  int texture_projection = 2;
+  int texture_projection = 1;
   int chosen_model = 0;
   int chosen_texture = 0;
   bool use_world_coordinates = false;

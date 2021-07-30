@@ -61,18 +61,24 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
 
 void Scene10::DrawArrow()
 {
-  // if(this->texture_projection != 2) {
+  if(this->texture_projection == 1) {
+    arrow->position.x = 2.0f * cos(arrow->phi) * sin(arrow->theta);
+    arrow->position.y = arrow->lookAtHeightCylinder;
+    arrow->position.z = 2.0f * cos(arrow->phi) * cos(arrow->theta);
+    arrow->lookAt.y = arrow->lookAtHeightCylinder;
+  }
+  else if(this->texture_projection != 2) {
     arrow->position.x = 2.0f * cos(arrow->phi) * sin(arrow->theta);
     arrow->position.y = 2.0f * sin(arrow->phi);
     arrow->position.z = 2.0f * cos(arrow->phi) * cos(arrow->theta);
-  // } else {
-  //   arrow->phi = 0.0f;
-  //   arrow->theta = 0.0f;
-  //   arrow->position.x = arrow->axisAlignedCenter.x + arrow->axisAlignedPosition.x;
-  //   arrow->position.y = arrow->axisAlignedCenter.y + arrow->axisAlignedPosition.y;
-  //   arrow->position.z = 2.0f * arrow->distance;
-  //   arrow->lookAt = arrow->position - vec4(0.0f, 0.0f, 1.0f, 0.0f);
-  // }
+  } else {
+    arrow->phi = 0.0f;
+    arrow->theta = 0.0f;
+    arrow->position.x = arrow->axisAlignedCenter.x + arrow->axisAlignedPosition.x;
+    arrow->position.y = arrow->axisAlignedCenter.y + arrow->axisAlignedPosition.y;
+    arrow->position.z = 2.0f * arrow->distance;
+    arrow->lookAt = arrow->position - vec4(0.0f, 0.0f, 1.0f, 0.0f);
+  }
 
   vec4 forward_vector = vec4(0.0f, 0.0f, 1.0f, 0.0f);
   vec4 look_at_vector =  arrow->lookAt - arrow->position;
@@ -88,6 +94,7 @@ void Scene10::DrawArrow()
   shaders["scene"].use();
   shaders["scene"].setVec4("arrow_position", arrow->position);
   shaders["scene"].setVec4("arrow_look_at", arrow->lookAt);
+  shaders["scene"].setVec4("arrow_point_in_plane", arrow_point_in_plane);
 
   float dot_product = dotproduct(look_at_vector, forward_vector);
   float y_angle = atan2(look_at_vector.x, dot_product);
@@ -100,6 +107,9 @@ void Scene10::DrawArrow()
   mat4 model = Matrix_Translate(arrow->position.x, arrow->position.y, arrow->position.z)
                * Matrix_Rotate_Y(y_angle)
                * Matrix_Rotate_X(x_angle);
+
+  if(!this->use_world_coordinates)
+    model = model * Matrix_Translate(-model_position.x, model_position.y, -model_position.z);
 
   shaders["arrow"].use();
   shaders["arrow"].setMat4("model", model);
@@ -173,10 +183,27 @@ void Scene10::Render()
 
   model = model * Matrix_Translate(model_position.x, model_position.y, model_position.z);
   arrow->axisAlignedCenter = this->virtualScene[chosen_model_name.c_str()].bbox_center;
-
+  arrow->lookAtMaxHeightCylinder = this->virtualScene[chosen_model_name.c_str()].bbox_max.y;
+  if(this->texture_projection != 2) {
+    arrow->lookAt = vec4(this->virtualScene[chosen_model_name.c_str()].bbox_center, 1.0);
+  }
+  shaders["scene"].use();
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
   shaders["scene"].setVec4("bbox_max", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_max, 1.0f));
+
+  if(this->texture_projection == 1) {
+    shaders["scene"].setVec4("bbox_center", vec4(
+      this->virtualScene[chosen_model_name.c_str()].bbox_center.x,
+      arrow->lookAtHeightCylinder,
+      this->virtualScene[chosen_model_name.c_str()].bbox_center.z,
+      1.0f));
+  }
+  else {
+    shaders["scene"].setVec4("bbox_center", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_center,1.0f));
+  }
+
+
   shaders["scene"].setInt("texture_projection", this->texture_projection);
   shaders["scene"].setFloat("cylinder_height", this->cylinder_height);
   shaders["scene"].setBool("use_world_coordinates", this->use_world_coordinates);
@@ -195,8 +222,23 @@ void Scene10::Render()
   this->second_camera->Enable((float) (display_w/2)/display_h, mouse_over_second_camera);
   this->second_camera->UpdateShaderUniforms(this->shaders["texture"]);
 
+  if(!this->use_world_coordinates)
+    model = Matrix_Identity();
+
   shaders["texture"].setMat4("model", model);
   shaders["texture"].setVec4("bbox_min", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_min, 1.0f));
+
+  if(this->texture_projection == 1) {
+    shaders["texture"].setVec4("bbox_center", vec4(
+      this->virtualScene[chosen_model_name.c_str()].bbox_center.x,
+      arrow->lookAtHeightCylinder,
+      this->virtualScene[chosen_model_name.c_str()].bbox_center.z,
+      1.0f));
+  }
+  else {
+    shaders["texture"].setVec4("bbox_center", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_center,1.0f));
+  }
+
   shaders["texture"].setVec4("bbox_max", vec4(this->virtualScene[chosen_model_name.c_str()].bbox_max, 1.0f));
   shaders["texture"].setInt("texture_projection", this->texture_projection);
   shaders["texture"].setFloat("cylinder_height", this->cylinder_height);
@@ -231,7 +273,7 @@ void Scene10::Render()
                           abs(virtual_model.bbox_max.y - virtual_model.bbox_min.y) / 2,
                           abs(virtual_model.bbox_max.z - virtual_model.bbox_min.z) / 2
                           ));
-    model = scale(model, vec3(1.05f));
+    model = scale(model, vec3(1.15f));
     chosen_projection_name = "cube";
   }
   else if(this->texture_projection == 3)
@@ -242,7 +284,7 @@ void Scene10::Render()
                           abs(virtual_model.bbox_max.y - virtual_model.bbox_min.y) / 2,
                           abs(virtual_model.bbox_max.z - virtual_model.bbox_min.z) / 2
                           ));
-    model = scale(model, vec3(1.05f));
+    model = scale(model, vec3(1.02f));
     chosen_projection_name = "cube";
   }
 

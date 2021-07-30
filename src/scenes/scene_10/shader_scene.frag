@@ -20,10 +20,12 @@ uniform sampler2D cubemapBackTexture;
 
 uniform vec4 bbox_min;
 uniform vec4 bbox_max;
+uniform vec4 bbox_center;
 
 uniform float cylinder_height;
 
 uniform vec4 arrow_position;
+uniform vec4 arrow_point_in_plane;
 
 uniform int texture_projection;
 #define SPHERICAL_PROJECTION 0
@@ -46,8 +48,6 @@ void main()
       position = position_world;
     else
       position = position_model;
-
-    vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
 
     int cube_map_index;
 
@@ -190,14 +190,26 @@ void main()
     else
       Kd0 = texture(cubemapBackTexture, vec2(U,V)).rgb;
 
-
-    float angle_between_arrow_and_position = acos(dot(normalize(bbox_center - arrow_position), normalize(bbox_center - position)));
-
-    if(angle_between_arrow_and_position < 0.07) {
-      Kd0 = vec3(0.0, 0.0, 0.0);
+    if ( texture_projection == AA_BOUNDING_BOX_PROJECTION )
+    {
+      float distance_point = distance(arrow_point_in_plane, vec4(position.x, position.y, 1.0, 1.0));
+      if(distance_point < 0.07) {
+        Kd0 = vec3(0.0, 0.0, 0.0);
+      }
+      if(distance_point < 0.06) {
+        Kd0 = vec3(0.0, 1.0, 0.0);
+      }
     }
-    if(angle_between_arrow_and_position < 0.06) {
-      Kd0 = vec3(0.0, 1.0, 0.0);
+    else
+    {
+      float angle_between_arrow_and_position = acos(dot(normalize(bbox_center - arrow_position), normalize(bbox_center - position)));
+
+      if(angle_between_arrow_and_position < 0.07) {
+        Kd0 = vec3(0.0, 0.0, 0.0);
+      }
+      if(angle_between_arrow_and_position < 0.06) {
+        Kd0 = vec3(0.0, 1.0, 0.0);
+      }
     }
 
     // Equação de Iluminação
