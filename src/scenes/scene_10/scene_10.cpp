@@ -162,7 +162,6 @@ void Scene10::Render()
       break;
     case 2:
       chosen_model_name = "teapot";
-      model = scale(model, glm::vec3(0.5f));
       break;
     case 3:
       chosen_model_name = "cube";
@@ -286,6 +285,20 @@ void Scene10::Render()
                           ));
     model = scale(model, vec3(1.02f));
     chosen_projection_name = "cube";
+  }
+
+  if(texture_projection == 1) {
+    switch(chosen_model) {
+      case 1:
+        model = scale(model, vec3(1.2f));
+        break;
+      case 2:
+        model = scale(model, vec3(1.6f, 1.0f, 1.6f));
+        break;
+      case 3:
+        model = scale(model, vec3(1.6f, 1.0f, 1.6f));
+        break;
+    }
   }
 
   shaders["texture"].setMat4("model", model);
