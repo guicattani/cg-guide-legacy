@@ -21,6 +21,7 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   this->sceneTextures["cubemap_front"]  = LoadTextureImage("../data/cubemap_front.jpg");
   this->sceneTextures["cubemap_back"]   = LoadTextureImage("../data/cubemap_back.jpg");
 
+
   glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_top"]);
   shaders["scene"].setInt("cubemapTopTexture", 1);
@@ -55,8 +56,8 @@ void Scene10::BuildTrianglesAndAddToVirtualScene()
   shaders["texture"].setInt("cubemapLeftTexture", 3);
   shaders["texture"].setInt("cubemapRightTexture", 4);
   shaders["texture"].setInt("cubemapFrontTexture", 5);
-  // Not entirely sure, but I think since GL_TEXTURE0 won't be used anymore, OGL does a roundrobin?
   shaders["texture"].setInt("cubemapBackTexture", 0);
+  // Not entirely sure, but I think since GL_TEXTURE0 won't be used anymore, OGL does a roundrobin?
 }
 
 void Scene10::DrawArrow()
@@ -149,6 +150,9 @@ void Scene10::Render()
       glBindTexture(GL_TEXTURE_2D, this->sceneTextures["world"]);
       break;
     }
+  } else {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->sceneTextures["cubemap_back"]);
   }
 
   string chosen_model_name;
