@@ -302,6 +302,7 @@ public:
   bool useDiffuseTexture = true;
   bool useSpecularTexture = true;
   float gouradSpecularStrength = 0.0f;
+  map<string, ObjModel> sceneModels;
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
   FreeCamera* camera;
@@ -346,6 +347,10 @@ public:
                                  0.032f,
                                  12.5f,
                                  15.0f};
+
+    sceneModels["cylinder"] = ObjModel("../data/cylinder.obj");
+    ComputeNormals(&sceneModels["cylinder"]);
+    AddModelToVirtualScene(&sceneModels["cylinder"], virtualScene);
 
     shaders["color_shader"] = Shader("../src/scenes/scene_7/shader_color.vert",
                                      "../src/scenes/scene_7/shader_color.frag");

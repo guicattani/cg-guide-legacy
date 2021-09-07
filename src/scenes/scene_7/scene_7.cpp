@@ -206,14 +206,27 @@ void Scene7::Render()
     glDepthRange (0.1f, 1.0f);
     this->shaders["light_shader"].use();
     this->camera->UpdateShaderUniforms(this->shaders["light_shader"]);
+
+    vec4 forward_vector = vec4(0.0f, 0.0f, 1.0f, 0.0f);
+    vec4 look_at_vector =  vec4(this->directional_light->direction, 0.0f);
+    float dot_product = dotproduct(look_at_vector, forward_vector);
+    float y_angle = atan2(look_at_vector.x, dot_product);
+
+    // TODO: get some help to understand why we need to rotate look at vector here and not in Y
+    vec4 up_vector = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+    look_at_vector = look_at_vector * Matrix_Rotate_Y(y_angle);
+    dot_product = dotproduct(look_at_vector, up_vector);
+    float x_angle = atan2(look_at_vector.z, dot_product);
+
     //negating direction shows the light cube properly, since now we have direction and not possition
-    model = glm::translate(model, -this->directional_light->direction + vec3(this->camera->position));
+    model = glm::translate(model, -this->directional_light->direction * 3.0f + vec3(this->camera->position))
+            * Matrix_Rotate_Y(y_angle)
+            * Matrix_Rotate_X(x_angle);
     model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
     this->shaders["light_shader"].setVec3("color", this->directional_light->ambient + this->directional_light->diffuse);
     this->shaders["light_shader"].setMat4("model", model);
 
-    glBindVertexArray(this->virtualScene["light_cube"].vertex_array_object_id);
-    glDrawArrays(this->virtualScene["light_cube"].rendering_mode, 0, this->virtualScene["light_cube"].num_indices);
+    DrawVirtualObject(this->virtualScene["cylinder"]);
     glDepthRange (0.0f, 1.0f);
   }
 
