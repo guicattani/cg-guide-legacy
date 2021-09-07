@@ -131,7 +131,11 @@ void Scene4::Render()
   model = Matrix_Identity(); // Reseta matriz de modelagem
   shaders["scene"].setMat4("model", model);
   shaders["scene"].setInt("object_id", BEZIER_LINE);
-  DrawVirtualObject(this->virtualScene["bezier_lines"]);
+  glDrawElements(
+      this->virtualScene["bezier_lines"].rendering_mode,
+      this->virtualScene["bezier_lines"].num_indices,
+      GL_UNSIGNED_INT,
+      (void *)this->virtualScene["bezier_lines"].first_index);
 
   glPointSize(15.0f);
   for (int i = 0; i < 4; i++)
