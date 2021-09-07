@@ -203,7 +203,7 @@ void Scene7::Render()
   glm::mat4 model = glm::mat4(1.0f);
 
   if(this->directionalLightOn) {
-    glDepthRange (0.1f, 1.0f);
+    glDepthRange (0.9f, 1.1f);
     this->shaders["light_shader"].use();
     this->camera->UpdateShaderUniforms(this->shaders["light_shader"]);
 
