@@ -94,7 +94,7 @@ class Scene3
 public:
   map<string, SceneObject> virtualScene;
   map<string, Shader> shaders;
-  FreeCamera* camera;
+  HybridCamera* camera;
 
   mat4 inspectable_model;
   vec3 translation = vec3(-2.0f,0.0f,0.0f);
@@ -109,7 +109,7 @@ public:
   Scene3() {
     shaders["scene"] = Shader("../src/scenes/scene_3/shader_scene.vert",
                               "../src/scenes/scene_3/shader_scene.frag");
-    camera = new FreeCamera(vec4(-3.0f,1.5f,3.0f,1.0f), 2.4f, 0.4f);
+    camera = new HybridCamera(vec4(-3.0f,1.5f,3.0f,1.0f), 2.4f, 0.4f);
     BuildTrianglesAndAddToVirtualScene();
   }
 };

@@ -25,6 +25,7 @@ void InterfaceScene3::ShowControls()
                                        (float) g_Scene3->camera->position[3]);
   ImGui::Text("Theta: %f", (float) g_Scene3->camera->theta);
   ImGui::Text("Phi: %f", (float) g_Scene3->camera->phi);
+  ImGui::Checkbox("Use perspective projection", &g_Scene3->camera->usePerspectiveProjection);
   ImGui::Separator();
 
   glm::vec4 p_model(0.5f, 0.5f, 0.5f, 1.0f);
