@@ -110,7 +110,7 @@ void Interface::Show(GLFWwindow *window)
 
     switch (g_CurrentScene)
     {
-    case 1:
+    case 0:
       switch(g_Scene1->current_part) {
         case 1:
           this->detail_window_constraints = InterfaceScene1::Part1::window_constraints;
@@ -122,25 +122,25 @@ void Interface::Show(GLFWwindow *window)
           break;
       }
       break;
-    case 2:
+    case 1:
       InterfaceScene2::ShowText();
       break;
-    case 3:
+    case 2:
       InterfaceScene3::ShowText();
       break;
-    case 4:
+    case 3:
       InterfaceScene4::ShowText();
       break;
-    case 5:
+    case 4:
       InterfaceScene5::ShowText();
       break;
-    case 6:
+    case 5:
       InterfaceScene6::ShowText();
       break;
-    case 7:
+    case 6:
       InterfaceScene7::ShowText();
       break;
-    case 8:
+    case 7:
       InterfaceScene8::ShowText();
       break;
     }
@@ -164,27 +164,7 @@ void Interface::Show(GLFWwindow *window)
         ImGui::EndMenuBar();
     };
 
-
-    ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("SettingsTabBar", tab_bar_flags))
-    {
-      if (ImGui::BeginTabItem("Scene"))
-      {
-        SceneLoader();
-        ImGui::EndTabItem();
-      }
-      if (ImGui::BeginTabItem("Camera"))
-      {
-        CameraSettings();
-        ImGui::EndTabItem();
-      }
-      if (ImGui::BeginTabItem("Debug"))
-      {
-        DebugSettings();
-        ImGui::EndTabItem();
-      }
-      ImGui::EndTabBar();
-    }
+    SceneLoader();
     ImGui::End();
   }
 
