@@ -324,7 +324,7 @@ public:
                               vec3(0.5f, 0.5f, 0.5f),
                               32.0f };
 
-    directional_light = new DirectionalLight { vec3(-1.2f, -1.0f, -2.0f),
+    directional_light = new DirectionalLight { vec3(-3.2f, -3.0f, -5.0f),
                                                vec3( 0.5f,  0.5f,  0.5f),
                                                vec3( 0.5f,  0.5f,  0.5f),
                                                vec3( 0.5f,  0.5f,  0.5f) };
