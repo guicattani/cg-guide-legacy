@@ -5,7 +5,7 @@
 
 const float Scene2::pi = 3.14159265358979323846;
 const int Scene2::zero_vertices = 32;
-const int Scene2::one_vertices = 10;
+const int Scene2::one_vertices = 4;
 
 const int Scene2::num_of_digits = 4;
 
