@@ -1,0 +1,1710 @@
+\documentclass[cic,tc,english]{iiufrgs}
+\usepackage[utf8]{inputenc}   % pacote para acentuação
+\usepackage{graphicx}         % pacote para importar figuras
+\usepackage{times}            % pacote para usar fonte Adobe Times
+\usepackage[alf,abnt-emphasize=bf]{abntex2cite}	% pacote para usar citações abnt
+\usepackage[export]{adjustbox}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{cleveref}
+
+\title{CG Guide, a Modern OpenGL and Computer Graphics teaching application}
+
+\author{de Castro}{Guilherme Cattani}
+
+\advisor[Prof. Dr.]{Gastal}{Eduardo Simões Lopes}
+
+% a data deve ser a da defesa; se nao especificada, são gerados
+% mes e ano correntes
+% \date{maio}{2001}
+
+% itens individuais da nominata podem ser redefinidos com os comandos
+% abaixo:
+% \renewcommand{\nominataReit}{Prof\textsuperscript{a}.~Wrana Maria Panizzi}
+% \renewcommand{\nominataReitname}{Reitora}
+% \renewcommand{\nominataPRE}{Prof.~Jos{\'e} Carlos Ferraz Hennemann}
+% \renewcommand{\nominataPREname}{Pr{\'o}-Reitor de Ensino}
+% \renewcommand{\nominataPRAPG}{Prof\textsuperscript{a}.~Joc{\'e}lia Grazia}
+% \renewcommand{\nominataPRAPGname}{Pr{\'o}-Reitora Adjunta de P{\'o}s-Gradua{\c{c}}{\~a}o}
+% \renewcommand{\nominataDir}{Prof.~Philippe Olivier Alexandre Navaux}
+% \renewcommand{\nominataDirname}{Diretor do Instituto de Inform{\'a}tica}
+% \renewcommand{\nominataCoord}{Prof.~Carlos Alberto Heuser}
+% \renewcommand{\nominataCoordname}{Coordenador do PPGC}
+% \renewcommand{\nominataBibchefe}{Beatriz Regina Bastos Haro}
+% \renewcommand{\nominataBibchefename}{Bibliotec{\'a}ria-chefe do Instituto de Inform{\'a}tica}
+% \renewcommand{\nominataChefeINA}{Prof.~Jos{\'e} Valdeni de Lima}
+% \renewcommand{\nominataChefeINAname}{Chefe do \deptINA}
+% \renewcommand{\nominataChefeINT}{Prof.~Leila Ribeiro}
+% \renewcommand{\nominataChefeINTname}{Chefe do \deptINT}
+
+
+% palavras-chave
+% iniciar todas com letras minúsculas, exceto no caso de abreviaturas
+%
+\keyword{computer graphics}
+\keyword{OpenGL}
+\keyword{teaching}
+
+%\settowidth{\seclen}{1.10~}
+
+%
+% inicio do documento
+%
+\begin{document}
+
+% folha de rosto
+% às vezes é necessário redefinir algum comando logo antes de produzir
+% a folha de rosto:
+% \renewcommand{\coordname}{Coordenadora do Curso}
+\maketitle
+
+% dedicatoria
+% \clearpage
+% \begin{flushright}
+%     \mbox{}\vfill
+%     {\sffamily\itshape
+%       ``If I have seen farther than others,\\
+%       it is because I stood on the shoulders of giants.''\\}
+%     --- \textsc{Sir~Isaac Newton}
+% \end{flushright}
+
+% agradecimentos
+%\chapter*{Agradecimentos}
+%Agradeço ao \LaTeX\ por não ter vírus de macro\ldots
+
+
+% resumo na língua do documento
+\begin{abstract}
+    Learning computer graphics is hard. Not only it involves a multitude of skills: spatial reasoning, mathematics, and physics. It is also a vast field with many different topics such as lighting, texture mapping, 3D transformations, etc. Added to it, there's also the complexity of its basics, with modern OpenGL it takes considerable effort to draw a shape on-screen. Given that it deals with intrinsically visual content, teaching computer graphics interactively is recommended. We did not found a teaching tool that was easy to use, extensible, and open sourced when looking for related work. We aim to fix this issue with an application called CG Guide, an interactive tool that runs on modern OpenGL and shows computer graphics scenes that can be changed in real-time. Its scenes are extensible and the code is open sourced. CG Guide comes with premade scenes that are ready to use and were created aiming to elucidate a specific concept of the principles of computer graphics, these include: texture mapping, shaders, matrix transformations, rendering, animations and 3D drawing.
+\end{abstract}
+
+% resumo na outra língua
+% como parametros devem ser passados o titulo e as palavras-chave
+% na outra língua, separadas por vírgulas
+
+\begin{englishabstract}{CG Guide, uma aplicação voltada para o ensino de conceitos de computação gráfica e de OpenGL moderno}{computação gráfica, OpenGL, aprendizado}
+
+    Aprender computação gráfica é difícil. São envolvidas muitas habilidades: raciocínio espacial, matemática e física. É uma área vasta com muitos tópicos diferentes como iluminação, mapeamento de textura, transformações 3D, etc. Existe também a complexidade do seu básico, com OpenGL moderno é necessário um esforço considerável para desenhar uma forma na tela. Como computação gráfica é uma área intrinsicamente visual, ensiná-la interativamente é recomendado. Procurando por trabalhos com esse objetivo, não foram encontradas ferramentas de ensino que eram fáceis de usar, extensíveis e com o código fonte aberto. Nós nos propusemos a consertar esse problema com uma aplicação chamada CG Guide, uma ferramenta interativa que roda em OpenGL moderno e mostra cenas de computação gráfica que podem ser alteradas em tempo real. Suas cenas são extensíveis e o código fonte é aberto. O CG Guide já conta com cenas que foram criadas com o objetivo de clarificar conceitos especificos e princípios da computação gráfica, incluindo: mapeamento de textura, shaders, trasnformações matriciais, rendering, animação e desenho 3D.
+\end{englishabstract}
+
+% lista de figuras
+\listoffigures
+
+% lista de tabelas
+%\listoftables
+
+% lista de abreviaturas e siglas
+% o parametro deve ser a abreviatura mais longa
+\begin{listofabbrv}{SPMD}
+    \item[GPU] Graphics Processing Unit
+    \item[GUI] Graphic User Interface
+    \item[API] Application Programming Interface
+    \item[OpenGL] Open Graphics Library
+    \item[GLSL] OpenGL Shading Language
+    \item[GLFW] Graphics Library Framework
+    \item[CG] Computer Graphics
+    \item[NDC] Normalized Device Coordinates
+    \item[VBO] Vertex Buffer Object
+    \item[VAO] Vertex Array Object
+    \item[MVPV] Model-View-Perspective-Viewport
+\end{listofabbrv}
+
+% idem para a lista de símbolos
+%\begin{listofsymbols}{$\alpha\beta\pi\omega$}
+%     \item[$\sum{\frac{a}{b}}$] Somatório do produtório
+%     \item[$\alpha\beta\pi\omega$] Fator de inconstância do resultado
+%\end{listofsymbols}
+
+% sumario
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% introducao
+\chapter{Introduction}
+
+Computer graphics is one of the most exciting and fast-evolving areas of computer science. New knowledge is being published every day at a high rate. \cite{walter2017whatareweteaching}  It's a very expansive topic that can range from simple shapes on a screen to realistic scenes that are basically indistinguishable from reality. Given its visual appeal, it's easy to see how it evolved to its current groundbreaking state.
+
+As computer graphics requires interdisciplinary skills, it can often be discouraging and hard for students to face it. According to \citet{Suselo2017JourneyTeachingCG}, insufficient skills in mathematics, programming, and spatial reasoning can impact the learning of computer graphics. In our institution, UFRGS\footnote{Federal University of Rio Grande do Sul}, an introductory course on Computer Graphics (CG) had a failure rate of over 10\% \cite{ApratoNeto2021INFCourseFailure}.
+
+While the end result is no stranger to students (most have been exposed to a Graphic User Interface (GUI), three-dimensional animations, realistic renders, computer games, etc.), the approach of teaching is most commonly bottom up \cite{SungShirley2003TopDownApproach}, so lessons are initially more focused on setting a solid understanding of the theory before showing a visual result. As \citet{He2012ReformComputerGraphics} suggest, \textit{computer graphics is a practical area that needs to combine theory study and practice for a better result}.
+
+With this motivation, we have developed an application called \textbf{CG Guide} \cref{systemteaser}, that uses a top-down approach and illustrates what goes on behind the scenes in the building blocks of 3D and 2D scenes. The software is interactive and serves as means to make computer graphics lessons more appealing and relatable to students. At the time of writing of this work, it comes with ten different scenes that cover different aspects of computer graphics programming. It's also extensible and open-sourced\footnote{\href{https://github.com/guicattani/cg-guide}{Available in https://github.com/guicattani/cg-guide}}.
+
+\begin{figure}[hbt!]
+    \caption{CG Guide screenshots collage, showing what the application is capable of}
+    \begin{center}
+        \includegraphics[width=\linewidth]{inputs/teaser.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{systemteaser}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Related work}
+
+Computer graphics is a very dynamic field with new knowledge being created everyday, considering well-known journals, the computer graphics community publishes an average of 2.75 papers a day \cite{walter2017whatareweteaching}.
+
+Knowledge is also publicly available on the internet. On website's like SIGGRAPH's (Special Interest Group on GRAPHics and Interactive Techniques)  \cite{scott2015hypergraph}, it's possible to find introductory mathematics for computer graphics, surface mapping and even ray tracing explanations. On Eurographics's (European Association for Computer Graphics) website it's possible to find material curated for teaching computer graphics.
+
+While tutorials and explanations enable students to learn on their own, teaching such dynamic field is also a challenge.  Added to this difficulty, the question of what to teach can also arise. \citet{walter2017whatareweteaching}'s work on what is being taught in introductory computer graphics elucidates how courses throughout the world handle this problem, according to it most common subjects are Rendering (75\%), Modeling (14\%), Animation (7\%), Fundamentals (3\%), and Visualization (1\%). Knowing this distinction was important to decide to focus CG Guide development almost completely to rendering.
+
+Other applications with the same motivations of teaching computer graphics interactively as CG Guide have been built in the past, the rest of this chapter will describe this previous work relates our system.
+
+\section{Edugraph}
+Developed by \citet{Luiz_Battaiola2003Edugraph}, shown on \cref{edugraphimage}, Edugraph is an educational software focused on teaching concepts of computer graphics through interactivity and a high level of experimentation. The user controls an avatar, represented by a robot in a 3rd person view, that is teleported to different worlds. Each world has a task to be done to proceed to other worlds with other tasks, all tasks have the subject of computer graphics and aim to teach concepts through exposition and playfulness.
+
+Although the goal of teaching is similar, the approach is different from our application, since we focused on end results that don't have an abstraction of a more ludic approach.
+
+\begin{figure}[hbt!]
+    \caption{Edugraph screenshot}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/edugraph.png}
+    \end{center}
+    \legend{Source: \cite{Luiz_Battaiola2003Edugraph}}
+    \label{edugraphimage}
+\end{figure}
+
+\section{GAIN: An interactive program for teaching interactive computer graphics programming}
+Developed by \citet{Towle1978Gain}, GAIN is the first of its kind, a software capable of teaching computer graphics to students without direct supervision of tutors. The lessons consist in drawing pictures with 3D coordinates via macros similar to FORTRAN and ASSEMBLY. Once the student finishes the drawing, an evaluation system assesses if the user missed any step. Interactive macros provide experience in command usage and real-time experience with drawing in 3D.
+
+GAIN is built with an automated assessment system, the need for such is a limiting factor and our application focuses on learning through experimentation rather than assessing the student directly.
+
+\section{CodeRunnerGL}
+Developed by \citet{Wunsche2019CodeRunnerGL}, shown on \cref{coderunnerglimage}, CodeRunnerGL is an adaptation of CodeRunner, a plug-in for Moodle. It enables Moodle to support Open Graphics Library (OpenGL) programming through commands sent to a Virtual Machine, which then has its display snapshotted and shown to the user. It supports automated feedback and assessment.
+
+At the time of its writing, few browsers supported WebGL, so CodeRunnerGL does not support real-time rendering. Our approach with CG Guide is focused on having results in real-time that match what parameters the user chooses.
+
+\begin{figure}[hbt!]
+    \caption{CodeRunnerGL screenshot}
+    \begin{center}
+        \includegraphics[height=17em]{inputs/coderunnergl.PNG}
+    \end{center}
+    \legend{Source: \cite{Wunsche2019CodeRunnerGL}}
+    \label{coderunnerglimage}
+\end{figure}
+
+\section{TERA, a Tool for Exploring Rendering Algorithms}
+Developed by \citet{Wolfe1996TERA}, shown on \cref{teraimage}, TERA is a tool focused on comparing rendering algorithms. In its initial version, it was only capable to show the difference between Flat, Faceted, Phong, and Gouraud shading and quiz the student on them. Later versions of TERA are capable of showing more shading techniques such as ray-tracing, texture mapping, bump mapping, and lighting. \cite{Eber2000TERA2}
+
+TERA focuses more on showing different algorithms but not on letting the user change what's on-screen. Having quizzes helps students cement their knowledge but only teaches students to differentiate the content, and not interact with it.
+
+\begin{figure}[hbt!]
+    \caption{TERA screenshot}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/tera.PNG}
+    \end{center}
+    \legend{Source: \cite{Wolfe1996TERA}}
+    \label{teraimage}
+\end{figure}
+
+\section{Mental Vision}
+Developed by \citet{Peternier2006mentalvision}, shown on \cref{mentalvisionimage}, Mental Vision is a pedagogical-oriented graphics engine. It offers a set of tools, called modules, to better visualize computer graphics abstract notions. Parameters are changeable and the scene acts accordingly. When used in a class, teachers have privileged control over the shown scene, but students can control the scene when given permission, this is useful when the teacher asks the student to solve a problem or show publicly their results.
+
+Mental Vision is not open sourced and support appears to be dropped as of 2009. Documentation is unreachable at the time of writing this work. Our application has the code open for contributions and extensions.
+
+\begin{figure}[hbt!]
+    \caption{Mental Vision screenshot}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/mentalvision.PNG}
+    \end{center}
+    \legend{Source: \cite{Peternier2006mentalvision}}
+    \label{mentalvisionimage}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Background}
+\label{backgroundchapter}
+This section presents fundamental concepts from computer graphics that are used in our application.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Points and Vectors}
+
+Points are the simplest of geometric objects. They can be defined as a set of numbers representing a coordinate in a space and can be used to define vertices, origins or simply a reference to somewhere in a space.
+
+Vectors represent a length and a direction, and are usually represented by an arrow. They can be used to change the coordinates of points in a space and also to represent directions such as the direction in which a surface faces or the direction from an object to a light source. A \textit{unit vector} is a vector whose length is one. Vectors can be added, subtracted and multiplied (through dot and cross products). Two vectors are equal if they have the same length and direction, as illustrated in \cref{samevectors}.  \cite{Marschner2021CGFundamentals}.
+
+\begin{figure}[hbt!]
+    \caption{Two vectors that are the same, because they have the same length and direction}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/vectors.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{samevectors}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rendering}
+
+Rendering is the main focus of computer graphics, and can be simply defined as drawing on a screen. It involves considering how each object in a virtual 3D scene contributes to each pixel in the 2D projection of the scene. This can be organized in two general ways:
+\begin{itemize}
+    \item In \textit{object-order rendering}, each object is considered in turns, and for each object all the pixels that it influences are found and updated. Rasterization is an example of object-order rendering.
+    \item In \textit{image-order rendering}, each pixel is considered in turn, and for each pixel all the objects that influence it are found and the pixel value is computed. Ray tracing is an example of image-order rendering.
+\end{itemize}
+
+
+\subsection{Rasterization}
+Modern computer displays have a rectangular shape consisting of a grid of pixels. This is the definition of a \textit{raster display} \cite{Marschner2021CGFundamentals}. Most computer graphics images are presented to the user on some kind of raster display. Because rasters are so prevalent in devices, raster images are the most common way to store and process images. A raster image is simply a 2D array that stores the pixel value for each pixel—usually a color stored as three numbers, for red, green, and blue. A raster image stored in memory can be displayed by using each pixel in the stored image to control the color of one pixel of the display  \cite{Marschner2021CGFundamentals}.
+
+Rasterization is considered \textit{object-order rendering} and is the process of finding all the pixels in an image that are occupied by a geometric primitive (e.g. a triangle). For each primitive that comes in, the rasterizer has two jobs: it enumerates the pixels that are covered by the primitive and it interpolates values, called attributes, across the primitive. The output of the rasterizer is a set of \textit{fragments}, one for each pixel covered by the primitive. Each fragment “lives” at a particular pixel and carries its own set of attribute values \cite{Marschner2021CGFundamentals}.
+
+Rendering by rasterization is done through the Graphics Pipeline, presented in  \cref{graphicspipelinesection}
+
+\subsection{Ray Tracing}
+\label{raytracingsection}
+Ray tracing is an image-order algorithm for making renderings of 3D scenes. It works by computing one pixel at a time. For each pixel the basic task is to find the object that is seen at that pixel’s position in the image \cite{Marschner2021CGFundamentals}. A \textit{ray} is simply a line that emanates from the viewpoint in the direction that pixel is positioned, as pictured in \cref{raytracingdiagram}. The first object hit by the ray, the one nearest the camera is the one that should be shown. The color of the pixel can then be calculated using shading and the object's \textit{normals} - vectors that are orthogonal to the object's surface. In recursive ray tracing this ray \textit{bounces} - creates other rays on hit with a scene object - through the scene, before returning a color value. The problem with the recursive call above is that it may never terminate, for example, if a ray starts inside a room, it will bounce forever. This can be fixed by adding a maximum recursion depth \cite{Marschner2021CGFundamentals}.
+
+Many effects that take significant work to fit into the object-order rasterization framework, including basics like the shadows and reflections, are simple and elegant in a ray tracer. Although simpler and more elegant, in raytracing shading a scene is much more processing intensive because it takes a large number of rays to perform the shading in any nontrivial scene \cite{Marschner2021CGFundamentals}.
+
+\begin{figure}[hbt!]
+    \caption{A ray emanating from a viewpoint in the direction of the pixel that is going to be rendered}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/raytracingdiagram.png}
+    \end{center}
+    \legend{Source: adapted from  \href{https://commons.wikimedia.org/wiki/File:Ray_trace_diagram.svg}{Wikimedia Commons}}
+    \label{raytracingdiagram}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphics Pipeline}
+\label{graphicspipelinesection}
+From this section onward we focus on rendering using only rasterization. The graphics pipeline, often referred to as the \textit{rendering pipeline}, is the model that describes all the necessary steps a system must perform to successfully render a 3D scene to a projected 2D scene. It's the graphics pipeline that turns everything in a scene, e.g. models, textures, lighting, etc., and maps it to the computer display via rasterization \cite{Marschner2021CGFundamentals}. Most of the pipeline is implemented in hardware, for optimization reasons, and is not programmable when using graphic APIs (Application Programming Interface) like OpenGL and DirectX.
+
+\begin{figure}[hbt!]
+    \caption{The stages of a graphics pipeline \cite{Marschner2021CGFundamentals}}
+    \begin{center}
+        \includegraphics[width=35em]{inputs/graphicspipeline.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{graphicspipelinestages}
+\end{figure}
+
+The pipeline is divided into multiple steps, each has its own functionality, each step result is carried over the next. Pictured in  \cref{graphicspipelinestages} are said steps, with highlighted blocks being programmable in the OpenGL rasterization graphics pipeline. To simplify its explanation we will focus our explanation on these highlighted blocks, together with the input and the output. According to \citet{Marschner2021CGFundamentals}:
+
+\begin{itemize}
+    \item \textbf{(Input)} Vertex Data: geometric objects are fed into the pipeline as a set of vertices.
+    \item Vertex Processing: vertices are then operated and the primitives using those vertices are fed into the next step of the pipeline. This step is where vertex shaders are executed, as explained in \cref{shaderssubsection}.
+    \item Rasterization: conversion of each geometric primitive (e.g. triangles) into a number of \textit{fragments}. \textit{Fragment} is a term that describes the information associated with a pixel prior to being processed in the final stages of the graphics pipeline. This definition includes much of the data that might be used to calculate the color of the pixel, such as the pixel’s scene depth, texture coordinates, or stencil information.
+    \item Fragment Processing: \textit{fragments} are processed in this stage.  This step is where fragment shaders are executed, as explained in \cref{shaderssubsection}.
+    \item Blending: the combination of fragments generated by different primitives that overlapped each pixel. For opaque surfaces, a common blending approach is to choose the color of the fragment with the smallest depth (closest to the observer).
+     \item \textbf{(Output)} Display: processed data is shown to the user.
+\end{itemize}
+
+\subsection{Shaders}
+\label{shaderssubsection}
+Both the vertex and fragment processing stages can be altered by the user with what's called \textit{shaders}, which are programs executed in the Graphics Processing Unit (GPU) for each vertex or fragment:
+\begin{itemize}
+    \item \textbf{Vertex shaders} provide control over how vertices are transformed. It can prepare data for later processing in the fragment processing stage.
+    \item \textbf{Fragment shaders} provide control over how each fragment is going to be processed (e.g. where the final color of each fragment is defined).
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model-View-Projection-Viewport Matrices}
+\label{mvpvmatricessection}
+An observer and an observable object are necessary for the rendering process. For this, we use meshes in a 2D or 3D space, to represent objects, and cameras that represent the observer. In a 2D space, we have objects organized in the $X$ and $Y$ axis only, whereas in a 3D space, we add depth and introduce it as a new dimension, represented by $Z$.
+
+Organizing where each object is and how each camera observes them in a 2D or 3D space is a challenge that is best approached by using linear algebra. With it, we can transform the coordinates of points and vectors through matrices so that each polygon is in the right position in a given configuration of observable objects and observers. For this purpose, one uses Model-View-Projection-Viewport (MVPV) matrices. These matrices follow the sequence that the name suggests, first the model then the view, the projection, and finally the viewport matrices transformations. Figure \ref{mvpvmatrices} shows the relation of how coordinates will behave in these transformations and their respective spaces, which will all be discussed in this section.
+
+\begin{figure}[hbt!]
+    \caption{Model-View-Projection-Viewport matrices effects on coordinates}
+    \begin{center}
+        \includegraphics[width=18em]{inputs/matrices.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{mvpvmatrices}
+\end{figure}
+
+An important principle of computer graphics is the projection of 3D points of a scene onto the 2D projection plane, divided into discrete pixels, available in the device rendering the scene. It's important to consider how depth will affect this projection so that we know which object will be drawn in front, and which in the back. Just as a ray tracer needs to find the closest surface intersection, a rasterization renderer needs to work out which of the (possibly many) surfaces drawn at any given point is the closest and only display it \cite{Marschner2021CGFundamentals}.
+
+While the Model transformations depend only on the model coordinates, View, Projection and Viewport transformations depend on the camera position, the type of projection, the field of view (the resolution of the image and the size of the display also need to be considered if the scene is being rasterized). To simplify this procedure most graphic systems do it by a sequence of three transformations, according to \citet{Marschner2021CGFundamentals}:
+
+\begin{itemize}
+    \item \textbf{Viewing transformation (View Matrix)} puts the objects from the scene in a coordinate system where the camera is at the origin in a convenient orientation, the result is what we call \textit{\textbf{Camera Space}}.
+    \item \textbf{Normalized Device Coordinates (NDC) transformation (Projection Matrix)} projects points first to \textit{clip coordinates}, which efficiently determine on an object-by-object basis which portions of the objects will be visible to the viewer. Clip coordinates are then divided by $w$, in what's called perspective division, creating Normalized Device Coordinates. In NDC all visible points fall in the $-1$ to $1$ range, in a space called \textit{\textbf{NDC Space}}.
+    \item \textbf{Viewport transformation (Viewport Matrix)} maps the unit image rectangle to the desired rectangle in pixel coordinates in what we call \textit{\textbf{Screen Space}}, the end goal for all transformations.
+\end{itemize}
+
+\subsection{Model Matrices}
+Models are nothing more than a collection of vertices organized in a particular way, therefore we can transform them very quickly using matrices. The vertices collection of a model are relative to the origin in what is called \textit{Local Space} or \textit{Local Coordinate System} of the object. But models are usually not in the origin of the world (the coordinate $(0,0,0)$ of the 3D world, or $(0,0)$ for a 2D world) this is where the model matrices come in: The most basic transformations are \textbf{scaling, translating, and rotating}. After the desired transformations, the model is considered to be in the \textit{World Space}.
+
+%%%%%%%%%%%%%
+\subsubsection{Scale}
+The simplest transform is scaling \cite{Marschner2021CGFundamentals}. Considering a 3D space and $s_x$, $s_y$ and $s_z$ as the scaling factor in the $X$, $Y$ and $Z$ coordinates respectively:
+
+\begin{equation}
+    scale(s_x, s_y, s_z) =
+        \begin{bmatrix}
+            s_x & 0 & 0 \\
+            0 & s_x & 0 \\
+            0 & 0 & s_z \\
+        \end{bmatrix}
+        .
+    \label{matrices:scale}
+\end{equation}
+
+Then applying \cref{matrices:scale} to an arbitrary vector $(x,y,z)$, we produce a scaled vector:
+
+\begin{equation}
+    \begin{bmatrix}
+        s_x & 0 & 0 \\
+        0 & s_y & 0 \\
+        0 & 0 & s_z
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        z
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        s_xx \\
+        s_yy \\
+        s_zz
+    \end{bmatrix}
+    .
+\end{equation}
+
+%%%%%%%%%%%%%
+\subsubsection{Rotation}
+\label{rotationmatrixchapter}
+\begin{figure}[hbt!]
+    \caption{Example of arbitrary counterclockwise rotation of vector $a$ by $\phi$}
+    \begin{center}
+        \includegraphics[width=15em]{inputs/vectorrotation.PNG}
+    \end{center}
+    \legend{Source: extracted from \cite{Marschner2021CGFundamentals}}
+    \label{rotationmatrix}
+\end{figure}
+
+As pictured in \cref{rotationmatrix}, considering a 2D space, supposing that we'd like to rotate a vector $a$ by an arbitrary angle $\phi$ to get vector $b$, we first decompose the $a$ vector (assumed to be a unit vector) in the $X$-axis, given that $\alpha$ is the angle between the vector and the $X$-axis, with basic trigonometric properties, we have:
+
+\begin{equation}
+    \label{matrices:rotation}
+    \begin{array}{c}
+        x_a = \cos\alpha, \\
+        y_a = \sin\alpha.
+    \end{array}
+\end{equation}
+
+Since $b$ is a rotation of $a$, its rotation makes a $\phi + \alpha$ angle with the $X$-axis, and we can expand this sum with \cref{matrices:rotation}, yielding:
+
+\begin{equation}
+    \begin{array}{c}
+        x_b = cos(\alpha + \phi) = \cos\alpha \cos\phi - sin\alpha sin\phi = x_a \cos\phi - y_a sin\phi, \\
+        y_b = \sin(\alpha + \phi) = \sin\alpha \cos\phi + \cos\alpha \sin\phi = y_a \cos\phi - x_a \sin\phi.
+    \end{array}
+    \label{matricesrotationexpand}
+\end{equation}
+
+As can be seen by \cref{matrices:rotation} and \cref{matricesrotationexpand}, the operation that transforms vector a into vector b can thus be represented by a matrix:
+\begin{equation}
+    rotate(\phi)=
+    \begin{bmatrix}
+        \cos\phi & -\sin\phi \\
+        \sin\phi & \cos\phi \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+For 3D rotations, there are multiple possible axes of rotation \cite{Marschner2021CGFundamentals}, as it's not the focus of this work we will not detail how to derive its formulas. According to \citet{Marschner2021CGFundamentals} if we want to rotate on the $Z$-axis:
+
+\begin{equation}
+    rotateZ(\phi)=
+    \begin{bmatrix}
+        \cos\phi & -\sin\phi & 0 \\
+        \sin\phi & \cos\phi & 0 \\
+        0 & 0 & 1 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+On the $X$-axis:
+
+\begin{equation}
+    rotateX(\phi)=
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & \cos\phi & -\sin\phi \\
+        0 & \sin\phi & \cos\phi  \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+And on the $Y$-axis:
+
+\begin{equation}
+    rotateY(\phi)=
+    \begin{bmatrix}
+       \cos\phi & 0 & \sin\phi \\
+       0 & 1 & 0 \\
+       -\sin\phi & 0 & \cos\phi \\
+    \end{bmatrix}
+    .
+\end{equation}
+%%%%%%%%%%%%%
+\subsubsection{Translation}
+\label{translationmatrixchapter}
+Translations can only be done for points, since vectors cannot be translated. Up until this point we have been looking at methods that change a vector attributes using a matrix, but we cannot use such transforms to move points in a model, because the origin always remains fixed under these linear transformations. In order to achieve translation we need to shift all the points of an object by the same amount. For a 2D space, where $(x^t, y^t)$ is the translation amount for $x$ and $y$-coordinates, and $(x',y')$ the resulting coordinates after the transformation:
+
+\begin{equation}
+    \begin{array}{c}
+        x' = x + x^t, \\
+        y' = y + y^t.
+    \end{array}
+\end{equation}
+
+It's impossible to multiply $x$ and $y$ by a $2 \times 2$ matrix (as it was done in scale and rotation) and get this result. A possible way is to represent the point by using a 3D vector with the third coordinate as one $[x\ y\ 1]^T$, In order to do that it will be necessary to use a $3 \times 3$ matrix. According to \citet{Marschner2021CGFundamentals}:
+\begin{equation}
+    \begin{bmatrix}
+       1 & 0 & x^t \\
+       0 & 1 & y^t \\
+       0 & 0 & 1   \\
+    \end{bmatrix}
+    .
+    \label{affine1}
+\end{equation}
+
+This matrix does a linear transformation followed by a translation. This is called an \textit{affine transformation}, and the way to implement them by adding an extra dimension is called \textit{homogeneous coordinates} \cite{Penna1986projectivegeometry}.
+
+A problem with this approach happens when we transform vectors, because they represent directions and should not change when we translate the object. This can be easily fixed by setting the third coordinate to zero $[x\ y\ 0]^T$. Hence, when used together with \cref{affine1}:
+\begin{equation}
+    \begin{bmatrix}
+      1 & 0 & x^t \\
+      0 & 1 & y^t \\
+      0 & 0 & 1   \\
+    \end{bmatrix}
+    \begin{bmatrix}
+       x \\
+       y \\
+       0 \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+       x' \\
+       y' \\
+       0  \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+So when we refer to homogeneous coordinates we use the third dimension to express the difference between position/points and vectors/directions. For a 2D space, having the third dimension as $1$ implies a \textit{position}, when the third dimension is $0$ we have a \textit{direction}. In a 3D space, the same technique works, and we add a fourth dimension \cite{Marschner2021CGFundamentals}, hence:
+
+\begin{equation}
+    \begin{bmatrix}
+      1 & 0 & 0 & x_t \\
+      0 & 1 & 0 & y_t \\
+      0 & 0 & 1 & z_t \\
+      0 & 0 & 0 & 1   \\
+    \end{bmatrix}
+    \begin{bmatrix}
+       x \\
+       y \\
+       z \\
+       1 \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+       x + x_t \\
+       y + y_t \\
+       z + z_t \\
+       1 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+\subsection{View Matrix}
+
+As presented in the opening of the section, the View Matrix is applied to the object after its coordinates are processed by the model matrices transformations and are already in \textit{World Space}. The View Matrix puts the camera at the origin of the world in a rotation facing the $Z$-axis. To do this we'll define a matrix $V$ with the following properties, according to \citet{TwoDee2020}:
+
+\begin{equation}
+\label{viewmatrixfirststep}
+    V
+    \begin{bmatrix}
+        r_x & u_x & f_y & p_x \\
+        r_y & u_y & f_y & p_y \\
+        r_z & u_z & f_y & p_z \\
+        0   & 0   & 0   & 1   \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+Considering $r$ to be the right (positive $X$) vector of the camera, $u$ to be the up (positive $Y$) vector of the camera, $f$ the front (positive $Z$) vector of the camera (all three vectors, $r,u,f$ are orthogonal to each other) and $p$ to be the position of the camera in \textit{World Space}. We have previously touched upon how rotation matrices and translation matrices were built in \cref{rotationmatrixchapter} and \cref{translationmatrixchapter}, respectively - so we can dismember the dot product matrix in  \cref{viewmatrixfirststep}:
+
+\begin{equation}
+    T
+    =
+    \begin{bmatrix}
+        1 & 0 & 0 & p_x \\
+        0 & 1 & 0 & p_y \\
+        0 & 0 & 1 & p_z \\
+        0 & 0 & 0 & 1   \\
+    \end{bmatrix}
+    ,
+\end{equation}
+\begin{equation}
+    R
+    =
+    \begin{bmatrix}
+        r_x & u_x & f_y & 0 \\
+        r_y & u_y & f_y & 0 \\
+        r_z & u_z & f_y & 0 \\
+        0   & 0   & 0   & 1 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+And if we consider the right-hand side of the \cref{viewmatrixfirststep} as an identity matrix identified by $I$, we have:
+
+\begin{equation}
+\label{viewmatrixsecondstep}
+    V ( T  R ) = I.
+\end{equation}
+
+Solving \cref{viewmatrixfirststep} for $V$ yields:
+\begin{equation}
+    \begin{array}{lc}
+        V ( T  R ) = I,                         \\
+        V  (T  R)  (T  R)^{-1} = I  (T R)^{-1}, \\
+        V = (T R)^{-1},                         \\
+        V = T^{-1} R^{-1}.                      \\
+    \end{array}
+\end{equation}
+
+Which then resolves to:
+
+\begin{equation}
+        \begin{array}{lc}
+        V = T^{-1} R^{-1}, \\
+        V
+        =
+        \begin{bmatrix}
+            r_x & r_x & r_y & 0 \\
+            u_y & u_y & u_y & 0 \\
+            f_z & f_z & f_y & 0 \\
+            0   & 0   & 0   & 1 \\
+        \end{bmatrix}
+
+        \begin{bmatrix}
+            1 & 0 & 0 & -p_x \\
+            0 & 1 & 0 & -p_y \\
+            0 & 0 & 1 & -p_z \\
+            0 & 0 & 0 & 1    \\
+        \end{bmatrix}
+        ,\\
+        V
+        =
+        \begin{bmatrix}
+            r_x & r_x & r_y & -p_x \\
+            u_y & u_y & u_y & -p_y \\
+            f_z & f_z & f_y & -p_z \\
+            0   & 0   & 0   & 1    \\
+        \end{bmatrix}
+        .
+    \end{array}
+\end{equation}
+
+\subsection{Projection Matrix}
+
+The projection matrix is the second to last matrix that is necessary in the sequence of matrices needed to render a point in the correct portion of the screen. It will produce the NDC space, a space where $X$, $Y$, and $Z$ coordinates vary between -1 and 1, and any point that falls outside this range will be discarded further down on the graphics pipeline. Section \ref{projectionmatrixscene} presents and discusses a way to visualize the NDC space.
+
+\subsubsection{Perspective Projection}
+\label{perspectiveprojection}
+As pictured in \cref{geometryofperspective}, considering a camera $e$ facing the direction $g$ in a distance $d$ from a view plane, limited by $e$'s range of vision, determined by $y_s$ and $y$, so that  $y_s$ is the intersection with the view plane and $y$ is the furthest point of the range of vision (distant of $z$ from the camera $e$), we can extract how $y_s$ depends on the distances $d$ and $z$ properties from \cref{geometryofperspective} using similar triangles (this will be the basis of the projection of $y$ in the view plane):
+
+\begin{figure}[hbt!]
+    \caption{Geometry involved in how a camera $e$ sees}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/viewplaneprojection.PNG}
+    \end{center}
+    \legend{Source: extracted from \cite{Marschner2021CGFundamentals}}
+    \label{geometryofperspective}
+\end{figure}
+
+
+
+\begin{equation}
+    \label{projectionsimilartriangles}
+    \begin{array}{lc}
+        \frac{y_s}{d} = \frac{y}{z},  \\
+        y_s = d \frac{y}{z}.
+    \end{array}
+\end{equation}
+
+One of the input vectors of \cref{projectionsimilartriangles} appears as a denominator, and this can't be achieved with just \textit{affine transformations}, in a similar situation we had in \cref{translationmatrixchapter}. Hence it's necessary to use homogeneous coordinates again. With homogeneous coordinates, we agreed that the point $(x,y)$ can be represented with the homogeneous vector $[x\ y\ 1]^T$.
+
+\begin{equation}
+    \begin{bmatrix}
+        M_{11} & M_{12} & M_{13}\\
+        M_{21} & M_{22} & M_{23}\\
+        M_{31} & M_{32} & M_{33} \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        y \\
+        z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        d \frac{y}{z} \\
+        d \\
+        1
+    \end{bmatrix}
+    .
+\end{equation}
+
+The third dimension for our homogeneous vector in this 2D space will be called $w$ and will represent the \textit{perspective distortion}. The \textit{perspective distortion} is necessary to compensate the viewer's perspective in a scene. In an orthographic environment, presented in \cref{ortographicprojection}, parallel lines will never meet, but in a perspective environment this is not true and they meet in infinity. When \textit{perspective distortion} is applied the farther the object is, the more distorted it will become, achieving this effect. This will be more apparent in a 3D space, so for now we will consider $w = z$.
+
+After the projection matrix - which is not an \textit{affine transformation} - has been applied, $w$ can (and should) be != $1$, in what is called clipping coordinates. For this reason, the perspective distortion should divide the homogeneous vector:
+
+\begin{equation}
+    \begin{bmatrix}
+        M_{11} & M_{12} & M_{13} \\
+        M_{21} & M_{22} & M_{23} \\
+        M_{31} & M_{32} & M_{33} \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        y \\
+        z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        d y \\
+        d z \\
+        z
+    \end{bmatrix}
+    div. w \rightarrow
+    \begin{bmatrix}
+        d \frac{y}{z} \\
+        d             \\
+        1
+    \end{bmatrix}
+    .
+\end{equation}
+
+Which then finally defines our perspective matrix $M$:
+
+\begin{equation}
+    M =
+    \begin{bmatrix}
+        d & 0 & 0 \\
+        0 & d & 0 \\
+        0 & 1 & 0 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+In a 3D space, adding the $x$ dimension, we have:
+
+
+\begin{equation}
+    \begin{bmatrix}
+        d & 0 & 0 & 0 \\
+        0 & d & 0 & 0 \\
+        0 & 0 & d & 0 \\
+        0 & 0 & 1 & 0 \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        d x \\
+        d y \\
+        d z \\
+        z
+    \end{bmatrix}
+    div. w \rightarrow
+    \begin{bmatrix}
+        d \frac{x}{z} \\
+        d \frac{y}{z} \\
+        d             \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        x' \\
+        y' \\
+        z' \\
+        1
+    \end{bmatrix}
+    \label{firstprojectionmatrix}
+    .
+\end{equation}
+
+Points $[x'\ y'\ z']$ in \cref{firstprojectionmatrix} will represent the projection of points $[x\ y\ z]$ in the viewport plane, as pictured in \cref{projectionofpoint}.
+
+\begin{figure}[hbt!]
+    \caption{Projection of $[x\ y\ z]$, pictured in yellow to $[x'\ y'\ z']$, pictured in red, on top of the view plane}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/projectionofpoint.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{projectionofpoint}
+\end{figure}
+
+From \cref{firstprojectionmatrix} we can see that $z'$ has a particular characteristic that makes it always sit on top of the view plane and $z$ will always be distant $d$ from the viewer, so depth is lost in this projection, but the ordering of objects can be preserved using the \textit{z-buffer algorithm}.
+
+In simple terms, the \textit{z-buffer algorithm} is a way to know the order of all fragments that project onto the same pixel. At each pixel, in the fragment blending phase of the graphics pipeline, we keep track of the distance to the closest surface that has been drawn so far and discard fragments that are farther away than that distance. The closest distance is stored by allocating an extra value for each pixel, in addition to the red, green, and blue color values. To ensure that the first fragment will pass the depth test the \textit{z-buffer} is initialized to the maximum depth \cite{Marschner2021CGFundamentals}. 
+
+Since our previous matrix ignored all depth by projecting $z$ in the view plane. We'll define a \textit{view frustum} that will act as the boundaries of what can be seen and will help in organizing the orders of the fragments for the \textit{z-buffer algorithm}.
+
+\begin{figure}[hbt!]
+    \caption{The near plane $n$, pictured in red color, and the far plane $f$, pictured in green color}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/frustumcolors.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{frustumcolors}
+\end{figure}
+
+We define two planes for the view frustum, a near plane $n$ and and a far plane $f$, pictured in \cref{frustumcolors}. Both of these planes will be defined by the distance from the viewer. With this information we can define the perspective matrix with depth information: 
+
+\begin{equation}
+    \begin{bmatrix}
+        n & 0 & 0 & 0       \\
+        0 & n & 0 & 0       \\
+        0 & 0 & n + f & -fn \\
+        0 & 0 & 1 & 0       \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        z \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        nx            \\
+        ny            \\
+        (n + f)z - fn \\
+        z
+    \end{bmatrix}
+     div. w \rightarrow
+    \begin{bmatrix}
+        n\frac{x}{z}         \\
+        n \frac{y}{z}        \\
+        n + f - \frac{fn}{z} \\
+        1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        x' \\
+        y' \\
+        z' \\
+        1
+    \end{bmatrix}
+    \label{secondtprojectionmatrix}
+    .
+\end{equation}
+
+We can test the depth $z'$ using $n + f - \frac{fn}{z}$ with our desired output:
+
+\begin{itemize}
+    \item If $z = n$ we have $n + f - \frac{fn}{z} = n$.
+    \item If $z = f$ we have $n + f - \frac{fn}{z} = f$.
+    \item And $n < z_1 < z_2 < f$ yields $n < z'_1 < z'_2 < f$.
+\end{itemize}
+
+We are not in NDC space yet, the next step is orthographic projection, seen in the next section, which will accommodate the \textit{field of view} and the \textit{aspect ratio} of the view frustum.
+
+\subsubsection{Orthographic Projection}
+\label{ortographicprojection}
+%As mentioned on \cref{perspectiveprojection}, perspective projection doesn't cover the \textit{field of view} and the \textit{aspect ratio} of the view frustum. This makes sense because the near view plane and the far plane are infinite planes and the projection matrix only focuses on perspective deforming the scene based on these two planes.
+
+To consider which portions of the near and far plane will compose the view frustum we need to introduce the concept of \textit{clipping window}, which will work to define a rectangle for the view frustum, this will be the \textit{view volume}.
+
+\begin{figure}[h!]
+    \caption{Clipping window and it's coordinates $(w_t, w_b, w_l, w_r)$}
+    \begin{center}
+        \includegraphics[width=29em]{inputs/clippingwindowcoordinates.png}
+    \end{center}
+     \legend{Source: adapted from  \href{https://commons.wikimedia.org/wiki/File:Orthographic_view_frustum.png}{Wikimedia Commons}}
+    \label{clippingwindowcoordinates}
+\end{figure}
+
+The word clipping (removing) already suggests that only everything inside it will be considered for the rendering of the final image, saving computer resources. This is done by considering four coordinates: $(w_t, w_b, w_l, w_r)$, top, bottom, left, and right, respectively, that will determine where the frustum view volume will be defined, as pictured in \cref{clippingwindowcoordinates}.
+
+After having the view frustum volume defined we need to transform it in a cube to finally reach the NDC space - as explained at the beginning of \cref{mvpvmatricessection} - which is centered at the origin, serving the purpose of simplifying the later stages of the graphics pipeline. According to \citet{power2015orthographic}, for this to happen we need the following.
+
+\begin{itemize}
+    \item translate the frustum view volume to be centered at the origin,
+    \item scale the frustum view volume to the size of the normalized view volume.
+\end{itemize}
+
+The center of the frustum volume can be defined as $(\frac{w_l + w_r}{2}, \frac{w_t + w_b}{2}, \frac{near + far}{2})$, which enables us to translate it to the origin using a translation matrix:
+
+\begin{equation}
+    T=
+    \begin{bmatrix}
+        1 && 0 && 0 && -\frac{w_l + w_r}{2}  \\
+        0 && 1 && 0 && -\frac{w_t + w_b}{2}  \\
+        0 && 0 && 1 && -\frac{near + far}{2} \\
+        0 && 0 && 0 && 1                     \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+The normalized frustum view volume has a height, width, and depth of $2$, since the NDC space is defined by a cube in ranges $[-1, 1]$. To scale a value from one range of values to another, we divide by the size of the original range and multiply by the size of the new range, hence:
+
+\begin{equation}
+    S=
+    \begin{bmatrix}
+        \frac{2}{w_r - w_l} && 0 && 0 && 0  \\
+        0 && \frac{2}{w_t - w_b} && 0 && 0  \\
+        0 && 0 && \frac{2}{far - near} && 0 \\
+        0 && 0 && 0 && 1                    \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+Therefore our affine transformation matrix for the orthographic projection $O$ is defined by:
+% TODO AQUI ACHO QUE FICA ESTRANHO PQ NÃO É UMA MULTIPLICAÇÃO DE MATRIZES MESMO E SIM UMA APLICAÇÃO EM ORDEM DAS MATRIZES
+\begin{equation}
+    O=S + T=
+    \begin{bmatrix}
+        \frac{2}{w_r - w_l} && 0 && 0 && -\frac{w_l + w_r}{2}   \\
+        0 && \frac{2}{w_t - w_b} && 0 && -\frac{w_t + w_b}{2}   \\
+        0 && 0 && \frac{2}{far - near} && -\frac{near + far}{2} \\
+        0 && 0 && 0 && 1                                        \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+It's important to highlight that the orthographic projection matrix does not require that the perspective projection matrix be applied first, it can be used by itself producing the effect seen on the right-hand side of \cref{perspectivevsprojection}, opposed to the perspective projection (with orthographic projection applied posterior) in left-hand side.
+
+\begin{figure}[hbt!]
+    \caption{Perspective and orthographic projections differences, left-hand side and right-hand side, respectively}
+    \begin{center}
+        \includegraphics[width=29em]{inputs/perspectivevsprojection.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{perspectivevsprojection}
+\end{figure}
+
+
+\subsection{Viewport Matrix}
+After the Perspective/Orthographic Projection and the division by $w$ we get in the NDC space (as shown in \cref{mvpvmatrices}), which means that we all the points coordinates are between -1 and +1, in all three dimensions $(x,y,z)$. To reach Screen Space, we need to map the points from NDC space to the viewport in the screen, i.e. the window that is going to be showing the render. For that to happen we must first scale the NDC cube to the shape of the viewport and then transform the NDC cube to the plane defining the viewport, we can do this with an affine transformation \cite{Marschner2021CGFundamentals}, which was presented in \cref{perspectiveprojection} .
+
+
+The viewport is a rectangle defined by the height and the width of the window of the application. Considering $v_t$ and $v_b$ as the $y$-coordinates of the top and the bottom, respectively, of the window, and considering $v_l$ and $v_r$ as the $x$-coordinates of the left and the right, respectively of the same window. We divide each fraction by the $x$ and $y$ coordinates of the NDC space, which are in the $(-1,-1,-1)$ to the  $(1,1,1)$ range:
+
+\begin{equation}
+    S=
+    \begin{bmatrix}
+        \frac{v_r-v_l}{1 - (-1)} & 0 & 0 & 0  \\
+        0 & \frac{v_t-v_b}{1 - (-1)} & 0 & 0  \\
+        0 & 0 & 1 & 0                         \\
+        0 & 0 & 0 & 1                         \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \frac{v_r-v_l}{2} & 0 & 0 & 0  \\
+        0 & \frac{v_t-v_b}{2} & 0 & 0  \\
+        0 & 0 & 1 & 0                  \\
+        0 & 0 & 0 & 1                  \\
+    \end{bmatrix}
+    \label{viewportscaling}
+    .
+\end{equation}
+
+
+
+Equation \ref{viewportscaling} covers the scaling of the points to the viewport's size. We then need to translate them with an affine transformation:
+
+ \begin{equation}
+    T=
+    \begin{bmatrix}
+        1 & 0 & 0 & \frac{v_r-v_l}{2}  \\
+        0 & 1 & 0 & \frac{v_t-v_b}{2}  \\
+        0 & 0 & 1 & 0                  \\
+        0 & 0 & 0 & 1                  \\
+    \end{bmatrix}
+    \label{viewporttranslation}
+    .
+\end{equation}
+
+Joining \cref{viewportscaling} and \cref{viewporttranslation} into viewport matrix $V$ we have:
+
+ \begin{equation}
+    V=S + T=
+    \begin{bmatrix}
+        \frac{v_r-v_l}{2} & 0 & 0 & \frac{v_r-v_l}{2} \\
+        0 & \frac{v_r-v_l}{2} & 0 & \frac{v_t-v_b}{2} \\
+        0 & 0 & 1 & 0                                 \\
+        0 & 0 & 0 & 1                                 \\
+    \end{bmatrix}
+    .
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Lighting and Shading}
+\label{lightingshadingsection}
+Lighting in the real world happens when photons interact with matter, bounce, and are absorbed by the retina, where the information they carry is transcoded to electric signals that are processed by the brain \cite{Marschner2021CGFundamentals}. In computer graphics, a similar effect can be achieved using ray-tracing, though it is very hard and expensive to achieve it in real-time. A simpler and less expensive way to do it is to use local illumination models (or local shading models), which are easily implementable in GPU programmable shaders.
+
+With shaders, we can approximate what lighting would look like using attributes such as the light position and the viewer position. As previously explained, light can be perceived as photons bouncing off surfaces to reach the retina, with vertex and fragment shaders we can use math to estimate this effect. In the following subsections, we will use the following vectors to illustrate how each shading algorithm works.
+
+\begin{itemize}
+    \item $L$ is the direction from the surface to the light point.
+    \item $N$ is the surface normal vector.
+    \item $V$ is the direction pointing towards the viewer.
+    \item $R$ is the direction $L$ but mirrored in relation to the normal vector $N$.
+\end{itemize}
+
+\begin{figure}[hbt!]
+    \caption{Vectors involved in a reflecting surface}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/phongvectors.png}
+    \end{center}
+    \legend{Source: Extracted from Wikipedia}
+    \label{phongvectors}
+\end{figure}
+
+\subsection{Phong Illumination Model}
+
+Phong Illumination Model is the simplest and the most popular lighting for 3D graphics because it's flexible to achieve a different range of visual effects and its implementation is efficient in the hardware. According to \citet{Buss2003computergraphicsmathematical}, there are two types of Phong reflections:
+
+\begin{itemize}
+    \item \textbf{Diffuse reflection} reflects the light evenly in all directions away from the surface, as pictured in the left-hand side of \cref{reflections}. Predominant in non-shiny surfaces.
+    \item \textbf{Specular reflection} reflects the light in a mirror-like way, which means that the reflected light is scattered in a determined angle, as pictured in the right-hand side of \cref{reflections}
+    \item \textbf{Ambient Light reflection} is light that arrives equally from all directions rather than from a light source. Ambient reflection is intended to model light that has spread around the environment through multiple reflections.
+\end{itemize}
+
+\begin{figure}[h!]
+    \caption{Diffuse reflection in the left-hand side and specular reflection in the right-hand side}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/reflections.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{reflections}
+\end{figure}
+
+Considering $Light_t$ as all the lights in the scene, $K_d$ as our diffuse reflectance, $K_s$ as our specular reflectance, $K_a$ as our ambient reflectance, considering $\wedge$ as the symbol indicating normalized vectors and $\bullet$ as the dot product:
+
+\begin{equation}
+    V = K_a + max(K_d(\hat N \bullet \hat L),\ 0) + max(K_s(\hat R \bullet \hat N),\ 0)\ \forall\  Light\ in\ Light_t.
+\end{equation}
+
+\newpage
+If we consider that the material reflecting the light can have different reflectance $q$, and also consider that each light source $I$ has different attributes for each type of reflection, so we have $I_d$ for diffuse light reflectance, $I_s$ for specular light reflectance, $I_a$ for ambient light reflectance we can make the equation more interesting and also more flexible:
+
+
+\begin{equation}
+    V = K_a I_a + max(K_d I_d (\hat N \bullet \hat L),\ 0) + max(K_s I_s(\hat R \bullet \hat N)^q,\ 0).
+    \label{phongequation}
+\end{equation}
+
+\subsection{Gouraud Shading}
+
+The Gouraud reflection model uses an estimation of the surface normal on each vertex of a 3D model by averaging the surface normals of the triangles that meet at each vertex. This estimation is then used to produce different color intensities at the vertex, which in turn can be interpolated with the color of the other vertices, creating the effect of reflection. While limited, this technique is very inexpensive to use. Due to its limitation of only reflecting on the vertex and not the fragment, the reflection usually appears faceted, and not having light directly over a vertex in a low poly model will produce incorrect reflections, pictured in \cref{Gourauderror}.
+
+\begin{figure}[hbt!]
+    \caption{Gouraud shading correctly over a vertex of a cube on the left-hand side, and Gouraud shading not reflecting on the right-hand side}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/gouraud.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{Gourauderror}
+\end{figure}
+
+\subsection{Types of light sources}
+\label{typesoflightprojection}
+Light can interact with the scene's object in different more interesting ways than only the angle of incidence. We are able to use different types of light sources, including directional lights, point lights and spotlights.
+
+\subsubsection{Directional}
+A directional light will always have the same direction, meaning that all light rays will be parallel to each other, i.e. in \cref{phongvectors} vector $L$ will always be in the same direction, independent of the position of the directional light. This creates a very similar effect to sunlight.
+
+\subsubsection{Point}
+Point lights are equivalent to light bulbs, they emit light in all directions equally. Added to it we can calculate how light dissipates in farther distances from a given point. We call this \textit{light attenuation} and its formula is given by:
+
+\begin{equation}
+    \sigma = \frac{1}{k_c + k_l d  + k_q d^2}.
+    \label{lightattenuation}
+\end{equation}
+
+$d$ is the distance from the light and the constant scalars are $k_c$, $k_l$ and $k_q$, the constant attenuation factor, the linear attenuation factor, and the quadratic attenuation factor, respectively \cite{Buss2003computergraphicsmathematical}. All light intensity values, $I_d$,  $I_s$ and  $I_a$ are multiplied by the distance attenuation factor $\sigma$ before being used in \cref{phongequation}. Vector $L$ is pointing towards a point in a surface.
+
+\subsubsection{Spot}
+A spotlight is characterized by having a direction $dir$, two cutoff angles $\theta_{inner}$ and $\theta_{outer}$ which are the inner and outer angles of the cone of light (considering $\theta_{inner} < \theta_{outer}$), as pictured in \cref{spotlight}, and a spotlight exponent $\epsilon$ which controls how fast the light intensity decreases from the center of the spotlight. Vector $L$ is pointing towards from a point in the surface.
+
+\begin{figure}[hbt!]
+    \caption{A spotlight and its angles in relation to its direction}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/spotlight.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{spotlight}
+\end{figure}
+
+
+\begin{equation}
+    \begin{array}{lc}
+        \theta = - \hat L \bullet dir,              \\
+        \epsilon = \theta_{inner} - \theta_{outer}.
+    \end{array}
+\end{equation}
+
+$\theta$ returns the angle between vector $L$ and the direction of the spotlight. The intensity $I_{spot}$ can then be calculated using: 
+
+\begin{equation}
+    I_{spot} = \frac{\theta - \theta_{outer}}{\epsilon}.
+    \label{lightspot}
+\end{equation}
+
+This intensity $I_{spot}$ should only be used in a $[0,1]$ range, so this result must be clamped to this range and it can be used in conjunction with attenuation seen in \cref{lightattenuation}.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Texture Mapping}
+\label{texturemappingsection}
+Objects in real life are hardly as uninteresting as a cube with only one color. A cardboard box, for example, has a texture and if you look close enough you can see how this texture affects the light bouncing off of it creates a more interesting look than a simple uniform color. In computer graphics, this can be simulated using textures. Textures can be used to make shadows and reflections, to provide illumination and even surface shape \cite{Marschner2021CGFundamentals}.  But mapping textures to shapes can be challenging and there are several ways one can go about doing it. In this section, we will look at a few of these approaches.
+
+\subsection{UV mapping}
+The simplest way to map a texture is using coordinates, this can be as simple as having each vertex of a cube map to all the extremities of an image (\cref{simpleuvmapping}), or as complex as having each vertex map to a single point in an unwrapped texture (\cref{complexuvmapping}). The way this is achieved is by using the textures coordinates, called $u$ and $v$, mapped to the coordinates $x$ and $y$ of a given surface, hence the name \textit{UV mapping}.
+
+\begin{figure}[h!]
+    \caption{Simple UV mapping}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/simpleuvmap.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{simpleuvmapping}
+\end{figure}
+
+\begin{figure}[h!]
+    \caption{Complex UV mapping}
+    \begin{center}
+        \includegraphics[width=20em]{inputs/complexuvmapping.png}
+    \end{center}
+    \legend{Source: Extracted from Autodesk Maya Documentation, \cite{MayaDoc2018}}
+    \label{complexuvmapping}
+\end{figure}
+
+\subsection{Texture projection}
+Another way to texture an object is to have a textured shape that envelops it and dictates what color each point of the object is going to be. A few examples include cubic, spherical (pictured in  \cref{sphericalprojection}), cylindrical, and cube map projection. More on \cref{advancedtexturemappingscene}.
+
+\begin{figure}[h!]
+    \caption{Spherical projection on a teapot model}
+    \begin{center}
+        \includegraphics[width=15em]{inputs/textureprojection.PNG}
+    \end{center}
+    \legend{Source: Extracted from \citet{wolfe2002surfacemapping}}
+    \label{sphericalprojection}
+\end{figure}
+
+\section{Bézier Curves}
+\label{beziercurveschapter}
+According to \citet{Mortenson1999mathcomputergraphics}, Bézier curves are parametric curves used in computer graphics and other related fields. They are used in vector graphics and on the time domain, as in animation and on smoothness of trajectories. The curves are defined by a collection of control points, and the number of points will determine which order the curve belongs to, from a minimum of two points.
+
+According to \citet{Mortenson1999mathcomputergraphics}:
+\begin{itemize}
+\item \textbf{Linear}, or first-degree, Bézier curves only have two control points, a starting and and ending point, as pictured in \cref{linearbezier}. Both points lie on the curve, which is a straight line between these points. Given $A$ and $B$ as starting and ending points, any Cartesian coordinates ($X,Y$) for some  ratio $v \in [0,1]$, given that $X_F$ is the X-coordinate of point $F$ and $Y_F$ is the Y-coordinate of point $F$, any point $F$ belonging to the curve is defined by:
+
+\begin{equation}
+    \begin{array}{c}
+        {X_F} = {X_A} + v({X_B} - {X_A}), \\
+        {Y_F} = {Y_A} + v({Y_B} - {Y_A}).
+    \end{array}
+    \label{linearbeziereq}
+\end{equation}
+
+\begin{figure}[t!]
+    \caption{A linear Bézier curve}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/linearbezier.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{linearbezier}
+\end{figure}
+
+Simplifying \cref{linearbeziereq}, we have:
+
+\begin{equation}
+    \begin{array}{c}
+        {X_F} = (1-v){X_A} + v{X_B}, \\
+        {Y_F} = (1-v){Y_A} + v{Y_B}.
+    \end{array}
+\end{equation}
+
+Which is the same as a \textit{linear interpolation} equation.
+
+\item \textbf{Quadratic}, or second-degree, Bézier curves have one intermediate control point, and two control points that lie on the far ends of the curve. Assuming $A$ as the first point, $B$ as the intermediate point, and $C$ as the end point, if an object would move through the curve, it would touch on both the first and the end points $A$ and $C$, but not the intermediate point $B$, as the curve suggests in picture \cref{quadraticbezier1}.
+
+\begin{figure}[h!]
+    \caption{A quadratic Bézier curve}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/quadracticbezier2.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{quadraticbezier1}
+\end{figure}
+
+The curve is constructed using by using auxiliary points $D$ and $E$, as pictured in \cref{quadraticintermediate} that lie on the lines that connect the control points, lines $AB$ and line $BC$. These auxiliary points are placed in following the same ratio $v$, hence, considering $|AD|$ as the length of line $AD$:
+
+\begin{figure}[h!]
+    \caption{A quadratic Bézier curve and its auxiliary points}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/quadraticcurveintermediate.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{quadraticintermediate}
+\end{figure}
+
+\begin{equation}
+    \frac{|AD|}{|AB|} = \frac{|BE|}{|BC|} = v
+\end{equation}
+
+Points $E$ and $D$'s Cartesian coordinates will then be defined by:
+
+\begin{equation}
+    \begin{array}{c}
+        {X_D} = (1-v){X_A} + v{X_B}, \\
+        {Y_D} = (1-v){Y_A} + v{Y_B}.
+    \end{array}
+    \label{bezier:d}
+\end{equation}
+
+\vspace{0.5em}
+
+\begin{equation}
+    \begin{array}{c}
+        {X_E} = (1-v){X_B} + v{X_C}, \\
+        {Y_E} = (1-v){Y_B} + v{Y_C}.
+    \end{array}
+    \label{bezier:e}
+\end{equation}
+
+As pictured in \cref{quadraticbezier2}, point $F$ can then be defined as the interpolation between points $D$ and $E$, therefore its coordinates are obtained with:
+
+\begin{figure}[h!]
+    \caption{A quadratic Bézier curve with auxiliary points made to define $F$ position}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/quadraticbezier.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{quadraticbezier2}
+\end{figure}
+
+\begin{equation}
+    \begin{array}{c}
+        {X_F} = (1-v){X_D} + v{X_E},  \\
+        {Y_F} = (1-v){Y_D} + v{Y_E}.
+    \end{array}
+    \label{bezier:f}
+\end{equation}
+
+To obtain $X$ and $Y$ in terms of points $A,B,C$ for any value of $v$, we substitute equations in their respective counterparts, that is: equations  \cref{bezier:d} and \cref{bezier:e} into \cref{bezier:f}. Which yields:
+
+\begin{equation}
+    \begin{array}{c}
+    {X_F} = (1-v)^2{X_A} + 2v(1-v){X_B} + v^2{X_C}, \\
+    {Y_F} = (1-v)^2{Y_A} + 2v(1-v){Y_B} + v^2{Y_C}.
+    \end{array}
+    \label{quadraticbeziereq}
+\end{equation}
+
+
+
+\item \textbf{Cubic}, or third-degree, Bézier curves can be defined as affine combinations of two quadratic Bézier curves, with points defined as $\alpha$ and $\beta$, as pictured in  \cref{cubicbezier}.
+
+\begin{equation}
+    \begin{array}{c}
+    {X_F} = (1-v){X_\alpha} + v{X_\beta}, \\
+    {Y_F} = (1-v){Y_\alpha} + v{Y_\beta}.
+    \end{array}
+\end{equation}
+
+Which can be derived with the quadratic equations on \ref{quadraticbeziereq}:
+
+\begin{equation}
+    \begin{array}{c}
+    {X_F} = (1-v)^3{X_A} + 3(1-v)^2v{X_B} + 3(1-v)v^2{X_C} + v^3{X_D}, \\
+    {Y_F} = (1-v)^3{Y_A} + 3(1-v)^2v{Y_B} + 3(1-v)v^2{Y_C} + v^3{Y_D}.
+    \end{array}
+\end{equation}
+
+\begin{figure}[h!]
+    \caption{A cubic Bézier curve with auxiliary curves and their respective points $\alpha$ and $\beta$ made to define $F$ position}
+    \begin{center}
+        \includegraphics[width=10em]{inputs/cubicbezier.jpg}
+    \end{center}
+    \legend{Source: the authors}
+    \label{cubicbezier}
+\end{figure}
+
+\item \textbf{Piece-wise Bézier curves}
+Another way to increase the complexity of Bézier curves but without the need of increasing the degree of the curve is by separating the curves in what's called \textit{piece-wise Bézier curves}. The way these curves work is by having control points being shared between curves, generating a more complex Bézier curve. As pictured in \cref{piecewisebezier}, the combined curves can be, but are not limited to, quadratic Bézier curves, so it's possible to combine different degrees of Bézier curves with such combination.
+
+\begin{figure}[h!]
+    \caption{A piece-wise Bézier curve, composed of quadratic Bézier curves}
+    \begin{center}
+        \includegraphics[width=29em]{inputs/quadraticpiecewise.png}
+    \end{center}
+    \legend{Source: Extracted from \cite{song2015realtime}}
+    \label{piecewisebezier}
+\end{figure}
+
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{System Design}
+CG Guide is separated in what we called \textit{scenes}, which are self contained demonstrations of a particular computer graphics concept. The most basic concepts behind computer graphics are explained in the first few scenes. These scenes have explanations on how to send data to GPU, how to load Wavefront OBJ files, how shaders affect the scene, etc. The latter scenes are focused on practical examples of computer graphics, among these are how to make objects move in a Bézier curve pattern, how to light objects, how perspective distorts objects, how a camera frustum works, and lastly how texture projections work. The scenes have built-in controls that allow the user to play with parameters for a holistic understanding.
+
+This chapter focuses on presenting design goals and architecture decisions involved in implementing our application, whilst defining nomenclature of the building blocks of CG Guide scenes.
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Design Goals}
+Our system was created focusing on the easy creation and extension of such scenes. To achieve this, our application was built following some principles.
+
+\subsection{Ease of use}
+For an interactive user experience that is both easy and simple to understand, we opted to implement it with ImGui, a graphical user interface for C++. ImGui has multiple easy-to-use components, such as sliders, drop-downs, and graphs. Some of the components have been modified to better suit some of the scenes' requirements. ImGui is open-sourced and has an MIT license, so it's included in the project.
+
+Other points considered in the ease of use are availability and ease of setup. At the time of writing this work, users can download a single executable \footnote{only available for Windows x64, available in \href{https://github.com/guicattani/cg-guide/releases}{https://github.com/guicattani/cg-guide/releases}} without any external library dependencies.
+\footnote{models, textures, and shaders are used in run-time, so are separated from the executable}
+
+\subsection{Modularity and Expandability}
+Each scene should be completely independent from each other. Scenes have their own objects, cameras and shaders, and GUIs, which enables an easy way to expand the roster of scenes without affecting existing ones.
+
+\subsection{Open-sourceness}
+From the start, the code was built with open-sourceness in mind. This means that code has been written with code quality standards, modularity and documentation. This enables anyone to update, improve or even copy the code for their own use. This also allows the code not to become outdated whilst contributing to the general quality of computer graphics learning materials.
+
+\subsection{Presentable}
+The scenes should be presentable to an audience, for example a class full of students. The interface scales to be bigger for better reading when presenting to a crowd. All scenes include scaling features to make scene objects appear bigger and more easily discernible when seen from a bigger distance.
+
+\section{Architecture}
+We used modern OpenGL for this project, namely OpenGL 3.0 and OpenGL Shading Language (GLSL) version 130, and although it is considered harder and less straightforward to learn compared to OpenGL 2.0, we can use programmable shaders, which allows shader code to be sent directly to the GPU.
+
+Since OpenGL only focuses on rendering it was necessary to add the auxiliary library GLFW, which enables input, windowing, and context creation. This is important for a better user experience and will enable mouse and keyboard interaction.
+
+After GLFW is initialized we do the necessary steps to initialize the GUI, ImGui. We need to bind the window created by GLFW and ImGui, this enables user input to change the interface status and, therefore, the state of the scene, while in the render loop.
+
+Finally we then render the scene and the interface. This is the main part of the application and consists of a loop that only finishes when the user closes the window. The user can then change the scene, from the roster of existing scenes, at any time using the given drop-down made for scene selection.
+
+All of these steps can be summarized as pictured in \cref{renderingprocess}.
+
+\begin{figure}[hbt!]
+    \caption{Initialization and rendering process}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/renderingprocess.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{renderingprocess}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Base Technologies}
+\subsubsection{OpenGL}
+OpenGL is a graphics API with a set of routines implemented by graphics card manufacturers that enable developers to control the hardware. OpenGL is cross-platform, meaning it can run on multiple platforms using the same code. It concerns itself with rendering only, it doesn't have a GUI built-in, an audio processing library, windowing nor input capabilities.
+
+\subsubsection{GLFW}
+GLFW is a lightweight Open Source library for OpenGL that provides windowing, context, and input capabilities.
+
+\subsubsection{ImGui}
+ImGui is a bloat-free graphical user interface library for C++. It outputs optimized vertex buffers that you can render anytime in your 3D-pipeline enabled application. It is fast, portable, renderer agnostic, and self-contained (no external dependencies) \cite{Imgui2016}.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Scenes}
+When approaching all design goals, we opted for a very simple way to create scenes. Scenes should stand on their own and not interfere in the functioning of the rest of the scenes nor in the rendering process.
+
+Each scene is composed of three components, \textbf{Cameras}, \textbf{3D Objects} and \textbf{Shaders}, as pictured in \cref{sceneobjects}.
+\begin{figure}[hbt!]
+    \caption{A scene object}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/sceneobject.png}
+    \end{center}
+    \legend{Source: the authors}
+    \label{sceneobjects}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Cameras} are objects that designate a point of view in a virtual scene. In our scenes, cameras will be either look-at or free. Look-at cameras always face a single point in world space and Free cameras will look at an arbitrary point that is directly in front of the camera, this point is rotated in tandem with the camera rotation, giving the impression of a "free" camera.
+
+\item \textbf{3D Objects} in turn, are objects comprised of meshes - a collection of vertices, faces, and normal vectors - and textures (which are optional). These objects can be loaded from Wavefront OBJ files or by defining each vertex, face, and normal vector. When projecting textures we also require texture coordinates that can be defined by the user or defined automatically by the model's bounding box\footnote{A 3D box made with the mesh's outermost vertices}.
+
+\item \textbf{Shaders} are a programmable way to indicate how color, and therefore light, is calculated for each pixel that is being rendered in the scene. In our project, shaders can be either by vertex or by fragment.
+\end{itemize}
+
+Scenes can have multiple cameras, 3D Objects, and shaders, essentially giving full control of what's being rendered to the scene's author. Having multiple cameras can be useful to show how the rendered scene is behaving when seen from a different perspective. These cameras are implemented in the latter, more complex, scenes of the application.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Results}
+Each scene has a focus on one important part of computer graphics. To change the scene the user chooses the desired scene from "Change Scene" drop down, as pictured in \cref{scenechangerdropdown}. This chapter discusses how each scene was implemented, what were the motivations for developing them, and the results.
+
+\begin{figure}[h!]
+    \caption{Scene changer drop-down}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scenechanger.jpg}
+    \end{center}
+    \legend{Source: our system}
+    \label{scenechangerdropdown}
+\end{figure}
+
+\section{Drawing a simple triangle}
+\label{trianglecolorblendscene}
+A triangle is a shape made out of three vertices connected in a particular order. A triangle the simplest shape that draws a plane, i.e. a point and a line do not draw a plane, we need at least three points to draw a plane, hence triangles are an efficient way to store a model's mesh data. Because of this most meshes are comprised of complexes of triangles with shared vertices \cite{Marschner2021CGFundamentals}.
+
+To specify what way the triangle is facing, a normal vector is used. Normals are vectors that are orthogonal to the triangle's surface. They can face either the front side or the backside. They are important in computer graphics because most models are only drawn in the outermost shell, i.e. the back-face of these triangles are not drawn to save processing power.
+
+\begin{figure}[h!]
+    \caption{Color blending in a red, green, and blue vertices triangle in our system}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene1.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{trianglecolorblend}
+\end{figure}
+
+With this in mind, the first scene starts with the simplest possible drawing, a triangle. To achieve this, first, it's necessary to declare its vertices and send it to the graphics card through OpenGL. A Vertex Array Objects (VAO) is a data structure that can hold many Vertex Buffer Objects (VBO), which in turn, are structures that hold an arbitrary attribute of the model. These attributes can be either vertex position, texture coordinates, color, normals, or any other attribute usable for the scene being built.
+
+For drawing a simple triangle we used a VAO that held two VBOs, one for the position, and one for the vertex color. The vertices colors can be directly changed by user input, allowing the user to experiment with how each color blends with the other vertices colors at run-time.
+
+After defining the VAO and VBOs we send the vertex data to the graphics pipeline in the GPU. This vertex data is modifiable by the vertex and fragment shader. The vertex shader receives the vertex position and color defined in the VBO, applies the projection and view from the camera, and passes the transformed position along with the color into the pipeline. In the fragment shader, we use the color passed down from the vertex shader and calculate how each pixel will look, this is called color blending, like the mid points between vertices in \cref{trianglecolorblend}.
+
+%
+\section{Animated binary clock and dynamic drawing}
+\begin{figure}[h!]
+    \caption{A binary clock drawn in OpenGL}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene2.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{binaryclock}
+\end{figure}
+
+To demonstrate how flexible the VBO/VAO structures are we designed a scene capable of handling a dynamic quantity of vertices, opposed to the fixed vertices of the previous scene, \cref{trianglecolorblendscene}.
+
+As pictured in  \cref{binaryclock}, the digit 1 consists of four vertices organized in a rectangle shape, and the digit 0 consists of two ellipses with an inside radius and an outside radius, which count 32 vertices to achieve a smooth curve. These vertices are connected in triples to form triangles, which are simply determined by their order of creation.
+
+Each digit has its own VBOs both for position and for color, opposed to \cref{trianglecolorblendscene}, this structure consists of only one VBO per VAO. While not recommended, this is by design, to show how one could approach using the VBO/VAO structures.
+%
+
+\section{Matrix transformations}
+\label{matrixtransformationscene}
+
+\begin{figure}[t!]
+    \caption{Model-View-Perspective-Viewport matrices effect on a scene}
+    \begin{center}
+        \includegraphics[width=\linewidth]{inputs/scene3.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{pointmvpvscene}
+\end{figure}
+
+In this scene, we aim to shed light on how the MVPV matrices, introduced in \cref{mvpvmatricessection}, influence the drawing on the screen of one of the uppermost vertices in one of two cubes. The highlighted vertex is made more evident than the others by being drawn as a black square, seen in the blue part of the left-most cube in \cref{pointmvpvscene}. Interacting with the scene will change the matrices \footnote{The matrices fields are not editable, the only way to change them is by interacting with the scene}:
+\begin{itemize}
+\item The cube is translatable and rotatable via the scene's interface. Changing these controls makes very apparent how the model matrix affine transformations change the model attributes by changing the way the cube is drawn, hence influencing how values are shown in the pipeline of matrices of the MVPV. 
+
+\item The camera is free and is controllable via the keyboard. Keyboard arrows change the position of the camera. Mouse movement changes the rotation of the camera. Changing the camera position or rotation will change the view matrix because the point will be in a different place in the view plane.
+
+\item The perspective can be changed to either perspective or orthographic projection with the click of a button in the interface, this will change the projection matrix accordingly.
+
+\item Changing the size of the window rendering the application will change the viewport matrix, as it interferes with where the vertex will be drawn as a pixel in the rendering window.
+\end{itemize}
+%
+\section{Bézier lines and 3D movement}
+\begin{figure}[hbt!]
+    \caption{Bézier lines movement based on control points}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene4.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{scene4demo}
+\end{figure}
+
+As presented in \cref{beziercurveschapter}, Bézier curves determine the point on a trajectory based on the control points of the curve and a ratio. For this scene the ratio $s$ will be calculated based on the $t$ frames that passed in each render cycle, modulated to fit in a $[0, 1]$ range, this can be achieved by using a simple senoid function to define $s$:
+
+\begin{equation}
+    s =\frac{\sin(\pi (t - \frac{1}{2}))}{2}  + \frac{1}{2}.
+    \label{scene4senoidtimefunction}
+\end{equation}
+
+The first graph on the left-side panel of \cref{scene4demo} will be used to draw \cref{scene4senoidtimefunction} based on the counts frames rendered. The control points are changeable according to their current $[x,y,z]$ coordinates, and in doing so, the user will have feedback of how the Bézier curves component functions will behave in such configuration, represented by the last 3 graphs in the panel of  \cref{scene4demo}. These graphs are separated in the $[x,y,z]$ dimensions and have a pink dot that moves along the graph's line according to the current position of the model of the bunny. To improve usability, the user can also hold the frame counting to freeze the model in place, therefore freezing how the component function graphs behave.
+
+
+%
+\section{Shading and lighting basics}
+\label{shadinglightingscene}
+
+As presented on \cref{lightingshadingsection}, light can interact in very different ways with a surface. For Phong shading, we can use ambient, diffuse, and specular reflectance. This scene focuses on showing how these different types of reflectances can be separated in the first three cubes, that are later combined in the last right-most cube, as seen on \cref{scene5demo}.
+
+The scene interface controls help the user understand how each combination of reflectance strengths can influence how the cube looks. The position of the light is changeable, as well as the ambient reflectance strength, the diffuse reflectance strength, and the specular Phong and Gouraud reflectance strengths.
+\begin{figure}[hbt!]
+    \caption{Blocks reflecting a point light in different ways}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene5.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{scene5demo}
+\end{figure}
+
+%
+\section{Simple texture mapping and texture lighting}
+
+For this scene, we aim to make the lighting of an object more interesting by using a diffuse and a specular texture. As pictured in \cref{scene6demo}, we used a simple UV projection for the texture in this scene, both for the diffuse and the specular texture, as presented on \cref{texturemappingsection}.
+
+\begin{figure}[hbt!]
+    \caption{A textured block with diffuse and specular texture interacting with a light}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene6_1.PNG}
+    \end{center}
+    \legend{Source: our system}
+    \label{scene6demo}
+\end{figure}
+
+The controls enable the user to change characteristics of the light and the cube:
+\begin{itemize}
+    \item \textbf{For the light }the user can change how each type of emission of a light, presented on \cref{lightingshadingsection}, can change when hitting an object. These include the ambient, the diffuse, and the specular color of emission.
+    \item \textbf{For the cube} the user can change the color for each type of reflectance and can enable the diffuse and/or the specular texture.
+\end{itemize}
+
+Having the ability to turn on and off the diffuse and specular texture can enable a better understanding of how textures can work when on top of one another: 
+\begin{itemize}
+    \item For the diffuse texture, pictured in the left-hand side of \cref{scene6textures}, we have the texture itself, with multiple colors. We chose to set it as diffuse to create a more realistic effect, but using the ambient reflectance as a texture would also be possible.
+    \item For the specular texture, pictured in the right-hand side of \cref{scene6textures}, we use a monochromatic texture that allows the shading programs to set different values of specularity for points in a texture. Values closer or equal to white will be completely reflective and values closer or equal to zero will be non-reflective.
+\end{itemize}
+
+\begin{figure}[hbt!]
+    \caption{Diffuse and specular textures used for texturing a cube, on the left-hand side and the right-hand side, respectively}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene6containertextures.png}
+    \end{center}
+    \legend{Source: Extracted from LearnOpenGL.com \cite{devries2015opengl}}
+    \label{scene6textures}
+\end{figure}
+%
+\section{Light attenuation and different ways to light a scene}
+\label{typesoflightscene}
+
+As pictured in \cref{scene7demo}, in this scene we wanted to show the different kinds of lighting seen on \cref{typesoflightprojection}, so the user can enable a directional, a point, and a spotlight to observe how they interact with an object.
+
+\begin{figure}[hbt!]
+    \caption{A demonstration of directional, point and spotlight}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene7.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{scene7demo}
+\end{figure}
+
+The directional light is represented by a cylinder, seen on the left-hand side of the triangle in \cref{scene7demo} , the user can change its direction of  and also its emit properties.
+
+The point light is represented by a cube and uses light attenuation as seen on \cref{typesoflightprojection}, so the farther the light is from the object, the dimmer the effect it will have on the object. The user can change the constant, the linear, and the quadratic attenuation factors to see how it affects its light falloff.
+
+The spotlight is represented by a pyramid, the base of the pyramid is where the light is coming from and the user can change the direction it points towards and also the cutoff inner and outer angles.
+
+%
+\section{Frustum and perspective basics}
+
+To better understand how a view frustum, seen on \cref{perspectiveprojection}, affects the perspective matrix, we developed a "third-person view" of what it would look like to see a camera and its view frustum. As pictured in \cref{scene8demo} the left-hand side is the rendered view of the right-hand side gray cube, representing the camera, together with lines representing the view frustum and its near and far planes.
+
+\begin{figure}[hbt!]
+    \caption{A camera frustum view and its representation in a scene}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene8.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{scene8demo}
+\end{figure}
+
+The user can change the perspective to be either orthographic or perspective, and this will change the frustum accordingly, as seen on \cref{orthographicfrustum}. Added to this the user can change the near and far plane distance from the camera, and also the field of view, seen on \cref{ortographicprojection}. Changing the field of view makes the frustum narrower or wider, depending on its setting, and this changes the camera view accordingly.
+
+\begin{figure}[hbt!]
+    \caption{A camera frustum view with orthographic projection and its representation in a scene}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene8_1.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{orthographicfrustum}
+\end{figure}
+
+%
+\section{Projection matrix simulation}
+\label{projectionmatrixscene}
+This scene illustrates the NDC space and the perspective deformation defined by a perspective projection matrix, both seen on \cref{mvpvmatricessection}.
+
+\begin{figure}[hbt!]
+    \caption{A camera frustum view with perspective projection before and after the perspective deformation}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene9.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{perspectivedeformation}
+\end{figure}
+
+Figure \ref{perspectivedeformation} shows how the perspective matrix affects objects in a scene \footnote{\href{https://raw.githubusercontent.com/guicattani/cg-guide/master/assets/perspectiveprojection.gif}{Animation available in CG Guide repository}}. Perspective deformation, seen on the right, is discussed in-depth on \cref{perspectiveprojection}.
+
+The application of the perspective matrix transforms the frustum into a cube that represents the NDC space. Everything that falls outside of this cube will not be rendered by the observer, as pictured in \cref{perspectivedeformationoutsideofndc}.
+
+The user can interact with the scene by moving the near and far plane and the field of view to see how this affects the objects being rendered.
+
+\begin{figure}[hbt!]
+    \caption{A camera view in the left-hand side and its respective perspective matrix deformation on the right-hand side}
+    \begin{center}
+        \includegraphics[width=30em]{inputs/scene9_2.png}
+    \end{center}
+    \legend{Source: our system}
+    \label{perspectivedeformationoutsideofndc}
+\end{figure}
+
+Another setting is the ability to follow the perspective camera (seen on the left-hand side of \cref{perspectivedeformationoutsideofndc}), this enables the user to put the second camera (on the right-hand side of \cref{perspectivedeformationoutsideofndc}) in the same place as the perspective camera. Doing so, and enabling the orthographic projection, makes both of the cameras render exactly the same, but on the second camera, the perspective is is actually being simulated by geometric distortions to the scene objects (this can be seen by unfollowing the first perspective camera and moving the second camera). %The need for enabling the orthographic projection is because the second camera already has a perspective matrix being rendered, this affects the results to be incorrect. To revert this the user uses the orthographic projection combined with the follow the camera setting.
+
+%
+\section{Advanced texture mapping}
+\label{advancedtexturemappingscene}
+This scene focuses on giving an experience very close to what is seen on
+\cref{sphericalprojection}, a texture that is projected upon a surface and an auxiliary arrow that indicates where the direction it points is projected onto the object. In this section, we will refer to each point in an object by its texture coordinate $(u,v) = \phi(x,y,z)$.
+
+\subsection{Axis Aligned Bounding Box Texture Projection}
+
+Axis Aligned Bounding Box Texture Projection is also known as \textit{Planar Projection}, and as the name suggests, projects a texture plane onto an object, as pictured in \cref{aabbtextureprojection}. This is the simplest mapping from 3D to 2D parallel projection, the same as used on \cref{ortographicprojection}, and just as so, it's done by multiplying a matrix (with no rotation) and discarding the $z$ component.
+
+\begin{figure}[hbt!]
+    \caption{Axis Aligned Bounding Box Texture Projection, the projected texture on the left-hand side, and unwrapped on the right-hand side}
+    \begin{center}
+        \includegraphics[width=28em]{inputs/scene10_1.png}
+    \end{center}
+    \legend{Source: Our system}
+    \label{aabbtextureprojection}
+\end{figure}
+
+\begin{equation}
+    \phi(x,y,z) = (u,v) \quad where
+    \begin{bmatrix}
+        u \\
+        v \\
+        * \\
+        1 \\
+    \end{bmatrix}
+    =
+    M_t
+    \begin{bmatrix}
+        x \\
+        y \\
+        z \\
+        1 \\
+    \end{bmatrix}
+    .
+    \label{aabbequation}
+\end{equation}
+
+The texturing matrix $M_t$ in \cref{aabbequation} represents an affine transformation (with rotation discarded), and the asterisk $*$ indicates that we don’t care what ends up in the $z$ coordinate. \cite{Marschner2021CGFundamentals}
+
+\subsection{Spherical}
+
+We can parametrize a point on the surface of an object by mapping it to the point on a sphere through radial projection: take a line from the center of the sphere through the point on the surface, and find the intersection with the sphere, like in \cref{sphericalprojection}, and as shown in our application in \cref{sphericaltextureprojectiondemo}.
+
+\begin{figure}[hbt!]
+    \caption{Spherical Texture Projection, the projected texture on the left-hand side, and the sphere projecting the texture on the right-hand side}
+    \begin{center}
+        \includegraphics[width=28em]{inputs/scene10_3.png}
+    \end{center}
+    \legend{Source: Our system}
+    \label{sphericaltextureprojectiondemo}
+\end{figure}
+
+This can be done by expressing the surface point in spherical coordinates $(\rho, \theta, \phi)$ and then discarding the $\rho$ coordinate and mapping $\theta$ and $\phi$ to the range $[0,1]$ \cite{Marschner2021CGFundamentals}:
+
+\begin{equation}
+    \phi(x,y,z) = ([\pi + atan2(y,x)]/2\pi\ ,\ [\pi - acos(\frac{z}{||x||})]/\pi).
+\end{equation}
+
+\subsection{Cylindrical}
+
+Cylindrical projection is made for models that are more columnar than spherical, for example, a vase. Figure \ref{cylindricalltextureprojectiondemo} demonstrates how our application demonstrates this texture projection.
+
+\begin{figure}[hbt!]
+    \caption{Cylindrical Texture Projection, the projected texture on the left-hand side, and the cylinder projecting the texture on the right}
+    \begin{center}
+        \includegraphics[width=28em]{inputs/scene10_2.png}
+    \end{center}
+    \legend{Source: Our system}
+    \label{cylindricalltextureprojectiondemo}
+\end{figure}
+
+Analogous to spherical texture projection, this can be simply done by converting coordinates to cylindrical coordinates and discarding the radius \cite{Marschner2021CGFundamentals}.
+
+\begin{equation}
+    \phi(x,y,z) = (\frac{1}{2\pi}[\pi + atan2(y,x)]/2\pi\ ,\ \frac{1}{2}[1 + z]).
+\end{equation}
+
+\subsection{Cube map}
+
+Using spherical coordinates to parameterize a planar shape (the 2D texture) leads to a high distortion of shape and area near the poles. A popular alternative is much more uniform at the cost of having more discontinuities. The idea is to project onto a cube, rather than a sphere, and then use six separate square textures for the six faces of the cube. The collection of six square textures is called a \textit{cube map}. This introduces discontinuities along all the cube edges, but it keeps distortion of shape and area low \cite{Marschner2021CGFundamentals}.
+
+Cube map projection, as pictured in \cref{cubemapltextureprojectiondemo}, is made by having one texture for each face of the cube of projection, it's cheaper than spherical coordinates because projecting onto a plane just requires a division. The point that projects onto the $+z$ face of the cube is defined by:
+
+\begin{equation}
+    (x,y,z) \implies  (\frac{x}{z},\frac{y}{z}).
+\end{equation}
+
+\begin{figure}[hbt!]
+    \caption{Cube map Texture Projection, the projected texture on the left-hand side, and cube projecting the texture on the right-hand side}
+    \begin{center}
+        \includegraphics[width=28em]{inputs/scene10_4.png}
+    \end{center}
+    \legend{Source: Our system}
+    \label{cubemapltextureprojectiondemo}
+\end{figure}
+
+We can tell which face a point projects by looking at the coordinate of the largest absolute value:  for example, if $|x| > |y|$ and $|x| > |z|$, the point projects to the $+x$ or $-x$ face, depending on the sign of $x$ \cite{Marschner2021CGFundamentals}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusion and Future Work}
+We presented an application capable of helping teachers teach and students to better understand concepts of computer graphics. It allows for a highly interactive environment that portrays computer graphics principles in a more student-friendly way. The need for an application such as CG Guide became very clear once we searched for applications that had the same purpose and only could find a few, and mostly legacy, applications. We aimed to make it as easy to understand and extend as possible, covering a bit of each introductory topic in computer graphics.
+
+This system can easily be built upon in the future, it only touches the tip of the computer graphics iceberg. Making it available to be open source makes this even more exciting because anyone can make their own CG Guide and use it as they please.
+
+A logical follow-up would be creating more scenes that cover more advanced topics. Although challenging and hard to implement this could help many in understanding computer graphics.
+
+Another simple, yet effective, way would be to put explanations of each scene inside of the program itself, this can be done quite easily and has already been experimented with when developing this application. The interface supports markdown syntax and showing images, diagrams, and graphs.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% referências
+% aqui será usado o environment padrao `thebibliography'; porém, sugere-se
+% seriamente o uso de BibTeX e do estilo abnt.bst (veja na página do
+% UTUG)
+%
+% observe também o estilo meio estranho de alguns labels; isso é
+% devido ao uso do pacote `natbib', que permite fazer citações de
+% autores, ano, e diversas combinações desses
+
+\bibliographystyle{abntex2-alf}
+\bibliography{biblio}
+
+\end{document}
