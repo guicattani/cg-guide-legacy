@@ -100,52 +100,8 @@ void Interface::Show(GLFWwindow *window)
   if (show_app_style_editor){ ImGui::Begin("Style Editor", &show_app_style_editor); ImGui::ShowStyleEditor(); ImGui::End(); }
   if (show_app_about)       { ImGui::ShowAboutWindow(&show_app_about); }
 
-  ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_Once);
-  ImGui::SetNextWindowSizeConstraints(ImVec2(this->detail_window_constraints.x, this->detail_window_constraints.y),
-                                      ImVec2(this->detail_window_constraints.x, this->detail_window_constraints.y));
   ImGuiWindowFlags window_flags = 0;
   window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
-  {
-    ImGui::Begin("Details", NULL, window_flags);
-
-    switch (g_CurrentScene)
-    {
-    case 0:
-      switch(g_Scene1->current_part) {
-        case 1:
-          this->detail_window_constraints = InterfaceScene1::Part1::window_constraints;
-          InterfaceScene1::Part1::ShowText();
-          break;
-        case 2:
-          this->detail_window_constraints = InterfaceScene1::window_constraints;
-          InterfaceScene1::ShowText();
-          break;
-      }
-      break;
-    case 1:
-      InterfaceScene2::ShowText();
-      break;
-    case 2:
-      InterfaceScene3::ShowText();
-      break;
-    case 3:
-      InterfaceScene4::ShowText();
-      break;
-    case 4:
-      InterfaceScene5::ShowText();
-      break;
-    case 5:
-      InterfaceScene6::ShowText();
-      break;
-    case 6:
-      InterfaceScene7::ShowText();
-      break;
-    case 7:
-      InterfaceScene8::ShowText();
-      break;
-    }
-    ImGui::End();
-  }
 
   ImGui::SetNextWindowPos(ImVec2(60, 20), ImGuiCond_Once);
   window_flags |= ImGuiWindowFlags_MenuBar;

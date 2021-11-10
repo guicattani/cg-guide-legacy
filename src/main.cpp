@@ -98,7 +98,7 @@ int main(int, char **)
   g_Scene9 = new Scene9();
   g_Scene10 = new Scene10();
 
-  g_CurrentScene = 9;
+  g_CurrentScene = 0;
 
   // Habilitamos o Z-buffer. Veja slide 108 do documento "Aula_09_Projecoes.pdf".
   glEnable(GL_DEPTH_TEST);

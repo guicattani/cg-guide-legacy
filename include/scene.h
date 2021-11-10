@@ -52,7 +52,7 @@ public:
   Shader shader = Shader("../src/scenes/scene_1/shader_scene.vert",
                          "../src/scenes/scene_1/shader_scene.frag");
 
-  unsigned int current_part = 1;
+  unsigned int current_part = 2;
   GLuint BuildTriangle();
   void Render();
 
