@@ -71,7 +71,7 @@ int main(int, char **)
   InitializeOpenGL3();
 
   // Create window with graphics context
-  g_Window = glfwCreateWindow(1000, 1000, "TCC - Guilherme", NULL, NULL);
+  g_Window = glfwCreateWindow(1000, 1000, "CG Guide", NULL, NULL);
   if (g_Window == NULL)
     return 1;
 
