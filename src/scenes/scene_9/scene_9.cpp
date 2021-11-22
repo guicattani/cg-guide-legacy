@@ -163,13 +163,8 @@ void Scene9::Render()
     second_camera->phi = 0.0f;
   }
 
-
   int display_w, display_h;
   glfwGetFramebufferSize(g_Window, &display_w, &display_h);
-  this->shaders["scene"].use();
-  shaders["scene"].setFloat("simulate_perspective_slider", this->simulate_perspective_slider);
-  shaders["scene"].setMat4("first_camera_projection", camera->projection);
-  shaders["scene"].setMat4("first_camera_view", camera->view);
 
   //first camera
   glViewport(0, 0, display_w/2, display_h);
@@ -180,6 +175,11 @@ void Scene9::Render()
   this->camera->Enable((float) (display_w/2)/display_h, mouse_over_camera);
   this->camera->UpdateShaderUniforms(this->shaders["scene"]);
   DrawCommonModels();
+
+  this->shaders["scene"].use();
+  shaders["scene"].setFloat("simulate_perspective_slider", this->simulate_perspective_slider);
+  shaders["scene"].setMat4("first_camera_projection", camera->projection);
+  shaders["scene"].setMat4("first_camera_view", camera->view);
 
   //second camera
   shaders["scene"].setBool("second_camera", true);
